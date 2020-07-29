@@ -21,7 +21,6 @@
 
 // Includes.
 #include <EA31337-classes/Indicator.mqh>
-#include <EA31337-classes/Indicators/Indi_MA.mqh>
 
 // Indicator line identifiers used in SVEBand.
 enum ENUM_SVE_BAND_LINE {
@@ -34,18 +33,19 @@ enum ENUM_SVE_BAND_LINE {
 // Structs.
 struct SVEBandParams : IndicatorParams {
   // Indicator params.
-  int    TEMAPeriod;
-  int    SvePeriod;
+  int TEMAPeriod;
+  int SvePeriod;
   double BBUpDeviations;
   double BBDnDeviations;
-  int    DeviationsPeriod;
+  int DeviationsPeriod;
   // Struct constructor.
-  void SVEBandParams(int _tema_period, int _sve_period,
-      double _deviations_up, double _deviations_down, int _deviations_period,
-      int _shift)
-      : TEMAPeriod(_tema_period), SvePeriod(_sve_period),
-      BBUpDeviations(_deviations_up), BBDnDeviations(_deviations_down),
-      DeviationsPeriod(_deviations_period) {
+  void SVEBandParams(int _tema_period, int _sve_period, double _deviations_up, double _deviations_down,
+                     int _deviations_period, int _shift)
+      : TEMAPeriod(_tema_period),
+        SvePeriod(_sve_period),
+        BBUpDeviations(_deviations_up),
+        BBDnDeviations(_deviations_down),
+        DeviationsPeriod(_deviations_period) {
     max_modes = FINAL_SVE_BAND_LINE_ENTRY;
     custom_indi_name = "Indicators\\SVE_Bollinger_Band";
     SetDataValueType(TYPE_DOUBLE);
@@ -77,13 +77,13 @@ class Indi_SVEBand : public Indicator {
    * Class constructor.
    */
   Indi_SVEBand(SVEBandParams &_p)
-      : params(_p.TEMAPeriod, _p.SvePeriod, _p.BBUpDeviations, _p.BBDnDeviations,
-        _p.DeviationsPeriod, _p.shift), Indicator((IndicatorParams) _p) {
+      : params(_p.TEMAPeriod, _p.SvePeriod, _p.BBUpDeviations, _p.BBDnDeviations, _p.DeviationsPeriod, _p.shift),
+        Indicator((IndicatorParams)_p) {
     params = _p;
   }
   Indi_SVEBand(SVEBandParams &_p, ENUM_TIMEFRAMES _tf)
-      : params(_p.TEMAPeriod, _p.SvePeriod, _p.BBUpDeviations, _p.BBDnDeviations,
-        _p.DeviationsPeriod, _p.shift), Indicator(NULL, _tf) {
+      : params(_p.TEMAPeriod, _p.SvePeriod, _p.BBUpDeviations, _p.BBDnDeviations, _p.DeviationsPeriod, _p.shift),
+        Indicator(NULL, _tf) {
     params = _p;
   }
 
@@ -96,10 +96,9 @@ class Indi_SVEBand : public Indicator {
     double _value = EMPTY_VALUE;
     switch (params.idstype) {
       case IDATA_ICUSTOM:
-        _value = iCustom(istate.handle, GetSymbol(), GetTf(), params.custom_indi_name,
-          params.GetTEMAPeriod(), params.GetSvePeriod(), params.GetBBUpDeviations(), params.GetBBDnDeviations(),
-          params.GetDeviationsPeriod(),
-          _mode, _shift);
+        _value = iCustom(istate.handle, GetSymbol(), GetTf(), params.custom_indi_name, params.GetTEMAPeriod(),
+                         params.GetSvePeriod(), params.GetBBUpDeviations(), params.GetBBDnDeviations(),
+                         params.GetDeviationsPeriod(), _mode, _shift);
         break;
       default:
         SetUserError(ERR_USER_NOT_SUPPORTED);
@@ -133,5 +132,4 @@ class Indi_SVEBand : public Indicator {
     }
     return _entry;
   }
-
 };
