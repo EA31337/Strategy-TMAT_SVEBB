@@ -1,3 +1,3 @@
-# Strategy Demo
+# Strategy TMA Band SVE True
 
-This is example demo strategy for the demonstration purposes.
+Implements TMA Band SVE True strategy.

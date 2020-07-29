@@ -27,14 +27,14 @@ jobs:
       - name: Compile for MQL4
         uses: fx31337/mql-compile-action@master
         with:
-          path: Stg_Demo.mq4
+          path: Stg_TMA_Band_SVE_True.mq4
           include: .
           mt-version: 5.0.0.2361
           verbose: true
       - name: Compile for MQL5
         uses: fx31337/mql-compile-action@master
         with:
-          path: Stg_Demo.mq5
+          path: Stg_TMA_Band_SVE_True.mq5
           include: .
           mt-version: 5.0.0.2515
           verbose: true
