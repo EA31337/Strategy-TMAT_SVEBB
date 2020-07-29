@@ -108,14 +108,14 @@ int start()
       {
          tBuffer[r][__haOpen] = averagePrice(i);
          continue;
-      }      
+
 
       //
       //
       //
       //
       //
-            
+
       tBuffer[r][__haOpen]  = (averagePrice(i)+tBuffer[r-1][__haOpen])/2.0;
             double haClose  = (averagePrice(i)+tBuffer[r][__haOpen]+MathMax(High[i],tBuffer[r][__haOpen])+MathMin(Low[i],tBuffer[r][__haOpen]))/4.0;
             double tema1    = iTema(haClose,i,0);
@@ -123,33 +123,33 @@ int start()
             double diff     = tema1-tema2;
             double zima     = tema1 +diff;
       tmaZima[i] = iTema(zima,i,6);
-   }      
-   
+   }
+
    //
    //
    //
    //
    //
-   
+
    for(i=limit; i >= 0; i--)
    {
          double sdev = iDeviation(tmaZima,SvePeriod,i);
             if (sdev != 0)
                  svePerB[i] = 25.0*(tmaZima[i]+2.0*sdev-iMAOnArray(tmaZima,0,SvePeriod,0,MODE_LWMA,i))/sdev;
-            else svePerB[i] = 0;            
+            else svePerB[i] = 0;
          sdev = iDeviation(svePerB,DeviationsPeriod,i);
-         
+
          bbValue[i] = svePerB[i];
          bbUpper[i] = 50.0 + sdev*BBUpDeviations;
          bbLower[i] = 50.0 - sdev*BBDnDeviations;
    }
-   
+
    //
    //
    //
    //
    //
-   
+
    return(0);
 }
 
@@ -165,7 +165,7 @@ int start()
 double averagePrice(int i)
 {
    if (Open[i] != 0)
-	     return((Open[i]+High[i]+Low[i]+Close[i])/4.0);
+       return((Open[i]+High[i]+Low[i]+Close[i])/4.0);
    else return((        High[i]+Low[i]+Close[i])/3.0);
 }
 
@@ -186,7 +186,7 @@ double iSma(double& array[], int period, int pos)
 {
    double sum = 0.0;
       for(int i=0; i<period; i++,pos++) sum += array[pos];
-   return(sum/period);     
+   return(sum/period);
 }
 
 //
@@ -201,7 +201,7 @@ double iTema(double price,int pos,int sbuf=0)
    int ia = sbuf+0;
    int ib = sbuf+1;
    int ic = sbuf+2;
-   
+
    if (i < 1)
       {
          tBuffer[i][ia] = price;

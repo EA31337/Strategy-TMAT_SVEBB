@@ -1,15 +1,26 @@
 /**
  * @file
- * Implements TMA_Band_SVE_True strategy based on the TMA_Band_SVE_True indicator.
+ * Implements TMA Band SVE True strategy.
+ *
+ * @see: https://www.forexstrategiesresources.com/trading-system-metatrader-4-iii/397-tma-band-true/
  */
 
 // Includes.
-//#include "Indi_TMA_Band_SVE_True.mqh"
+#include "Indi_SVE_Bollinger_Band.mqh"
+//#include "Indi_TMA_True.mqh"
 #include <EA31337-classes/Strategy.mqh>
 
 // User input params.
 INPUT string __TMA_Band_SVE_True_Parameters__ = "-- TMA_Band_SVE_True strategy params --";  // >>> TMA_Band_SVE_True <<<
 INPUT float TMA_Band_SVE_True_LotSize = 0;                                     // Lot size
+// Indicators params.
+INPUT int Indi_SVE_Bollinger_Band_TEMAPeriod = 8;                              // SVE Band: TEMA Period
+INPUT int Indi_SVE_Bollinger_Band_SvePeriod = 18;                              // SVE Band: SVE Period
+INPUT double Indi_SVE_Bollinger_Band_BBUpDeviations = 1.6;                     // SVE Band: BB Up Deviation
+INPUT double Indi_SVE_Bollinger_Band_BBDnDeviations = 1.6;                     // SVE Band: BB Down Deviation
+INPUT int Indi_SVE_Bollinger_Band_DeviationsPeriod = 63;                       // SVE Band: Deviations Period
+INPUT int Indi_SVE_Bollinger_Band_Shift = 0;                                   // SVE Band: Shift
+// Strategy params.
 INPUT int TMA_Band_SVE_True_Shift = 0;                                         // Shift (relative to the current bar, 0 - default)
 INPUT int TMA_Band_SVE_True_SignalOpenMethod = 0;                              // Signal open method
 INPUT int TMA_Band_SVE_True_SignalOpenFilterMethod = 0;                        // Signal open filter method

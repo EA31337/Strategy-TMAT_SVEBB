@@ -2,10 +2,10 @@
 //|                                                      TmaTrue.mq4 |
 //+------------------------------------------------------------------+
 #property copyright "Copyright © 2010, zznbrm"
-                          
+
 //---- indicator settings
 #property indicator_chart_window
-#property  indicator_buffers 3 
+#property  indicator_buffers 3
 #property  indicator_color1 DarkGray
 #property  indicator_color2 DarkGray
 #property  indicator_color3 DarkGray
@@ -36,27 +36,27 @@ datetime gdtLastAlert = 0;
 //| Custom indicator initialization function                         |
 //+------------------------------------------------------------------+
 int init()
-{          
+{
    if ( eintTimeframe == 0 )   gintTF = Period();
    else                        gintTF = eintTimeframe;
-   
+
    gdtLastAlert = 0;
-   
+
    IndicatorBuffers( 3 );
    IndicatorDigits( 5 );
-   
-   SetIndexBuffer( 0, gadblMid ); 
+
+   SetIndexBuffer( 0, gadblMid );
    SetIndexLabel( 0, "TMA Mid" );
 
    SetIndexBuffer( 1, gadblUpper );
    SetIndexLabel( 1, "TMA Upper" );
-   
+
    SetIndexBuffer( 2, gadblLower );
-   SetIndexLabel( 2, "TMA Lower" );   
-       
+   SetIndexLabel( 2, "TMA Lower" );
+
    //---- name for DataWindow and indicator subwindow label
    IndicatorShortName( "TmaTrue(" + eintHalfLength + ",M" + gintTF + ")" );
-   
+
    return( 0 );
 }
 
@@ -74,19 +74,19 @@ int deinit()
 int start()
 {
    int counted_bars = IndicatorCounted();
-   
+
    if (counted_bars < 0) return (-1);
    if (counted_bars > 0) counted_bars--;
    int intLimit = Bars - counted_bars;
    double dblTma, dblUpper, dblLower, dblRange;
    int intBarShift;
-      
-   if ( eintBarsToProcess > 0 && intLimit > eintBarsToProcess )     intLimit = eintBarsToProcess; 
+
+   if ( eintBarsToProcess > 0 && intLimit > eintBarsToProcess )     intLimit = eintBarsToProcess;
 
    for( int inx = intLimit; inx >= 0; inx-- )
-   {   
-      if ( gintTF == Period() ) 
-      {      
+   {
+      if ( gintTF == Period() )
+      {
          dblRange = iATR( Symbol(), gintTF, eintAtrPeriod, inx+10 );
          dblTma = calcTma( eintHalfLength, inx );
       }
@@ -96,12 +96,12 @@ int start()
          dblRange = iATR( Symbol(), gintTF, eintAtrPeriod, intBarShift+10 );
          dblTma = calcTmaMtf( gintTF, eintHalfLength, intBarShift, Close[inx] );
       }
-             
+
       gadblMid[inx] = dblTma;
       gadblUpper[inx] = dblTma + ( edblAtrMultiplier * dblRange );
       gadblLower[inx] = dblTma - ( edblAtrMultiplier * dblRange );
    }
-   
+
    if ( eblnAlerts && gdtLastAlert < Time[1] )
    {
       if ( ( Close[1] > gadblUpper[1] ) && ( Close[2] < gadblUpper[2] ) )
@@ -109,14 +109,14 @@ int start()
          Alert( Symbol(), " - M", Period(), " - ", TimeToStr( TimeLocal(), TIME_MINUTES ), " closed above upper TMA." );
          gdtLastAlert = Time[1];
       }
-      
+
       if ( ( Close[1] < gadblLower[1] ) && ( Close[2] > gadblLower[2] ) )
       {
          Alert( Symbol(), " - M", Period(), " - ", TimeToStr( TimeLocal(), TIME_MINUTES ), " closed below lower TMA." );
          gdtLastAlert = Time[1];
       }
    }
-   
+
    return( 0 );
 }
 
@@ -127,19 +127,19 @@ double calcTma( int intHalfLength, int intShift )
 {
    double dblResult, dblSum, dblSumW, dblRange;
    int inx, jnx, knx;
-   
+
    dblSumW = intHalfLength + 1;
    dblSum = dblSumW * Close[intShift];
    jnx = intHalfLength;
-   
+
    for ( inx = 1, jnx = intHalfLength; inx <= intHalfLength; inx++, jnx-- )
    {
       dblSumW += jnx;
       dblSum += ( jnx * Close[intShift+inx] );
-   } 
-   
+   }
+
    dblResult = dblSum / dblSumW;
-   
+
    return( dblResult );
 }
 
@@ -150,19 +150,19 @@ double calcTmaMtf( int intTF, int intHalfLength, int intUpperTfShift, double dbl
 {
    double dblResult, dblSum, dblSumW, dblRange;
    int inx, jnx, knx;
-   
+
    // This is the current bar
    dblSumW = intHalfLength + 1;
    dblSum = dblSumW * dblClose;
    jnx = intHalfLength;
-   
+
    for ( inx = 1, jnx = intHalfLength; inx <= intHalfLength; inx++, jnx-- )
    {
       dblSumW += jnx;
-      dblSum += ( jnx * iClose( Symbol(), intTF, intUpperTfShift+inx ) );  
-   } 
-   
+      dblSum += ( jnx * iClose( Symbol(), intTF, intUpperTfShift+inx ) );
+   }
+
    dblResult = dblSum / dblSumW;
-   
+
    return( dblResult );
 }
