@@ -72,12 +72,12 @@ struct Stg_TMA_Band_SVE_True_Params : StgParams {
 };
 
 // Loads pair specific param values.
-#include "sets/EURUSD_H1.h"
-#include "sets/EURUSD_H4.h"
-#include "sets/EURUSD_M1.h"
-#include "sets/EURUSD_M15.h"
-#include "sets/EURUSD_M30.h"
-#include "sets/EURUSD_M5.h"
+#include "config/EURUSD_H1.h"
+#include "config/EURUSD_H4.h"
+#include "config/EURUSD_M1.h"
+#include "config/EURUSD_M15.h"
+#include "config/EURUSD_M30.h"
+#include "config/EURUSD_M5.h"
 
 class Stg_TMA_Band_SVE_True : public Strategy {
  public:
