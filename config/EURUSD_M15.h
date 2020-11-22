@@ -9,8 +9,8 @@ struct Stg_TMA_Band_SVE_True_EURUSD_M15_Params : Stg_TMA_Band_SVE_True_Params {
     TMA_Band_SVE_True_SignalOpenBoostMethod = signal_open_boost = 0;
     TMA_Band_SVE_True_SignalCloseMethod = signal_close_method = 0;
     TMA_Band_SVE_True_SignalCloseLevel = signal_close_level = 0;
-    TMA_Band_SVE_True_PriceLimitMethod = price_limit_method = 0;
-    TMA_Band_SVE_True_PriceLimitLevel = price_limit_level = 2;
+    TMA_Band_SVE_True_PriceStopMethod = price_stop_method = 0;
+    TMA_Band_SVE_True_PriceStopLevel = price_stop_level = 2;
     TMA_Band_SVE_True_TickFilterMethod = tick_filter_method = 1;
     TMA_Band_SVE_True_MaxSpread = max_spread = 0;
   }

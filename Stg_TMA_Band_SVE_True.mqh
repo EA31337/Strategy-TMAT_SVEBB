@@ -33,8 +33,8 @@ INPUT float TMA_Band_SVE_True_SignalOpenLevel = 0;       // Signal open level
 INPUT int TMA_Band_SVE_True_SignalOpenBoostMethod = 0;   // Signal open boost method
 INPUT int TMA_Band_SVE_True_SignalCloseMethod = 0;       // Signal close method
 INPUT float TMA_Band_SVE_True_SignalCloseLevel = 0;      // Signal close level
-INPUT int TMA_Band_SVE_True_PriceLimitMethod = 0;        // Price limit method
-INPUT float TMA_Band_SVE_True_PriceLimitLevel = 2;       // Price limit level
+INPUT int TMA_Band_SVE_True_PriceStopMethod = 0;         // Price stop method
+INPUT float TMA_Band_SVE_True_PriceStopLevel = 2;        // Price stop level
 INPUT int TMA_Band_SVE_True_TickFilterMethod = 0;        // Tick filter method
 INPUT float TMA_Band_SVE_True_MaxSpread = 2.0;           // Max spread to trade (in pips)
 
@@ -48,8 +48,8 @@ struct Stg_TMA_Band_SVE_True_Params : StgParams {
   int TMA_Band_SVE_True_SignalOpenBoostMethod;
   int TMA_Band_SVE_True_SignalCloseMethod;
   float TMA_Band_SVE_True_SignalCloseLevel;
-  int TMA_Band_SVE_True_PriceLimitMethod;
-  float TMA_Band_SVE_True_PriceLimitLevel;
+  int TMA_Band_SVE_True_PriceStopMethod;
+  float TMA_Band_SVE_True_PriceStopLevel;
   int TMA_Band_SVE_True_TickFilterMethod;
   float TMA_Band_SVE_True_MaxSpread;
 
@@ -65,8 +65,8 @@ struct Stg_TMA_Band_SVE_True_Params : StgParams {
         TMA_Band_SVE_True_SignalOpenBoostMethod(::TMA_Band_SVE_True_SignalOpenBoostMethod),
         TMA_Band_SVE_True_SignalCloseMethod(::TMA_Band_SVE_True_SignalCloseMethod),
         TMA_Band_SVE_True_SignalCloseLevel(::TMA_Band_SVE_True_SignalCloseLevel),
-        TMA_Band_SVE_True_PriceLimitMethod(::TMA_Band_SVE_True_PriceLimitMethod),
-        TMA_Band_SVE_True_PriceLimitLevel(::TMA_Band_SVE_True_PriceLimitLevel),
+        TMA_Band_SVE_True_PriceStopMethod(::TMA_Band_SVE_True_PriceStopMethod),
+        TMA_Band_SVE_True_PriceStopLevel(::TMA_Band_SVE_True_PriceStopLevel),
         TMA_Band_SVE_True_TickFilterMethod(::TMA_Band_SVE_True_TickFilterMethod),
         TMA_Band_SVE_True_MaxSpread(::TMA_Band_SVE_True_MaxSpread) {}
 };
@@ -122,9 +122,9 @@ class Stg_TMA_Band_SVE_True : public Strategy {
   }
 
   /**
-   * Gets price limit value for profit take or stop loss.
+   * Gets price stop value for profit take or stop loss.
    */
-  float PriceLimit(ENUM_ORDER_TYPE _cmd, ENUM_ORDER_TYPE_VALUE _mode, int _method = 0, float _level = 0.0f) {
+  float PriceStop(ENUM_ORDER_TYPE _cmd, ENUM_ORDER_TYPE_VALUE _mode, int _method = 0, float _level = 0.0f) {
     // Indicator *_indi = Data();
     double _trail = _level * Market().GetPipSize();
     // int _bar_count = (int)_level * 10;
