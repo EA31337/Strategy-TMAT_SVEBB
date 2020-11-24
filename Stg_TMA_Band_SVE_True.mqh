@@ -106,7 +106,7 @@ class Stg_TMA_Band_SVE_True : public Strategy {
   /**
    * Check strategy's opening signal.
    */
-  bool SignalOpen(ENUM_ORDER_TYPE _cmd, int _method = 0, float _level = 0.0f) {
+  bool SignalOpen(ENUM_ORDER_TYPE _cmd, int _method = 0, float _level = 0.0f, int _shift = 0) {
     Indicator *_indi = Data();
     bool _is_valid = _indi[CURR].IsValid();
     bool _result = _is_valid;
