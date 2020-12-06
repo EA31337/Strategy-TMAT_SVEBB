@@ -19,10 +19,6 @@
  *
  */
 
-// Includes.
-#include <EA31337-classes/Indicator.mqh>
-#include <EA31337-classes/Indicators/Indi_MA.mqh>
-
 // Indicator line identifiers used in TMATrue.
 enum ENUM_TMA_TRUE_LINE {
   TMA_TRUE_BASE = 0,   // Main line.

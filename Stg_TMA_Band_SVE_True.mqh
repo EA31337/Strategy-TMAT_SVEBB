@@ -6,8 +6,6 @@
  */
 
 // Includes.
-#include <EA31337-classes/Strategy.mqh>
-
 #include "Indi_SVE_Bollinger_Band.mqh"
 #include "Indi_TMA_True.mqh"
 

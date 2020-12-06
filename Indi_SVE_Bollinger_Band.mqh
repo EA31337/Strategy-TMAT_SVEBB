@@ -19,9 +19,6 @@
  *
  */
 
-// Includes.
-#include <EA31337-classes/Indicator.mqh>
-
 // Indicator line identifiers used in SVEBand.
 enum ENUM_SVE_BAND_LINE {
   SVE_BAND_BASE = 0,   // Main line.
