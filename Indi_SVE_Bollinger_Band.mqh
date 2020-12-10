@@ -118,11 +118,10 @@ class Indi_SVEBand : public Indicator {
     } else {
       _entry.timestamp = GetBarTime(_shift);
       for (ENUM_SVE_BAND_LINE _mode = 0; _mode < FINAL_SVE_BAND_LINE_ENTRY; _mode++) {
-        _entry.value.SetValue(params.idvtype, GetValue(_mode, _shift), _mode);
+        _entry.values[_mode] = GetValue(_mode, _shift);
       }
-      _entry.SetFlag(INDI_ENTRY_FLAG_IS_VALID, _entry.value.GetMinDbl(params.idvtype) > 0 &&
-                                                   _entry.value.GetValueDbl(params.idvtype, SVE_BAND_LOWER) <
-                                                       _entry.value.GetValueDbl(params.idvtype, SVE_BAND_UPPER));
+      _entry.SetFlag(INDI_ENTRY_FLAG_IS_VALID,
+                     _entry.IsGt(0) && _entry.values[(int)SVE_BAND_UPPER].IsGt(_entry[(int)SVE_BAND_UPPER]));
       if (_entry.IsValid()) {
         idata.Add(_entry, _bar_time);
       }
