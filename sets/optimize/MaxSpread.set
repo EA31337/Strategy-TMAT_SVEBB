@@ -1,0 +1,7 @@
+; Optimize max spread param.
+TMA_Band_SVE_True_MaxSpread,1=10
+TMA_Band_SVE_True_MaxSpread,2=10
+TMA_Band_SVE_True_MaxSpread,3=40
+TMA_Band_SVE_True_MaxSpread,F=1
+TMA_Band_SVE_True_SignalOpenFilterMethod=1
+TMA_Band_SVE_True_TickFilterMethod=1

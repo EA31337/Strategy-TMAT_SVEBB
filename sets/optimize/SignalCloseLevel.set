@@ -1,0 +1,7 @@
+; Optimize signal close level param.
+TMA_Band_SVE_True_SignalCloseLevel,1=10
+TMA_Band_SVE_True_SignalCloseLevel,2=5
+TMA_Band_SVE_True_SignalCloseLevel,3=40
+TMA_Band_SVE_True_SignalCloseLevel,F=1
+TMA_Band_SVE_True_SignalOpenFilterMethod=1
+TMA_Band_SVE_True_TickFilterMethod=1

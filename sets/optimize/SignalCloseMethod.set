@@ -1,0 +1,7 @@
+; Optimize signal close method param.
+TMA_Band_SVE_True_SignalCloseMethod,1=-4
+TMA_Band_SVE_True_SignalCloseMethod,2=1
+TMA_Band_SVE_True_SignalCloseMethod,3=4
+TMA_Band_SVE_True_SignalCloseMethod,F=1
+TMA_Band_SVE_True_SignalOpenFilterMethod=1
+TMA_Band_SVE_True_TickFilterMethod=1

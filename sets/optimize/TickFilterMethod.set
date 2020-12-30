@@ -1,0 +1,6 @@
+; Optimize tick filter method param.
+TMA_Band_SVE_True_SignalOpenFilterMethod=1
+TMA_Band_SVE_True_TickFilterMethod,1=1
+TMA_Band_SVE_True_TickFilterMethod,2=1
+TMA_Band_SVE_True_TickFilterMethod,3=32
+TMA_Band_SVE_True_TickFilterMethod,F=1

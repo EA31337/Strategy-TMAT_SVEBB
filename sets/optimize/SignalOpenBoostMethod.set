@@ -1,0 +1,7 @@
+; Optimize signal open boost method param.
+TMA_Band_SVE_True_SignalOpenBoostMethod,1=1
+TMA_Band_SVE_True_SignalOpenBoostMethod,2=1
+TMA_Band_SVE_True_SignalOpenBoostMethod,3=8
+TMA_Band_SVE_True_SignalOpenBoostMethod,F=1
+TMA_Band_SVE_True_SignalOpenFilterMethod=1
+TMA_Band_SVE_True_TickFilterMethod=1
