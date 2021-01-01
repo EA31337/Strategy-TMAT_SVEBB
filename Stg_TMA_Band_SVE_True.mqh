@@ -13,17 +13,17 @@
 INPUT string __TMA_Band_SVE_True_Parameters__ = "-- TMA_Band_SVE_True strategy params --";  // >>> TMA_Band_SVE_True <<<
 INPUT float TMA_Band_SVE_True_LotSize = 0;                                                  // Lot size
 INPUT int TMA_Band_SVE_True_SignalOpenMethod = 0;                                           // Signal open method
-INPUT int TMA_Band_SVE_True_SignalOpenFilterMethod = 0;                                     // Signal open filter method
-INPUT float TMA_Band_SVE_True_SignalOpenLevel = 0;                                          // Signal open level
+INPUT int TMA_Band_SVE_True_SignalOpenFilterMethod = 1;                                     // Signal open filter method
+INPUT float TMA_Band_SVE_True_SignalOpenLevel = 0.0f;                                       // Signal open level
 INPUT int TMA_Band_SVE_True_SignalOpenBoostMethod = 0;                                      // Signal open boost method
 INPUT int TMA_Band_SVE_True_SignalCloseMethod = 0;                                          // Signal close method
-INPUT float TMA_Band_SVE_True_SignalCloseLevel = 0;                                         // Signal close level
+INPUT float TMA_Band_SVE_True_SignalCloseLevel = 0.0f;                                      // Signal close level
 INPUT int TMA_Band_SVE_True_PriceStopMethod = 0;                                            // Price stop method
 INPUT float TMA_Band_SVE_True_PriceStopLevel = 2;                                           // Price stop level
-INPUT int TMA_Band_SVE_True_TickFilterMethod = 0;                                           // Tick filter method
-INPUT float TMA_Band_SVE_True_MaxSpread = 2.0;     // Max spread to trade (in pips)
+INPUT int TMA_Band_SVE_True_TickFilterMethod = 1;                                           // Tick filter method
+INPUT float TMA_Band_SVE_True_MaxSpread = 4.0;     // Max spread to trade (in pips)
 INPUT int TMA_Band_SVE_True_Shift = 0;             // Shift (relative to the current bar, 0 - default)
-INPUT int TMA_Band_SVE_True_OrderCloseTime = -10;  // Order close time in mins (>0) or bars (<0)
+INPUT int TMA_Band_SVE_True_OrderCloseTime = -20;  // Order close time in mins (>0) or bars (<0)
 // Indicators params.
 INPUT int Indi_SVE_Bollinger_Band_TEMAPeriod = 8;           // SVE Band: TEMA Period
 INPUT int Indi_SVE_Bollinger_Band_SvePeriod = 18;           // SVE Band: SVE Period
