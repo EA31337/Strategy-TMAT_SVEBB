@@ -4,29 +4,29 @@
  */
 
 // Defines indicator's parameter values for the given pair symbol and timeframe.
-struct Indi_Force_Params_{{ Timeframe }} : Indi_Force_Params {
-  Indi_Force_Params_{{ Timeframe }}() : Indi_Force_Params(indi_force_defaults, PERIOD_{{ Timeframe }}) {
-    applied_price = (ENUM_APPLIED_PRICE){{ Force_Indi_Force_Applied_Price | default(0) }};
-    ma_method = {{ Force_Indi_Force_MA_Method | default(0) }};
-    period = {{ Force_Indi_Force_Period | default(0) }};
-    shift = {{ Force_Shift | default(0) }};
+struct Indi_TMA_Band_SVE_True_Params_{{ Timeframe }} : Indi_TMA_Band_SVE_True_Params {
+  Indi_TMA_Band_SVE_True_Params_{{ Timeframe }}() : Indi_TMA_Band_SVE_True_Params(indi_tbst_defaults, PERIOD_{{ Timeframe }}) {
+    applied_price = (ENUM_APPLIED_PRICE){{ TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Applied_Price | default(0) }};
+    ma_method = {{ TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_MA_Method | default(0) }};
+    period = {{ TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Period | default(0) }};
+    shift = {{ TMA_Band_SVE_True_Shift | default(0) }};
   }
-} indi_force_{{ Timeframe | lower }};
+} indi_tbst_{{ Timeframe | lower }};
 
 // Defines strategy's parameter values for the given pair symbol and timeframe.
-struct Stg_Force_Params_{{ Timeframe }} : StgParams {
+struct Stg_TMA_Band_SVE_True_Params_{{ Timeframe }} : StgParams {
   // Struct constructor.
-  Stg_Force_Params_{{ Timeframe }}() : StgParams(stg_force_defaults) {
-    lot_size = {{ Force_LotSize | default(0) }};
-    signal_open_method = {{ Force_SignalOpenMethod | default(0) }};
-    signal_open_filter = {{ Force_SignalOpenFilterMethod | default(1) }};
-    signal_open_level = {{ Force_SignalOpenLevel | default(0) }};
-    signal_open_boost = {{ Force_SignalOpenBoostMethod | default(0) }};
-    signal_close_method = {{ Force_SignalCloseMethod | default(0) }};
-    signal_close_level = {{ Force_SignalCloseLevel | default(0) }};
-    price_stop_method = {{ Force_PriceStopMethod | default(0) }};
-    price_stop_level = {{ Force_SignalCloseLevel | default(1) }};
-    tick_filter_method = {{ Force_TickFilterMethod  | default(1) }};
-    max_spread = {{ Force_MaxSpread | default(0) }};
+  Stg_TMA_Band_SVE_True_Params_{{ Timeframe }}() : StgParams(stg_tbst_defaults) {
+    lot_size = {{ TMA_Band_SVE_True_LotSize | default(0) }};
+    signal_open_method = {{ TMA_Band_SVE_True_SignalOpenMethod | default(0) }};
+    signal_open_filter = {{ TMA_Band_SVE_True_SignalOpenFilterMethod | default(1) }};
+    signal_open_level = {{ TMA_Band_SVE_True_SignalOpenLevel | default(0) }};
+    signal_open_boost = {{ TMA_Band_SVE_True_SignalOpenBoostMethod | default(0) }};
+    signal_close_method = {{ TMA_Band_SVE_True_SignalCloseMethod | default(0) }};
+    signal_close_level = {{ TMA_Band_SVE_True_SignalCloseLevel | default(0) }};
+    price_stop_method = {{ TMA_Band_SVE_True_PriceStopMethod | default(0) }};
+    price_stop_level = {{ TMA_Band_SVE_True_SignalCloseLevel | default(1) }};
+    tick_filter_method = {{ TMA_Band_SVE_True_TickFilterMethod  | default(1) }};
+    max_spread = {{ TMA_Band_SVE_True_MaxSpread | default(0) }};
   }
-} stg_force_{{ Timeframe | lower }};
+} stg_tbst_{{ Timeframe | lower }};
