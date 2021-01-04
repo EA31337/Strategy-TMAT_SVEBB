@@ -20,10 +20,10 @@ struct Stg_TMA_Band_SVE_True_Params_{{ Timeframe }} : StgParams {
     lot_size = {{ TMA_Band_SVE_True_LotSize | default(0) }};
     signal_open_method = {{ TMA_Band_SVE_True_SignalOpenMethod | default(0) }};
     signal_open_filter = {{ TMA_Band_SVE_True_SignalOpenFilterMethod | default(1) }};
-    signal_open_level = {{ TMA_Band_SVE_True_SignalOpenLevel | default(0) }};
+    signal_open_level = (float){{ TMA_Band_SVE_True_SignalOpenLevel | default(0) }};
     signal_open_boost = {{ TMA_Band_SVE_True_SignalOpenBoostMethod | default(0) }};
     signal_close_method = {{ TMA_Band_SVE_True_SignalCloseMethod | default(0) }};
-    signal_close_level = {{ TMA_Band_SVE_True_SignalCloseLevel | default(0) }};
+    signal_close_level = (float){{ TMA_Band_SVE_True_SignalCloseLevel | default(0) }};
     price_stop_method = {{ TMA_Band_SVE_True_PriceStopMethod | default(0) }};
     price_stop_level = {{ TMA_Band_SVE_True_SignalCloseLevel | default(1) }};
     tick_filter_method = {{ TMA_Band_SVE_True_TickFilterMethod  | default(1) }};
