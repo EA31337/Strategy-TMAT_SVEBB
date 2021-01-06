@@ -1,6 +1,6 @@
 TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Applied_Price={{ applied_price | replace("(ENUM_APPLIED_PRICE)", "") | int | default(0) }}
 TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_MA_Method={{ ma_method | default(0) }}
-TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Period={{ period | default(4) }}
+TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Period={{ (period | default(0) | int) }}
 TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Shift={{ shift | default(0) }}
 TMA_Band_SVE_True_LotSize={{ lot_size | default(0) }}
 TMA_Band_SVE_True_PriceStopLevel,1=10
