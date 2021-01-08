@@ -25,7 +25,7 @@ struct Stg_TMA_Band_SVE_True_Params_{{ Timeframe }} : StgParams {
     signal_close_method = {{ TMA_Band_SVE_True_SignalCloseMethod | default(0) }};
     signal_close_level = (float){{ TMA_Band_SVE_True_SignalCloseLevel | default(0) }};
     price_stop_method = {{ TMA_Band_SVE_True_PriceStopMethod | default(0) }};
-    price_stop_level = {{ TMA_Band_SVE_True_SignalCloseLevel | default(1) }};
+    price_stop_level = (float){{ TMA_Band_SVE_True_SignalCloseLevel | default(1) }};
     tick_filter_method = {{ TMA_Band_SVE_True_TickFilterMethod  | default(1) }};
     max_spread = {{ TMA_Band_SVE_True_MaxSpread | default(0) }};
   }
