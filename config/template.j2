@@ -7,7 +7,7 @@
 struct Indi_TMA_Band_SVE_True_Params_{{ Timeframe }} : Indi_TMA_Band_SVE_True_Params {
   Indi_TMA_Band_SVE_True_Params_{{ Timeframe }}() : Indi_TMA_Band_SVE_True_Params(indi_tbst_defaults, PERIOD_{{ Timeframe }}) {
     applied_price = (ENUM_APPLIED_PRICE){{ TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Applied_Price | default(0) }};
-    ma_method = {{ TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_MA_Method | default(0) }};
+    ma_method = (ENUM_MA_METHOD){{ TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_MA_Method | default(0) }};
     period = {{ TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Period | default(0) }};
     shift = {{ TMA_Band_SVE_True_Shift | default(0) }};
   }
