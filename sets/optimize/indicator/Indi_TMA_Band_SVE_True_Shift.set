@@ -1,0 +1,7 @@
+; Optimize indicator's shift param.
+TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Shift,1=0
+TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Shift,2=1
+TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Shift,3=4
+TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Shift,F=1
+TMA_Band_SVE_True_SignalOpenFilterMethod=1
+TMA_Band_SVE_True_TickFilterMethod=1
