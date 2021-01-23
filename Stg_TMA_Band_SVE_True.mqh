@@ -10,7 +10,7 @@
 #include "Indi_TMA_True.mqh"
 
 // User input params.
-INPUT string __TMA_Band_SVE_True_Parameters__ = "-- TMA_Band_SVE_True strategy params --";  // >>> TMA_Band_SVE_True <<<
+INPUT string __TMA_Band_SVE_True_Parameters__ = "-- TMA_Band_SVE_True strategy params --";  // >>> TMA Band SVE True <<<
 INPUT float TMA_Band_SVE_True_LotSize = 0;                                                  // Lot size
 INPUT int TMA_Band_SVE_True_SignalOpenMethod = 0;                                           // Signal open method
 INPUT int TMA_Band_SVE_True_SignalOpenFilterMethod = 1;                                     // Signal open filter method
