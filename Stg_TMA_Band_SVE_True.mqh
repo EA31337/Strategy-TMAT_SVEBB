@@ -115,7 +115,6 @@ class Stg_TMA_Band_SVE_True : public Strategy {
     _stg_params.SetTf(_tf, _Symbol);
     // Initialize strategy instance.
     Strategy *_strat = new Stg_TMA_Band_SVE_True(_stg_params, "TMA_Band_SVE_True");
-    _stg_params.SetStops(_strat, _strat);
     return _strat;
   }
 
