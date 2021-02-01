@@ -5,6 +5,9 @@
  * @see: https://www.forexstrategiesresources.com/trading-system-metatrader-4-iii/397-tma-band-true/
  */
 
+// Includes conditional compilation directives.
+#include "config/define.h"
+
 // Includes EA31337 framework.
 #include <EA31337-classes/EA.mqh>
 #include <EA31337-classes/Indicator.mqh>
