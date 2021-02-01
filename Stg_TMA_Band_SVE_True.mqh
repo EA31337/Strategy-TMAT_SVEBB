@@ -103,10 +103,10 @@ class Stg_TMA_Band_SVE_True : public Strategy {
                                      ENUM_LOG_LEVEL _log_level = V_INFO) {
     // Initialize strategy initial values.
     Stg_TMA_Band_SVE_True_Params _stg_params;
-    if (!Terminal::IsOptimization()) {
-      SetParamsByTf<Stg_TMA_Band_SVE_True_Params>(_stg_params, _tf, stg_tbst_m1, stg_tbst_m5, stg_tbst_m15,
-                                                  stg_tbst_m30, stg_tbst_h1, stg_tbst_h4, stg_tbst_h4);
-    }
+#ifdef __config__
+    SetParamsByTf<Stg_TMA_Band_SVE_True_Params>(_stg_params, _tf, stg_tbst_m1, stg_tbst_m5, stg_tbst_m15, stg_tbst_m30,
+                                                stg_tbst_h1, stg_tbst_h4, stg_tbst_h4);
+#endif
     // Initialize strategy parameters.
     // TBSTIndiParams tbst_params(_tf);
     _stg_params.GetLog().SetLevel(_log_level);
