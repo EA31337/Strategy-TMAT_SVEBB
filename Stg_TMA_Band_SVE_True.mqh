@@ -72,19 +72,12 @@ struct Stg_TMA_Band_SVE_True_Params : StgParams {
   // Constructor: Set default param values.
   Stg_TMA_Band_SVE_True_Params(Trade *_trade = NULL, Indicator *_data = NULL, Strategy *_sl = NULL,
                                Strategy *_tp = NULL)
-      : StgParams(_trade, _data, _sl, _tp),
-        TMA_Band_SVE_True_LotSize(::TMA_Band_SVE_True_LotSize),
-        TMA_Band_SVE_True_Shift(::TMA_Band_SVE_True_Shift),
-        TMA_Band_SVE_True_SignalOpenMethod(::TMA_Band_SVE_True_SignalOpenMethod),
-        TMA_Band_SVE_True_SignalOpenFilterMethod(::TMA_Band_SVE_True_SignalOpenFilterMethod),
-        TMA_Band_SVE_True_SignalOpenLevel(::TMA_Band_SVE_True_SignalOpenLevel),
-        TMA_Band_SVE_True_SignalOpenBoostMethod(::TMA_Band_SVE_True_SignalOpenBoostMethod),
-        TMA_Band_SVE_True_SignalCloseMethod(::TMA_Band_SVE_True_SignalCloseMethod),
-        TMA_Band_SVE_True_SignalCloseLevel(::TMA_Band_SVE_True_SignalCloseLevel),
-        TMA_Band_SVE_True_PriceStopMethod(::TMA_Band_SVE_True_PriceStopMethod),
-        TMA_Band_SVE_True_PriceStopLevel(::TMA_Band_SVE_True_PriceStopLevel),
-        TMA_Band_SVE_True_TickFilterMethod(::TMA_Band_SVE_True_TickFilterMethod),
-        TMA_Band_SVE_True_MaxSpread(::TMA_Band_SVE_True_MaxSpread) {}
+      : StgParams(::TMA_Band_SVE_True_SignalOpenMethod, ::TMA_Band_SVE_True_SignalOpenFilterMethod,
+                  ::TMA_Band_SVE_True_SignalOpenLevel, ::TMA_Band_SVE_True_SignalOpenBoostMethod,
+                  ::TMA_Band_SVE_True_SignalCloseMethod, ::TMA_Band_SVE_True_SignalCloseLevel,
+                  ::TMA_Band_SVE_True_PriceStopMethod, ::TMA_Band_SVE_True_PriceStopLevel,
+                  ::TMA_Band_SVE_True_TickFilterMethod, ::TMA_Band_SVE_True_MaxSpread, ::TMA_Band_SVE_True_Shift,
+                  ::TMA_Band_SVE_True_OrderCloseTime) {}
 };
 
 // Loads pair specific param values.
