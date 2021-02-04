@@ -52,9 +52,9 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-      file: 
-        - SVE_Bollinger_Band
-        - TMA_True
+        file:
+          - SVE_Bollinger_Band
+          - TMA_True
     steps:
       - uses: actions/checkout@v2
       - uses: actions/checkout@v2
