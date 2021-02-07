@@ -1,11 +1,11 @@
 ---
-name: Optimize PriceStop params
+name: Optimize Indicator params
 
 # yamllint disable-line rule:truthy
 on:
   push:
     branches:
-      - 'optimize-pricestop'
+      - 'optimize-indi'
 
 jobs:
   Compile-EA:
@@ -88,7 +88,7 @@ jobs:
           path: 'Indicators/*.ex?'
   Process:
     env:
-      SETS_DIR: sets/optimize/pricestop
+      SETS_DIR: sets/optimize/indicator
     outputs:
       sets-list: ${{ steps.get-sets.outputs.sets }}
     runs-on: ubuntu-latest
