@@ -1,11 +1,11 @@
 // Defines indicator's parameter values for the given pair symbol and timeframe.
-struct Indi_TMA_True_Params_M15 : Indi_TMA_True_Params {
-  Indi_TMA_True_Params_M15() : Indi_TMA_True_Params(indi_tmat_defaults, PERIOD_M15) { shift = 0; }
-} indi_tmat_m15;
+struct Indi_TMA_True_Params_H8 : Indi_TMA_True_Params {
+  Indi_TMA_True_Params_H8() : Indi_TMA_True_Params(indi_tmat_defaults, PERIOD_H8) { shift = 0; }
+} indi_tmat_h8;
 
 // Defines strategy's parameter values for the given pair symbol and timeframe.
-struct Stg_TMA_Band_SVE_True_EURUSD_M15_Params : Stg_TMA_Band_SVE_True_Params {
-  Stg_TMA_Band_SVE_True_EURUSD_M15_Params() {
+struct Stg_TMA_Band_SVE_True_EURUSD_H8_Params : Stg_TMA_Band_SVE_True_Params {
+  Stg_TMA_Band_SVE_True_EURUSD_H8_Params() {
     TMA_Band_SVE_True_LotSize = lot_size = 0;
     TMA_Band_SVE_True_Shift = 0;
     TMA_Band_SVE_True_SignalOpenMethod = signal_open_method = 0;
@@ -19,4 +19,4 @@ struct Stg_TMA_Band_SVE_True_EURUSD_M15_Params : Stg_TMA_Band_SVE_True_Params {
     TMA_Band_SVE_True_TickFilterMethod = tick_filter_method = 1;
     TMA_Band_SVE_True_MaxSpread = max_spread = 0;
   }
-} stg_tbst_m15;
+} stg_tbst_h8;

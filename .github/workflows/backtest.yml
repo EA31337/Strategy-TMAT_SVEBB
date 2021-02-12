@@ -107,10 +107,13 @@ jobs:
     steps:
       - uses: actions/download-artifact@v2
         with:
-          name: EA
+          path: .
       - name: Run strategy
-        uses: ea31337/mql-tester-action@dev
+        uses: ea31337/mql-tester-action@master
         with:
+          RunOnStart: >-
+            ln -fsv /github/workspace/Indicators
+            "$TERMINAL_DIR/$MQL_DIR/Indicators"
           BtDeposit: 100000
           BtDest: ${{ github.workspace }}/_results
           BtMonths: ${{ matrix.month }}

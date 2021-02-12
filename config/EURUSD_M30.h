@@ -1,3 +1,8 @@
+// Defines indicator's parameter values for the given pair symbol and timeframe.
+struct Indi_TMA_True_Params_M30 : Indi_TMA_True_Params {
+  Indi_TMA_True_Params_M30() : Indi_TMA_True_Params(indi_tmat_defaults, PERIOD_M30) { shift = 0; }
+} indi_tmat_m30;
+
 // Defines strategy's parameter values for the given pair symbol and timeframe.
 struct Stg_TMA_Band_SVE_True_EURUSD_M30_Params : Stg_TMA_Band_SVE_True_Params {
   Stg_TMA_Band_SVE_True_EURUSD_M30_Params() {
