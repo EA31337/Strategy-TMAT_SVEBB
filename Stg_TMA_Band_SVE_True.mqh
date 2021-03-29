@@ -22,7 +22,7 @@ INPUT int TMA_Band_SVE_True_PriceStopMethod = 0;                                
 INPUT float TMA_Band_SVE_True_PriceStopLevel = 2;                                           // Price stop level
 INPUT int TMA_Band_SVE_True_TickFilterMethod = 1;                                           // Tick filter method
 INPUT float TMA_Band_SVE_True_MaxSpread = 4.0;     // Max spread to trade (in pips)
-INPUT int TMA_Band_SVE_True_Shift = 0;             // Shift (relative to the current bar, 0 - default)
+INPUT short TMA_Band_SVE_True_Shift = 0;           // Shift (relative to the current bar, 0 - default)
 INPUT int TMA_Band_SVE_True_OrderCloseTime = -20;  // Order close time in mins (>0) or bars (<0)
 // Indicators params.
 INPUT string _TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_Parameters__ =
