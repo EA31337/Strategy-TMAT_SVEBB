@@ -2,7 +2,7 @@
 //|                                                                  |
 //|                                                                  |
 //| original developed by Sylvain Vervoort                           |
-//| TASC, May 2010 “Smoothing The Bollinger %b,” articlw             |
+//| TASC, May 2010 "Smoothing The Bollinger %b," articlw             |
 //+------------------------------------------------------------------+
 #property copyright "mladen"
 #property link "mladenfx@gmail.com"
