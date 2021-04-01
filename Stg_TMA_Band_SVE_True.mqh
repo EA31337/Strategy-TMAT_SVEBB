@@ -6,8 +6,8 @@
  */
 
 // Includes.
+#include <EA31337-classes/Indicator.enum.h>
 #include "Indi_SVE_Bollinger_Band.mqh"
-#include "Indi_TMA_True.mqh"
 
 // User input params.
 INPUT string __TMA_Band_SVE_True_Parameters__ = "-- TMA_Band_SVE_True strategy params --";  // >>> TMA Band SVE True <<<
@@ -22,7 +22,7 @@ INPUT int TMA_Band_SVE_True_PriceStopMethod = 0;                                
 INPUT float TMA_Band_SVE_True_PriceStopLevel = 2;                                           // Price stop level
 INPUT int TMA_Band_SVE_True_TickFilterMethod = 1;                                           // Tick filter method
 INPUT float TMA_Band_SVE_True_MaxSpread = 4.0;     // Max spread to trade (in pips)
-INPUT int TMA_Band_SVE_True_Shift = 0;             // Shift (relative to the current bar, 0 - default)
+INPUT short TMA_Band_SVE_True_Shift = 0;           // Shift (relative to the current bar, 0 - default)
 INPUT int TMA_Band_SVE_True_OrderCloseTime = -20;  // Order close time in mins (>0) or bars (<0)
 // Indicators params.
 INPUT string _TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_Parameters__ =
@@ -39,9 +39,10 @@ INPUT string _TMA_Band_SVE_True_Indi_TMA_True_Parameters__ =
                                                                     // indicator <<<
 INPUT int TMA_Band_SVE_True_Indi_TMA_True_AtrTimeframe = 0;         // TMA True: Timeframe
 INPUT int TMA_Band_SVE_True_Indi_TMA_True_TmaHalfLength = 3;        // TMA True: Half Length
-INPUT double TMA_Band_SVE_True_Indi_TMA_True_AtrMultiplier = 0.5;   // TMA True: ATR Multiplier
+INPUT double TMA_Band_SVE_True_Indi_TMA_True_AtrMultiplier = 1.5;   // TMA True: ATR Multiplier
 INPUT int TMA_Band_SVE_True_Indi_TMA_True_AtrPeriod = 6;            // TMA True: ATR Period
 INPUT int TMA_Band_SVE_True_Indi_TMA_True_BarsToProcess = 0;        // TMA True: Bars to process
+INPUT int TMA_Band_SVE_True_Indi_TMA_True_Shift = 0;                // TMA True: Shift
 
 // Structs.
 
@@ -80,13 +81,46 @@ struct Stg_TMA_Band_SVE_True_Params : StgParams {
                   ::TMA_Band_SVE_True_OrderCloseTime) {}
 };
 
+// Structs.
+
+#include "Indi_TMA_True.mqh"
+
+// Defines struct with default user indicator values.
+struct Indi_TMA_True_Params_Defaults : Indi_TMA_True_Params {
+  Indi_TMA_True_Params_Defaults()
+      : Indi_TMA_True_Params(
+            ::TMA_Band_SVE_True_Indi_TMA_True_AtrTimeframe, ::TMA_Band_SVE_True_Indi_TMA_True_TmaHalfLength,
+            ::TMA_Band_SVE_True_Indi_TMA_True_AtrMultiplier, ::TMA_Band_SVE_True_Indi_TMA_True_AtrPeriod,
+            ::TMA_Band_SVE_True_Indi_TMA_True_BarsToProcess, ::TMA_Band_SVE_True_Indi_TMA_True_Shift) {}
+} indi_tmat_defaults;
+
+// Defines struct with default user strategy values.
+struct Stg_TMA_True_Params_Defaults : StgParams {
+  Stg_TMA_True_Params_Defaults()
+      : StgParams(::TMA_Band_SVE_True_SignalOpenMethod, ::TMA_Band_SVE_True_SignalOpenFilterMethod,
+                  ::TMA_Band_SVE_True_SignalOpenLevel, ::TMA_Band_SVE_True_SignalOpenBoostMethod,
+                  ::TMA_Band_SVE_True_SignalCloseMethod, ::TMA_Band_SVE_True_SignalCloseLevel,
+                  ::TMA_Band_SVE_True_PriceStopMethod, ::TMA_Band_SVE_True_PriceStopLevel,
+                  ::TMA_Band_SVE_True_TickFilterMethod, ::TMA_Band_SVE_True_MaxSpread, ::TMA_Band_SVE_True_Shift,
+                  ::TMA_Band_SVE_True_OrderCloseTime) {}
+} stg_tmat_defaults;
+
 // Loads pair specific param values.
 #include "config/EURUSD_H1.h"
 #include "config/EURUSD_H4.h"
+#include "config/EURUSD_H8.h"
 #include "config/EURUSD_M1.h"
 #include "config/EURUSD_M15.h"
 #include "config/EURUSD_M30.h"
 #include "config/EURUSD_M5.h"
+
+// Defines struct to store indicator and strategy params.
+struct Stg_TMA_True_Params {
+  StgParams sparams;
+
+  // Struct constructors.
+  Stg_TMA_True_Params(StgParams &_sparams) : sparams(stg_tmat_defaults) { sparams = _sparams; }
+};
 
 class Stg_TMA_Band_SVE_True : public Strategy {
  public:
@@ -94,16 +128,30 @@ class Stg_TMA_Band_SVE_True : public Strategy {
 
   static Stg_TMA_Band_SVE_True *Init(ENUM_TIMEFRAMES _tf = NULL, long _magic_no = NULL,
                                      ENUM_LOG_LEVEL _log_level = V_INFO) {
-    // Initialize strategy initial values.
+    Indi_TMA_True_Params _tma_params(
+        TMA_Band_SVE_True_Indi_TMA_True_AtrTimeframe, TMA_Band_SVE_True_Indi_TMA_True_TmaHalfLength,
+        TMA_Band_SVE_True_Indi_TMA_True_AtrMultiplier, TMA_Band_SVE_True_Indi_TMA_True_AtrPeriod,
+        TMA_Band_SVE_True_Indi_TMA_True_BarsToProcess, TMA_Band_SVE_True_Indi_TMA_True_Shift);
+
+    SVEBandParams _sve_params(
+        TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_TEMAPeriod, TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_SvePeriod,
+        TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_BBUpDeviations,
+        TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_BBDnDeviations,
+        TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_DeviationsPeriod, TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_Shift);
+
     Stg_TMA_Band_SVE_True_Params _stg_params;
 #ifdef __config__
+    SetParamsByTf<Indi_TMA_True_Params>(_tma_params, _tf, indi_tmat_m1, indi_tmat_m5, indi_tmat_m15, indi_tmat_m30,
+                                        indi_tmat_h1, indi_tmat_h4, indi_tmat_h8);
+
     SetParamsByTf<Stg_TMA_Band_SVE_True_Params>(_stg_params, _tf, stg_tbst_m1, stg_tbst_m5, stg_tbst_m15, stg_tbst_m30,
                                                 stg_tbst_h1, stg_tbst_h4, stg_tbst_h4);
 #endif
     // Initialize strategy parameters.
-    // TBSTIndiParams tbst_params(_tf);
     _stg_params.GetLog().SetLevel(_log_level);
-    //_stg_params.SetIndicator(new Indi_TMA_Band_SVE_True(tbst_params));
+    Indicator *_tma = new Indi_TMA_True(_tma_params);
+    _stg_params.SetIndicator(_tma, INDI_TMA_TRUE);
+    _stg_params.SetIndicator(new Indi_SVEBand(_sve_params), INDI_SVE_BB);
     _stg_params.SetMagicNo(_magic_no);
     _stg_params.SetTf(_tf, _Symbol);
     // Initialize strategy instance.
@@ -115,17 +163,105 @@ class Stg_TMA_Band_SVE_True : public Strategy {
    * Check strategy's opening signal.
    */
   bool SignalOpen(ENUM_ORDER_TYPE _cmd, int _method = 0, float _level = 0.0f, int _shift = 0) {
-    Indicator *_indi = Data();
-    bool _is_valid = _indi[CURR].IsValid();
+    Indicator *_indi_tma = GetIndicator(INDI_TMA_TRUE);
+    Indicator *_indi_sve = GetIndicator(INDI_SVE_BB);
+    bool _is_valid = _indi_tma[CURR].IsValid() && _indi_sve[CURR].IsValid();
+
+    return _is_valid;
+
+    // Print("_is_valid = ", _is_valid);
+
+    Chart *_chart = sparams.GetChart();
+
     bool _result = _is_valid;
+
+    if (!_result) {
+      // Returns false when indicator data is not valid.
+      return false;
+    }
+
+    double lowest_price, highest_price;
+
+    double _change_pc_tma = Math::ChangeInPct(_indi_tma[1][(int)TMA_TRUE_MAIN], _indi_tma[0][(int)TMA_TRUE_MAIN], true);
+    double _change_pc_sve = Math::ChangeInPct(_indi_sve[1][(int)SVE_BAND_BASE], _indi_sve[0][(int)SVE_BAND_BASE], true);
+
     switch (_cmd) {
       case ORDER_TYPE_BUY:
-        // Buy signal.
+        lowest_price = fmin3(_chart.GetLow(CURR), _chart.GetLow(PREV), _chart.GetLow(PPREV));
+        _result = (lowest_price < fmax3(_indi_tma[CURR][(int)TMA_TRUE_LOWER], _indi_tma[PREV][(int)TMA_TRUE_LOWER],
+                                        _indi_tma[PPREV][(int)TMA_TRUE_LOWER]));
+        _result &= _change_pc_tma > _level;
+        if (_method != 0) {
+          if (METHOD(_method, 0)) _result &= fmin(Close[PREV], Close[PPREV]) < _indi_tma[CURR][(int)TMA_TRUE_LOWER];
+          if (METHOD(_method, 1))
+            _result &= (_indi_tma[CURR][(int)TMA_TRUE_LOWER] > _indi_tma[PPREV][(int)TMA_TRUE_LOWER]);
+          if (METHOD(_method, 2))
+            _result &= (_indi_tma[CURR][(int)TMA_TRUE_MAIN] > _indi_tma[PPREV][(int)TMA_TRUE_MAIN]);
+          if (METHOD(_method, 3))
+            _result &= (_indi_tma[CURR][(int)TMA_TRUE_UPPER] > _indi_tma[PPREV][(int)TMA_TRUE_UPPER]);
+          if (METHOD(_method, 4)) _result &= Open[CURR] < _indi_tma[CURR][(int)TMA_TRUE_MAIN];
+          if (METHOD(_method, 5)) _result &= fmin(Close[PREV], Close[PPREV]) > _indi_tma[CURR][(int)TMA_TRUE_MAIN];
+        }
+
+        // Price value was lower than the lower band.
+        lowest_price = fmin3(_chart.GetLow(CURR), _chart.GetLow(PREV), _chart.GetLow(PPREV));
+        _result = (lowest_price < fmax3(_indi_sve[CURR][(int)SVE_BAND_LOWER], _indi_sve[PREV][(int)SVE_BAND_LOWER],
+                                        _indi_sve[PPREV][(int)SVE_BAND_LOWER]));
+        _result &= _change_pc_sve > _level;
+        if (_result && _method != 0) {
+          if (METHOD(_method, 0)) _result &= fmin(Close[PREV], Close[PPREV]) < _indi_sve[CURR][(int)SVE_BAND_LOWER];
+          if (METHOD(_method, 1))
+            _result &= (_indi_sve[CURR][(int)SVE_BAND_LOWER] > _indi_sve[PPREV][(int)SVE_BAND_LOWER]);
+          if (METHOD(_method, 2))
+            _result &= (_indi_sve[CURR][(int)SVE_BAND_BASE] > _indi_sve[PPREV][(int)SVE_BAND_BASE]);
+          if (METHOD(_method, 3))
+            _result &= (_indi_sve[CURR][(int)SVE_BAND_UPPER] > _indi_sve[PPREV][(int)SVE_BAND_UPPER]);
+          if (METHOD(_method, 4)) _result &= lowest_price < _indi_sve[CURR][(int)SVE_BAND_BASE];
+          if (METHOD(_method, 5)) _result &= Open[CURR] < _indi_sve[CURR][(int)SVE_BAND_BASE];
+          if (METHOD(_method, 6)) _result &= fmin(Close[PREV], Close[PPREV]) > _indi_sve[CURR][(int)SVE_BAND_BASE];
+        }
         break;
+
       case ORDER_TYPE_SELL:
-        // Sell signal.
+        // Price value was higher than the upper band.
+        highest_price = fmin3(_chart.GetHigh(CURR), _chart.GetHigh(PREV), _chart.GetHigh(PPREV));
+
+        _result = (highest_price > fmin3(_indi_tma[CURR][(int)TMA_TRUE_UPPER], _indi_tma[PREV][(int)TMA_TRUE_UPPER],
+                                         _indi_tma[PPREV][(int)TMA_TRUE_UPPER]));
+        _result &= _change_pc_tma < -_level;
+
+        _result = (highest_price > fmin3(_indi_sve[CURR][(int)SVE_BAND_UPPER], _indi_sve[PREV][(int)SVE_BAND_UPPER],
+                                         _indi_sve[PPREV][(int)SVE_BAND_UPPER]));
+        _result &= _change_pc_sve < _level;
+
+        if (_method != 0) {
+          if (METHOD(_method, 0)) _result &= fmin(Close[PREV], Close[PPREV]) > _indi_tma[CURR][(int)TMA_TRUE_UPPER];
+          if (METHOD(_method, 1))
+            _result &= (_indi_tma[CURR][(int)TMA_TRUE_LOWER] < _indi_tma[PPREV][(int)TMA_TRUE_LOWER]);
+          if (METHOD(_method, 2))
+            _result &= (_indi_tma[CURR][(int)TMA_TRUE_MAIN] < _indi_tma[PPREV][(int)TMA_TRUE_MAIN]);
+          if (METHOD(_method, 3))
+            _result &= (_indi_tma[CURR][(int)TMA_TRUE_UPPER] < _indi_tma[PPREV][(int)TMA_TRUE_UPPER]);
+          if (METHOD(_method, 4)) _result &= Open[CURR] > _indi_tma[CURR][(int)TMA_TRUE_MAIN];
+          if (METHOD(_method, 5)) _result &= fmin(Close[PREV], Close[PPREV]) < _indi_tma[CURR][(int)TMA_TRUE_MAIN];
+        }
+
+        if (_result && _method != 0) {
+          if (METHOD(_method, 0)) _result &= fmin(Close[PREV], Close[PPREV]) > _indi_sve[CURR][(int)SVE_BAND_UPPER];
+          if (METHOD(_method, 1))
+            _result &= (_indi_sve[CURR][(int)SVE_BAND_LOWER] < _indi_sve[PPREV][(int)SVE_BAND_LOWER]);
+          if (METHOD(_method, 2))
+            _result &= (_indi_sve[CURR][(int)SVE_BAND_BASE] < _indi_sve[PPREV][(int)SVE_BAND_BASE]);
+          if (METHOD(_method, 3))
+            _result &= (_indi_sve[CURR][(int)SVE_BAND_UPPER] < _indi_sve[PPREV][(int)SVE_BAND_UPPER]);
+          if (METHOD(_method, 4)) _result &= highest_price > _indi_sve[CURR][(int)SVE_BAND_BASE];
+          if (METHOD(_method, 5)) _result &= Open[CURR] > _indi_sve[CURR][(int)SVE_BAND_BASE];
+          if (METHOD(_method, 6)) _result &= fmin(Close[PREV], Close[PPREV]) < _indi_sve[CURR][(int)SVE_BAND_BASE];
+        }
+
         break;
     }
+
     return _result;
   }
 

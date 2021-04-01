@@ -4,29 +4,57 @@
  */
 
 // Defines indicator's parameter values for the given pair symbol and timeframe.
-struct Indi_TMA_Band_SVE_True_Params_{{ Timeframe }} : Indi_TMA_Band_SVE_True_Params {
-  Indi_TMA_Band_SVE_True_Params_{{ Timeframe }}() : Indi_TMA_Band_SVE_True_Params(indi_tbst_defaults, PERIOD_{{ Timeframe }}) {
-    applied_price = (ENUM_APPLIED_PRICE){{ TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Applied_Price | default(0) }};
-    ma_method = (ENUM_MA_METHOD){{ TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_MA_Method | default(0) }};
-    period = {{ TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Period | default(0) }};
-    shift = {{ TMA_Band_SVE_True_Shift | default(0) }};
+struct Indi_TMA_True_Params_ {
+  {
+    Timeframe
   }
-} indi_tbst_{{ Timeframe | lower }};
+} : Indi_TMA_True_Params {
+  Indi_TMA_True_Params_{{Timeframe}}() : Indi_TMA_True_Params(indi_tmat_defaults, PERIOD_{{Timeframe}}) {
+    atr_multiplier = {{TMA_True_Indi_TMA_True_AtrMultiplier | default(0)}};
+    atr_period = {{TMA_True_Indi_TMA_True_AtrPeriod | default(0)}};
+    atr_tf = {{TMA_True_Indi_TMA_True_Timeframe | default(0)}};
+    bars_to_process = {{TMA_True_Indi_TMA_True_BarsToProcess | default(0)}};
+    half_length = {{TMA_True_Indi_TMA_True_HalfLength | default(0)}};
+    shift = {{TMA_True_Indi_TMA_True_Shift | default(0)}};
+  }
+}
+indi_tmat_{{Timeframe | lower}};
+
+// Defines indicator's parameter values for the given pair symbol and timeframe.
+struct Indi_TMA_Band_SVE_True_Params_ {
+  {
+    Timeframe
+  }
+} : Indi_TMA_Band_SVE_True_Params {
+  Indi_TMA_Band_SVE_True_Params_{{Timeframe}}()
+      : Indi_TMA_Band_SVE_True_Params(indi_tbst_defaults, PERIOD_{{Timeframe}}) {
+    applied_price = (ENUM_APPLIED_PRICE){{TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Applied_Price | default(0)}};
+    ma_method = (ENUM_MA_METHOD){{TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_MA_Method | default(0)}};
+    period = {{TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Period | default(0)}};
+    shift = {{TMA_Band_SVE_True_Shift | default(0)}};
+  }
+}
+indi_tbst_{{Timeframe | lower}};
 
 // Defines strategy's parameter values for the given pair symbol and timeframe.
-struct Stg_TMA_Band_SVE_True_Params_{{ Timeframe }} : StgParams {
-  // Struct constructor.
-  Stg_TMA_Band_SVE_True_Params_{{ Timeframe }}() : StgParams(stg_tbst_defaults) {
-    lot_size = {{ TMA_Band_SVE_True_LotSize | default(0) }};
-    signal_open_method = {{ TMA_Band_SVE_True_SignalOpenMethod | default(0) }};
-    signal_open_filter = {{ TMA_Band_SVE_True_SignalOpenFilterMethod | default(1) }};
-    signal_open_level = (float){{ TMA_Band_SVE_True_SignalOpenLevel | default(0) }};
-    signal_open_boost = {{ TMA_Band_SVE_True_SignalOpenBoostMethod | default(0) }};
-    signal_close_method = {{ TMA_Band_SVE_True_SignalCloseMethod | default(0) }};
-    signal_close_level = (float){{ TMA_Band_SVE_True_SignalCloseLevel | default(0) }};
-    price_stop_method = {{ TMA_Band_SVE_True_PriceStopMethod | default(0) }};
-    price_stop_level = (float){{ TMA_Band_SVE_True_SignalCloseLevel | default(1) }};
-    tick_filter_method = {{ TMA_Band_SVE_True_TickFilterMethod  | default(1) }};
-    max_spread = {{ TMA_Band_SVE_True_MaxSpread | default(0) }};
+struct Stg_TMA_Band_SVE_True_Params_ {
+  {
+    Timeframe
   }
-} stg_tbst_{{ Timeframe | lower }};
+} : StgParams {
+  // Struct constructor.
+  Stg_TMA_Band_SVE_True_Params_{{Timeframe}}() : StgParams(stg_tbst_defaults) {
+    lot_size = {{TMA_Band_SVE_True_LotSize | default(0)}};
+    signal_open_method = {{TMA_Band_SVE_True_SignalOpenMethod | default(0)}};
+    signal_open_filter = {{TMA_Band_SVE_True_SignalOpenFilterMethod | default(1)}};
+    signal_open_level = (float){{TMA_Band_SVE_True_SignalOpenLevel | default(0)}};
+    signal_open_boost = {{TMA_Band_SVE_True_SignalOpenBoostMethod | default(0)}};
+    signal_close_method = {{TMA_Band_SVE_True_SignalCloseMethod | default(0)}};
+    signal_close_level = (float){{TMA_Band_SVE_True_SignalCloseLevel | default(0)}};
+    price_stop_method = {{TMA_Band_SVE_True_PriceStopMethod | default(0)}};
+    price_stop_level = (float){{TMA_Band_SVE_True_SignalCloseLevel | default(1)}};
+    tick_filter_method = {{TMA_Band_SVE_True_TickFilterMethod | default(1)}};
+    max_spread = {{TMA_Band_SVE_True_MaxSpread | default(0)}};
+  }
+}
+stg_tbst_{{Timeframe | lower}};

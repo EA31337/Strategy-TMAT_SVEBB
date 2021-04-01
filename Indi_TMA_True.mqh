@@ -19,83 +19,91 @@
  *
  */
 
-// Indicator line identifiers used in TMATrue.
-enum ENUM_TMA_TRUE_LINE {
-  TMA_TRUE_BASE = 0,   // Main line.
+// Indicator line identifiers used in the indicator.
+enum ENUM_TMA_TRUE_MODE {
+  TMA_TRUE_MAIN = 0,   // Main line.
   TMA_TRUE_UPPER = 1,  // Upper limit.
   TMA_TRUE_LOWER = 2,  // Lower limit.
-  FINAL_TMA_TRUE_LINE_ENTRY,
+  FINAL_TMA_TRUE_MODE_ENTRY,
 };
 
 // Structs.
-struct TMATrueParams : IndicatorParams {
+
+// Defines struct to store indicator parameter values.
+struct Indi_TMA_True_Params : public IndicatorParams {
   // Indicator params.
-  int AtrTimeframe;
-  int TmaHalfLength;
-  double AtrMultiplier;
-  int AtrPeriod;
-  int BarsToProcess;
-  // Struct constructor.
-  void TMATrueParams(int _atr_tf, int _tma_hl, double _atr_mul, int _atr_period, int _bars, int _shift = 0)
-      : AtrTimeframe(_atr_tf),
-        TmaHalfLength(_tma_hl),
-        AtrMultiplier(_atr_mul),
-        AtrPeriod(_atr_period),
-        BarsToProcess(_bars) {
-    max_modes = FINAL_TMA_TRUE_LINE_ENTRY;
-    custom_indi_name = "Indicators\\TMA_True";
-    shift = _shift;
+  int atr_tf;
+  int half_length;
+  double atr_multiplier;
+  int atr_period;
+  int bars_to_process;
+  // Struct constructors.
+  Indi_TMA_True_Params(int _atr_tf, int _half_length, double _atr_multiplier, int _atr_period, int _bars_to_process,
+                       int _shift)
+      : atr_tf(_atr_tf),
+        half_length(_half_length),
+        atr_multiplier(_atr_multiplier),
+        atr_period(_atr_period),
+        bars_to_process(_bars_to_process) {
+    max_modes = FINAL_TMA_TRUE_MODE_ENTRY;
+    custom_indi_name = "TMA_True";
+    SetDataSourceType(IDATA_ICUSTOM);
     SetDataValueType(TYPE_DOUBLE);
   };
+
+  Indi_TMA_True_Params(Indi_TMA_True_Params &_params, ENUM_TIMEFRAMES _tf) {
+    this = _params;
+    tf = _tf;
+  }
   // Getters.
-  int GetAtrTimeframe() { return AtrTimeframe; }
-  int GetTmaHalfLength() { return TmaHalfLength; }
-  double GetAtrMultiplier() { return AtrMultiplier; }
-  int GetAtrPeriod() { return AtrPeriod; }
-  int GetBarsToProcess() { return BarsToProcess; }
+  int GetATRTimeframe() { return atr_tf; }
+  int GetHalfLength() { return half_length; }
+  double GetAtrMultiplier() { return atr_multiplier; }
+  int GetAtrPeriod() { return atr_period; }
+  int GetBarsToProcess() { return bars_to_process; }
   // Setters.
-  void SetAtrTimeframe(int _value) { AtrTimeframe = _value; }
-  void SetTmaHalfLength(int _value) { TmaHalfLength = _value; }
-  void SetAtrMultiplier(double _value) { AtrMultiplier = _value; }
-  void SetAtrPeriod(int _value) { AtrPeriod = _value; }
-  void SetBarsToProcess(int _value) { BarsToProcess = _value; }
+  void SetATRTimeframe(int _value) { atr_tf = _value; }
+  void SetHalfLength(int _value) { half_length = _value; }
+  void SetAtrMultiplier(double _value) { atr_multiplier = _value; }
+  void SetAtrPeriod(int _value) { atr_period = _value; }
+  void SetBarsToProcess(int _value) { bars_to_process = _value; }
 };
 
 /**
  * Implements indicator class.
  */
-class Indi_TMATrue : public Indicator {
- protected:
-  // Structs.
-  TMATrueParams params;
-
+class Indi_TMA_True : public Indicator {
  public:
+  // Structs.
+  Indi_TMA_True_Params params;
+
   /**
    * Class constructor.
    */
-  Indi_TMATrue(TMATrueParams &_p)
-      : params(_p.AtrTimeframe, _p.TmaHalfLength, _p.AtrMultiplier, _p.AtrPeriod, _p.BarsToProcess),
-        Indicator((IndicatorParams)_p) {
-    params = _p;
-  }
-  Indi_TMATrue(TMATrueParams &_p, ENUM_TIMEFRAMES _tf)
-      : params(_p.AtrTimeframe, _p.TmaHalfLength, _p.AtrMultiplier, _p.AtrPeriod, _p.BarsToProcess),
-        Indicator(NULL, _tf) {
-    params = _p;
-  }
+  Indi_TMA_True(Indi_TMA_True_Params &_p)
+      : params(_p.atr_tf, _p.half_length, _p.atr_multiplier, _p.atr_period, _p.bars_to_process, _p.shift),
+        Indicator((IndicatorParams)_p) {}
+  Indi_TMA_True(Indi_TMA_True_Params &_p, ENUM_TIMEFRAMES _tf)
+      : params(_p.atr_tf, _p.half_length, _p.atr_multiplier, _p.atr_period, _p.bars_to_process, _p.shift),
+        Indicator((IndicatorParams)_p, _tf) {}
+
+  /**
+   * Gets indicator's params.
+   */
+  // Indi_TMA_True_Params GetIndiParams() const { return params; }
 
   /**
    * Returns the indicator's value.
    *
    */
-  double GetValue(ENUM_TMA_TRUE_LINE _mode, int _shift = 0) {
+  double GetValue(ENUM_TMA_TRUE_MODE _mode, int _shift = 0) {
     ResetLastError();
     double _value = EMPTY_VALUE;
     switch (params.idstype) {
       case IDATA_ICUSTOM:
-        _value = iCustom(istate.handle, GetSymbol(), GetTf(), params.custom_indi_name, params.GetAtrTimeframe(),
-                         params.GetTmaHalfLength(), params.GetAtrMultiplier(), params.GetAtrPeriod(),
-                         params.GetBarsToProcess(), _mode, _shift);
+        _value = iCustom(istate.handle, GetSymbol(), GetTf(), params.custom_indi_name, params.tf,
+                         params.GetHalfLength(), params.GetAtrMultiplier(), params.GetAtrPeriod(),
+                         params.GetBarsToProcess(), /*alerts*/ false, _mode, _shift);
         break;
       default:
         SetUserError(ERR_USER_NOT_SUPPORTED);
@@ -112,16 +120,17 @@ class Indi_TMATrue : public Indicator {
   IndicatorDataEntry GetEntry(int _shift = 0) {
     long _bar_time = GetBarTime(_shift);
     unsigned int _position;
-    IndicatorDataEntry _entry;
+    IndicatorDataEntry _entry(params.max_modes);
     if (idata.KeyExists(_bar_time, _position)) {
       _entry = idata.GetByPos(_position);
     } else {
       _entry.timestamp = GetBarTime(_shift);
-      for (ENUM_TMA_TRUE_LINE _mode = 0; _mode < FINAL_TMA_TRUE_LINE_ENTRY; _mode++) {
+      for (ENUM_TMA_TRUE_MODE _mode = 0; _mode < FINAL_TMA_TRUE_MODE_ENTRY; _mode++) {
         _entry.values[_mode] = GetValue(_mode, _shift);
       }
-      _entry.SetFlag(INDI_ENTRY_FLAG_IS_VALID,
-                     _entry.IsGt(0) && _entry.values[(int)TMA_TRUE_UPPER].IsGt(TMA_TRUE_LOWER));
+      _entry.SetFlag(
+          INDI_ENTRY_FLAG_IS_VALID,
+          _entry.GetMin<double>() > 0 && _entry.values[TMA_TRUE_UPPER].IsGt<double>(_entry[(int)TMA_TRUE_LOWER]));
       if (_entry.IsValid()) {
         idata.Add(_entry, _bar_time);
       }

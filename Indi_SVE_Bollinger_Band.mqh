@@ -44,8 +44,9 @@ struct SVEBandParams : IndicatorParams {
         BBDnDeviations(_deviations_down),
         DeviationsPeriod(_deviations_period) {
     max_modes = FINAL_SVE_BAND_LINE_ENTRY;
-    custom_indi_name = "Indicators\\SVE_Bollinger_Band";
+    custom_indi_name = "SVE_Bollinger_Band";
     SetDataValueType(TYPE_DOUBLE);
+    SetDataSourceType(IDATA_ICUSTOM);
   };
   // Getters.
   int GetTEMAPeriod() { return TEMAPeriod; }
@@ -120,8 +121,9 @@ class Indi_SVEBand : public Indicator {
       for (ENUM_SVE_BAND_LINE _mode = 0; _mode < FINAL_SVE_BAND_LINE_ENTRY; _mode++) {
         _entry.values[_mode] = GetValue(_mode, _shift);
       }
-      _entry.SetFlag(INDI_ENTRY_FLAG_IS_VALID,
-                     _entry.IsGt(0) && _entry.values[(int)SVE_BAND_UPPER].IsGt(_entry[(int)SVE_BAND_UPPER]));
+      _entry.SetFlag(
+          INDI_ENTRY_FLAG_IS_VALID,
+          _entry.IsGt<double>(0) && _entry.values[(int)SVE_BAND_UPPER].IsGt<double>(_entry[(int)SVE_BAND_LOWER]));
       if (_entry.IsValid()) {
         idata.Add(_entry, _bar_time);
       }
