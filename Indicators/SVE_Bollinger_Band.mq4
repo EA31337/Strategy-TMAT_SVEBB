@@ -108,6 +108,7 @@ int start()
       {
          tBuffer[r][__haOpen] = averagePrice(i);
          continue;
+      }
 
 
       //
