@@ -7,6 +7,7 @@
 
 // Includes.
 #include <EA31337-classes/Indicator.enum.h>
+
 #include "Indi_SVE_Bollinger_Band.mqh"
 
 // User input params.
