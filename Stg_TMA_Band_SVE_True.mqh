@@ -270,7 +270,7 @@ class Stg_TMA_Band_SVE_True : public Strategy {
    * Gets price stop value for profit take or stop loss.
    */
   float PriceStop(ENUM_ORDER_TYPE _cmd, ENUM_ORDER_TYPE_VALUE _mode, int _method = 0, float _level = 0.0f) {
-    // Indicator *_indi = Data();
+    // Indicator *_indi = GetIndicator();
     double _trail = _level * Market().GetPipSize();
     // int _bar_count = (int)_level * 10;
     int _direction = Order::OrderDirection(_cmd, _mode);
