@@ -125,7 +125,8 @@ struct Stg_TMA_True_Params {
 
 class Stg_TMA_Band_SVE_True : public Strategy {
  public:
-  Stg_TMA_Band_SVE_True(StgParams &_params, Trade *_trade = NULL, string _name = "") : Strategy(_params, _trade, _name) {}
+  Stg_TMA_Band_SVE_True(StgParams &_sparams, TradeParams &_tparams, ChartParams &_cparams, string _name = "")
+      : Strategy(_sparams, _tparams, _cparams, _name) {}
 
   static Stg_TMA_Band_SVE_True *Init(ENUM_TIMEFRAMES _tf = NULL, long _magic_no = NULL,
                                      ENUM_LOG_LEVEL _log_level = V_INFO) {
