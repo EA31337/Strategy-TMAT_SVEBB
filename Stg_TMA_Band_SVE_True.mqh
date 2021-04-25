@@ -125,7 +125,7 @@ struct Stg_TMA_True_Params {
 
 class Stg_TMA_Band_SVE_True : public Strategy {
  public:
-  Stg_TMA_Band_SVE_True(StgParams &_params, string _name) : Strategy(_params, _name) {}
+  Stg_TMA_Band_SVE_True(StgParams &_params, Trade *_trade = NULL, string _name = "") : Strategy(_params, _trade, _name) {}
 
   static Stg_TMA_Band_SVE_True *Init(ENUM_TIMEFRAMES _tf = NULL, long _magic_no = NULL,
                                      ENUM_LOG_LEVEL _log_level = V_INFO) {
@@ -149,14 +149,13 @@ class Stg_TMA_Band_SVE_True : public Strategy {
                                                 stg_tbst_h1, stg_tbst_h4, stg_tbst_h4);
 #endif
     // Initialize strategy parameters.
-    _stg_params.GetLog().SetLevel(_log_level);
     Indicator *_tma = new Indi_TMA_True(_tma_params);
     _stg_params.SetIndicator(_tma, INDI_TMA_TRUE);
-    _stg_params.SetIndicator(new Indi_SVEBand(_sve_params), INDI_SVE_BB);
-    _stg_params.SetMagicNo(_magic_no);
-    _stg_params.SetTf(_tf, _Symbol);
-    // Initialize strategy instance.
-    Strategy *_strat = new Stg_TMA_Band_SVE_True(_stg_params, "TMA_Band_SVE_True");
+    _stg_params.SetIndicator(_sve_params, INDI_SVE_BB);
+    // Initialize Strategy instance.
+    ChartParams _cparams(_tf, _Symbol);
+    TradeParams _tparams(_magic_no, _log_level);
+    Strategy *_strat = new Stg_TMA_Band_SVE_True(_stg_params, _tparams, _cparams, "TMA_Band_SVE_True");
     return _strat;
   }
 
@@ -172,7 +171,7 @@ class Stg_TMA_Band_SVE_True : public Strategy {
 
     // Print("_is_valid = ", _is_valid);
 
-    Chart *_chart = sparams.GetChart();
+    Chart *_chart = trade.GetChart();
 
     bool _result = _is_valid;
 
