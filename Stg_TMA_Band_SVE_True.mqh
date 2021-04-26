@@ -152,7 +152,8 @@ class Stg_TMA_Band_SVE_True : public Strategy {
     // Initialize strategy parameters.
     Indicator *_tma = new Indi_TMA_True(_tma_params);
     _stg_params.SetIndicator(_tma, INDI_TMA_TRUE);
-    _stg_params.SetIndicator(_sve_params, INDI_SVE_BB);
+    Indicator *_sve_bb = new Indi_SVEBand(_sve_params);
+    _stg_params.SetIndicator(_sve_bb, INDI_SVE_BB);
     // Initialize Strategy instance.
     ChartParams _cparams(_tf, _Symbol);
     TradeParams _tparams(_magic_no, _log_level);
