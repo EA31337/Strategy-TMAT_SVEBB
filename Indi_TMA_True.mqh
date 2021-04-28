@@ -46,7 +46,11 @@ struct Indi_TMA_True_Params : public IndicatorParams {
         atr_period(_atr_period),
         bars_to_process(_bars_to_process) {
     max_modes = FINAL_TMA_TRUE_MODE_ENTRY;
+#ifdef __resource__
+    custom_indi_name = "::Indicators/TMA_True";
+#else
     custom_indi_name = "TMA_True";
+#endif
     SetDataSourceType(IDATA_ICUSTOM);
     SetDataValueType(TYPE_DOUBLE);
   };

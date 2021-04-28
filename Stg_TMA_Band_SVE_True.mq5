@@ -37,6 +37,14 @@ input bool Info_On_Chart = true;          // Display info on chart.
 #endif
 #property link ea_link
 
+// Load external resources.
+#ifdef __resource__
+#ifdef __MQL5__
+#resource "Indicators/SVE_Bollinger_Band.ex5"
+#resource "Indicators/TMA_True.ex5"
+#endif
+#endif
+
 // Class variables.
 EA *ea;
 

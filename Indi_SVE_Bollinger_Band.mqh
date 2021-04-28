@@ -44,7 +44,11 @@ struct SVEBandParams : IndicatorParams {
         BBDnDeviations(_deviations_down),
         DeviationsPeriod(_deviations_period) {
     max_modes = FINAL_SVE_BAND_LINE_ENTRY;
+#ifdef __resource__
+    custom_indi_name = "::Indicators/SVE_Bollinger_Band";
+#else
     custom_indi_name = "SVE_Bollinger_Band";
+#endif
     SetDataValueType(TYPE_DOUBLE);
     SetDataSourceType(IDATA_ICUSTOM);
   };
