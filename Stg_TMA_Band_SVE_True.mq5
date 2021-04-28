@@ -24,7 +24,7 @@ input bool Info_On_Chart = true;          // Display info on chart.
 
 // Defines.
 #define ea_name "Strategy TMA Band SVE True"
-#define ea_version "1.000"
+#define ea_version "1.002"
 #define ea_desc "Strategy based on EA31337 framework."
 #define ea_link "https://github.com/EA31337/Strategy-TMA_Band_SVE_True"
 #define ea_author "kenorb"
