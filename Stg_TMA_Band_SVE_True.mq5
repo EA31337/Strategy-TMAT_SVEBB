@@ -15,7 +15,7 @@
 #include <EA31337-classes/Strategy.mqh>
 
 // Inputs.
-input int Active_Tfs = 15;                // Activated timeframes (1-255) [M1=1,M5=2,M15=4,M30=8,H1=16,H4=32...]
+input int Active_Tfs = 14;                // Activated timeframes (1-255) [M1=1,M5=2,M15=4,M30=8,H1=16,H4=32...]
 input ENUM_LOG_LEVEL Log_Level = V_INFO;  // Log level.
 input bool Info_On_Chart = true;          // Display info on chart.
 
@@ -24,7 +24,7 @@ input bool Info_On_Chart = true;          // Display info on chart.
 
 // Defines.
 #define ea_name "Strategy TMA Band SVE True"
-#define ea_version "1.002"
+#define ea_version "1.004"
 #define ea_desc "Strategy based on EA31337 framework."
 #define ea_link "https://github.com/EA31337/Strategy-TMA_Band_SVE_True"
 #define ea_author "kenorb"

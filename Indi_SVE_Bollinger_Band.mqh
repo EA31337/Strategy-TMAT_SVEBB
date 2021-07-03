@@ -98,9 +98,10 @@ class Indi_SVEBand : public Indicator {
     double _value = EMPTY_VALUE;
     switch (params.idstype) {
       case IDATA_ICUSTOM:
-        _value = iCustom(istate.handle, Get<string>(CHART_PARAM_SYMBOL), Get<ENUM_TIMEFRAMES>(CHART_PARAM_TF), params.custom_indi_name, params.GetTEMAPeriod(),
-                         params.GetSvePeriod(), params.GetBBUpDeviations(), params.GetBBDnDeviations(),
-                         params.GetDeviationsPeriod(), _mode, _shift);
+        _value =
+            iCustom(istate.handle, Get<string>(CHART_PARAM_SYMBOL), Get<ENUM_TIMEFRAMES>(CHART_PARAM_TF),
+                    params.custom_indi_name, params.GetTEMAPeriod(), params.GetSvePeriod(), params.GetBBUpDeviations(),
+                    params.GetBBDnDeviations(), params.GetDeviationsPeriod(), _mode, _shift);
         break;
       default:
         SetUserError(ERR_USER_NOT_SUPPORTED);
