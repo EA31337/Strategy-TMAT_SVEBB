@@ -47,7 +47,7 @@ struct Indi_TMA_True_Params : public IndicatorParams {
         bars_to_process(_bars_to_process) {
     max_modes = FINAL_TMA_TRUE_MODE_ENTRY;
 #ifdef __resource__
-    custom_indi_name = "::Indicators/TMA_True";
+    custom_indi_name = "Indicators/TMA_True";
 #else
     custom_indi_name = "TMA_True";
 #endif
