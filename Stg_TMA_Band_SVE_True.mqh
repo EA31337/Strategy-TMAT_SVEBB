@@ -25,6 +25,8 @@ INPUT float TMA_Band_SVE_True_PriceStopLevel = 2;         // Price stop level
 INPUT int TMA_Band_SVE_True_TickFilterMethod = 1;         // Tick filter method
 INPUT float TMA_Band_SVE_True_MaxSpread = 4.0;            // Max spread to trade (in pips)
 INPUT short TMA_Band_SVE_True_Shift = 0;                  // Shift (relative to the current bar, 0 - default)
+INPUT float TMA_Band_SVE_True_OrderCloseLoss = 0;         // Order close loss
+INPUT float TMA_Band_SVE_True_OrderCloseProfit = 0;       // Order close profit
 INPUT int TMA_Band_SVE_True_OrderCloseTime = -20;         // Order close time in mins (>0) or bars (<0)
 INPUT_GROUP("TMA_Band_SVE_True strategy: SVE Bollinger Band indicator params");
 INPUT int TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_TEMAPeriod = 8;           // SVE Band: TEMA Period
@@ -75,7 +77,11 @@ struct Stg_TMA_Band_SVE_True_Params : StgParams {
                   ::TMA_Band_SVE_True_SignalCloseMethod, ::TMA_Band_SVE_True_SignalCloseFilter,
                   ::TMA_Band_SVE_True_SignalCloseLevel, ::TMA_Band_SVE_True_PriceStopMethod,
                   ::TMA_Band_SVE_True_PriceStopLevel, ::TMA_Band_SVE_True_TickFilterMethod,
-                  ::TMA_Band_SVE_True_MaxSpread, ::TMA_Band_SVE_True_Shift, ::TMA_Band_SVE_True_OrderCloseTime) {}
+                  ::TMA_Band_SVE_True_MaxSpread, ::TMA_Band_SVE_True_Shift) {
+    Set(STRAT_PARAM_OCL, TMA_Band_SVE_True_OrderCloseLoss);
+    Set(STRAT_PARAM_OCP, TMA_Band_SVE_True_OrderCloseProfit);
+    Set(STRAT_PARAM_OCT, TMA_Band_SVE_True_OrderCloseTime);
+  }
 };
 
 // Structs.
@@ -96,10 +102,10 @@ struct Stg_TMA_True_Params_Defaults : StgParams {
   Stg_TMA_True_Params_Defaults()
       : StgParams(::TMA_Band_SVE_True_SignalOpenMethod, ::TMA_Band_SVE_True_SignalOpenFilterMethod,
                   ::TMA_Band_SVE_True_SignalOpenLevel, ::TMA_Band_SVE_True_SignalOpenBoostMethod,
-                  ::TMA_Band_SVE_True_SignalCloseMethod, ::TMA_Band_SVE_True_SignalCloseLevel,
-                  ::TMA_Band_SVE_True_PriceStopMethod, ::TMA_Band_SVE_True_PriceStopLevel,
-                  ::TMA_Band_SVE_True_TickFilterMethod, ::TMA_Band_SVE_True_MaxSpread, ::TMA_Band_SVE_True_Shift,
-                  ::TMA_Band_SVE_True_OrderCloseTime) {}
+                  ::TMA_Band_SVE_True_SignalCloseMethod, ::TMA_Band_SVE_True_SignalCloseFilter,
+                  ::TMA_Band_SVE_True_SignalCloseLevel, ::TMA_Band_SVE_True_PriceStopMethod,
+                  ::TMA_Band_SVE_True_PriceStopLevel, ::TMA_Band_SVE_True_TickFilterMethod,
+                  ::TMA_Band_SVE_True_MaxSpread, ::TMA_Band_SVE_True_Shift) {}
 } stg_tmat_defaults;
 
 // Loads pair specific param values.
