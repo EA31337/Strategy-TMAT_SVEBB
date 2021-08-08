@@ -11,39 +11,34 @@
 #include "Indi_SVE_Bollinger_Band.mqh"
 
 // User input params.
-INPUT string __TMA_Band_SVE_True_Parameters__ = "-- TMA_Band_SVE_True strategy params --";  // >>> TMA Band SVE True <<<
-INPUT float TMA_Band_SVE_True_LotSize = 0;                                                  // Lot size
-INPUT int TMA_Band_SVE_True_SignalOpenMethod = 2;                                           // Signal open method
-INPUT int TMA_Band_SVE_True_SignalOpenFilterMethod = 32;                                    // Signal open filter method
-INPUT float TMA_Band_SVE_True_SignalOpenLevel = 0.0f;                                       // Signal open level
-INPUT int TMA_Band_SVE_True_SignalOpenBoostMethod = 0;                                      // Signal open boost method
-INPUT int TMA_Band_SVE_True_SignalCloseMethod = 2;                                          // Signal close method
-INPUT float TMA_Band_SVE_True_SignalCloseLevel = 0.0f;                                      // Signal close level
-INPUT int TMA_Band_SVE_True_PriceStopMethod = 1;                                            // Price stop method
-INPUT float TMA_Band_SVE_True_PriceStopLevel = 2;                                           // Price stop level
-INPUT int TMA_Band_SVE_True_TickFilterMethod = 1;                                           // Tick filter method
-INPUT float TMA_Band_SVE_True_MaxSpread = 4.0;     // Max spread to trade (in pips)
-INPUT short TMA_Band_SVE_True_Shift = 0;           // Shift (relative to the current bar, 0 - default)
-INPUT int TMA_Band_SVE_True_OrderCloseTime = -20;  // Order close time in mins (>0) or bars (<0)
-// Indicators params.
-INPUT string _TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_Parameters__ =
-    "-- TMA_Band_SVE_True strategy: SVE Bollinger Band indicator params --";  // >>> TMA_Band_SVE_True strategy: SVE
-                                                                              // Bollinger Band indicator <<<
+INPUT_GROUP("TMA_Band_SVE_True strategy: strategy params");
+INPUT float TMA_Band_SVE_True_LotSize = 0;                // Lot size
+INPUT int TMA_Band_SVE_True_SignalOpenMethod = 2;         // Signal open method
+INPUT int TMA_Band_SVE_True_SignalOpenFilterMethod = 32;  // Signal open filter method
+INPUT float TMA_Band_SVE_True_SignalOpenLevel = 0.0f;     // Signal open level
+INPUT int TMA_Band_SVE_True_SignalOpenBoostMethod = 0;    // Signal open boost method
+INPUT int TMA_Band_SVE_True_SignalCloseMethod = 2;        // Signal close method
+INPUT float TMA_Band_SVE_True_SignalCloseLevel = 0.0f;    // Signal close level
+INPUT int TMA_Band_SVE_True_PriceStopMethod = 1;          // Price stop method
+INPUT float TMA_Band_SVE_True_PriceStopLevel = 2;         // Price stop level
+INPUT int TMA_Band_SVE_True_TickFilterMethod = 1;         // Tick filter method
+INPUT float TMA_Band_SVE_True_MaxSpread = 4.0;            // Max spread to trade (in pips)
+INPUT short TMA_Band_SVE_True_Shift = 0;                  // Shift (relative to the current bar, 0 - default)
+INPUT int TMA_Band_SVE_True_OrderCloseTime = -20;         // Order close time in mins (>0) or bars (<0)
+INPUT_GROUP("TMA_Band_SVE_True strategy: SVE Bollinger Band indicator params");
 INPUT int TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_TEMAPeriod = 8;           // SVE Band: TEMA Period
 INPUT int TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_SvePeriod = 18;           // SVE Band: SVE Period
 INPUT double TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_BBUpDeviations = 1.6;  // SVE Band: BB Up Deviation
 INPUT double TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_BBDnDeviations = 1.6;  // SVE Band: BB Down Deviation
 INPUT int TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_DeviationsPeriod = 63;    // SVE Band: Deviations Period
 INPUT int TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_Shift = 0;                // SVE Band: Shift
-INPUT string _TMA_Band_SVE_True_Indi_TMA_True_Parameters__ =
-    "-- TMA_Band_SVE_True strategy: TMA True indicator params --";  // >>> TMA_Band_SVE_True strategy: TMA True
-                                                                    // indicator <<<
-INPUT int TMA_Band_SVE_True_Indi_TMA_True_AtrTimeframe = 0;         // TMA True: Timeframe
-INPUT int TMA_Band_SVE_True_Indi_TMA_True_TmaHalfLength = 3;        // TMA True: Half Length
-INPUT double TMA_Band_SVE_True_Indi_TMA_True_AtrMultiplier = 1.5;   // TMA True: ATR Multiplier
-INPUT int TMA_Band_SVE_True_Indi_TMA_True_AtrPeriod = 6;            // TMA True: ATR Period
-INPUT int TMA_Band_SVE_True_Indi_TMA_True_BarsToProcess = 0;        // TMA True: Bars to process
-INPUT int TMA_Band_SVE_True_Indi_TMA_True_Shift = 0;                // TMA True: Shift
+INPUT_GROUP("TMA_Band_SVE_True strategy: TMA True indicator params");
+INPUT int TMA_Band_SVE_True_Indi_TMA_True_AtrTimeframe = 0;        // TMA True: Timeframe
+INPUT int TMA_Band_SVE_True_Indi_TMA_True_TmaHalfLength = 3;       // TMA True: Half Length
+INPUT double TMA_Band_SVE_True_Indi_TMA_True_AtrMultiplier = 1.5;  // TMA True: ATR Multiplier
+INPUT int TMA_Band_SVE_True_Indi_TMA_True_AtrPeriod = 6;           // TMA True: ATR Period
+INPUT int TMA_Band_SVE_True_Indi_TMA_True_BarsToProcess = 0;       // TMA True: Bars to process
+INPUT int TMA_Band_SVE_True_Indi_TMA_True_Shift = 0;               // TMA True: Shift
 
 // Structs.
 
@@ -115,7 +110,7 @@ struct Stg_TMA_True_Params_Defaults : StgParams {
 #include "config/EURUSD_M30.h"
 #include "config/EURUSD_M5.h"
 
-// Defines struct to store indicator and strategy params.
+// Defines struct to store indicator and strategy: strategy params.
 struct Stg_TMA_True_Params {
   StgParams sparams;
 
