@@ -14,7 +14,7 @@
 INPUT string __TMA_Band_SVE_True_Parameters__ = "-- TMA_Band_SVE_True strategy params --";  // >>> TMA Band SVE True <<<
 INPUT float TMA_Band_SVE_True_LotSize = 0;                                                  // Lot size
 INPUT int TMA_Band_SVE_True_SignalOpenMethod = 2;                                           // Signal open method
-INPUT int TMA_Band_SVE_True_SignalOpenFilterMethod = 32;                                     // Signal open filter method
+INPUT int TMA_Band_SVE_True_SignalOpenFilterMethod = 32;                                    // Signal open filter method
 INPUT float TMA_Band_SVE_True_SignalOpenLevel = 0.0f;                                       // Signal open level
 INPUT int TMA_Band_SVE_True_SignalOpenBoostMethod = 0;                                      // Signal open boost method
 INPUT int TMA_Band_SVE_True_SignalCloseMethod = 2;                                          // Signal close method
@@ -167,20 +167,13 @@ class Stg_TMA_Band_SVE_True : public Strategy {
   bool SignalOpen(ENUM_ORDER_TYPE _cmd, int _method = 0, float _level = 0.0f, int _shift = 0) {
     Indicator *_indi_tma = GetIndicator(INDI_TMA_TRUE);
     Indicator *_indi_sve = GetIndicator(INDI_SVE_BB);
-    bool _is_valid = _indi_tma[CURR].IsValid() && _indi_sve[CURR].IsValid();
-
-    return _is_valid;
-
-    // Print("_is_valid = ", _is_valid);
-
-    Chart *_chart = trade.GetChart();
-
-    bool _result = _is_valid;
-
+    bool _result = _indi_tma.GetFlag(INDI_ENTRY_FLAG_IS_VALID) && _indi_sve.GetFlag(INDI_ENTRY_FLAG_IS_VALID);
     if (!_result) {
       // Returns false when indicator data is not valid.
       return false;
     }
+
+    Chart *_chart = trade.GetChart();
 
     double lowest_price, highest_price;
 
