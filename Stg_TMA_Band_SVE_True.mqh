@@ -18,6 +18,7 @@ INPUT int TMA_Band_SVE_True_SignalOpenFilterMethod = 32;  // Signal open filter 
 INPUT float TMA_Band_SVE_True_SignalOpenLevel = 0.0f;     // Signal open level
 INPUT int TMA_Band_SVE_True_SignalOpenBoostMethod = 0;    // Signal open boost method
 INPUT int TMA_Band_SVE_True_SignalCloseMethod = 2;        // Signal close method
+INPUT int TMA_Band_SVE_True_SignalCloseFilter = 0;        // Signal close filter (-127-127)
 INPUT float TMA_Band_SVE_True_SignalCloseLevel = 0.0f;    // Signal close level
 INPUT int TMA_Band_SVE_True_PriceStopMethod = 1;          // Price stop method
 INPUT float TMA_Band_SVE_True_PriceStopLevel = 2;         // Price stop level
@@ -71,10 +72,10 @@ struct Stg_TMA_Band_SVE_True_Params : StgParams {
                                Strategy *_tp = NULL)
       : StgParams(::TMA_Band_SVE_True_SignalOpenMethod, ::TMA_Band_SVE_True_SignalOpenFilterMethod,
                   ::TMA_Band_SVE_True_SignalOpenLevel, ::TMA_Band_SVE_True_SignalOpenBoostMethod,
-                  ::TMA_Band_SVE_True_SignalCloseMethod, ::TMA_Band_SVE_True_SignalCloseLevel,
-                  ::TMA_Band_SVE_True_PriceStopMethod, ::TMA_Band_SVE_True_PriceStopLevel,
-                  ::TMA_Band_SVE_True_TickFilterMethod, ::TMA_Band_SVE_True_MaxSpread, ::TMA_Band_SVE_True_Shift,
-                  ::TMA_Band_SVE_True_OrderCloseTime) {}
+                  ::TMA_Band_SVE_True_SignalCloseMethod, ::TMA_Band_SVE_True_SignalCloseFilter,
+                  ::TMA_Band_SVE_True_SignalCloseLevel, ::TMA_Band_SVE_True_PriceStopMethod,
+                  ::TMA_Band_SVE_True_PriceStopLevel, ::TMA_Band_SVE_True_TickFilterMethod,
+                  ::TMA_Band_SVE_True_MaxSpread, ::TMA_Band_SVE_True_Shift, ::TMA_Band_SVE_True_OrderCloseTime) {}
 };
 
 // Structs.
