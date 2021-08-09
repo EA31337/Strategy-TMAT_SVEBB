@@ -15,6 +15,7 @@ INPUT_GROUP("TMA_Band_SVE_True strategy: strategy params");
 INPUT float TMA_Band_SVE_True_LotSize = 0;                // Lot size
 INPUT int TMA_Band_SVE_True_SignalOpenMethod = 2;         // Signal open method
 INPUT int TMA_Band_SVE_True_SignalOpenFilterMethod = 32;  // Signal open filter method
+INPUT int TMA_Band_SVE_True_SignalOpenFilterTime = 6;     // Signal open filter time
 INPUT float TMA_Band_SVE_True_SignalOpenLevel = 0.0f;     // Signal open level
 INPUT int TMA_Band_SVE_True_SignalOpenBoostMethod = 0;    // Signal open boost method
 INPUT int TMA_Band_SVE_True_SignalCloseMethod = 2;        // Signal close method
@@ -81,6 +82,7 @@ struct Stg_TMA_Band_SVE_True_Params : StgParams {
     Set(STRAT_PARAM_OCL, TMA_Band_SVE_True_OrderCloseLoss);
     Set(STRAT_PARAM_OCP, TMA_Band_SVE_True_OrderCloseProfit);
     Set(STRAT_PARAM_OCT, TMA_Band_SVE_True_OrderCloseTime);
+    Set(STRAT_PARAM_SOFT, TMA_Band_SVE_True_SignalOpenFilterTime);
   }
 };
 
