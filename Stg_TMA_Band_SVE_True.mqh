@@ -110,6 +110,7 @@ struct Stg_TMA_True_Params_Defaults : StgParams {
                   ::TMA_Band_SVE_True_MaxSpread, ::TMA_Band_SVE_True_Shift) {}
 } stg_tmat_defaults;
 
+#ifdef __config__
 // Loads pair specific param values.
 #include "config/H1.h"
 #include "config/H4.h"
@@ -118,6 +119,7 @@ struct Stg_TMA_True_Params_Defaults : StgParams {
 #include "config/M15.h"
 #include "config/M30.h"
 #include "config/M5.h"
+#endif
 
 // Defines struct to store indicator and strategy: strategy params.
 struct Stg_TMA_True_Params {
