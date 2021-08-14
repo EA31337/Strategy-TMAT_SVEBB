@@ -36,12 +36,20 @@ input bool Info_On_Chart = true;          // Display info on chart.
 #property description ea_desc
 #endif
 #property link ea_link
+#ifdef __resource__
+#ifdef __MQL5__
+#property tester_indicator "::Indicators\\SVE_Bollinger_Band.ex5"
+#property tester_library "::Indicators\\SVE_Bollinger_Band.ex5"
+#property tester_indicator "::Indicators\\TMA_True.ex5"
+#property tester_library "::Indicators\\TMA_True.ex5"
+#endif
+#endif
 
 // Load external resources.
 #ifdef __resource__
 #ifdef __MQL5__
-#resource "Indicators/SVE_Bollinger_Band.ex5"
-#resource "Indicators/TMA_True.ex5"
+#resource "\\Indicators\\SVE_Bollinger_Band.ex5"
+#resource "\\Indicators\\TMA_True.ex5"
 #endif
 #endif
 
