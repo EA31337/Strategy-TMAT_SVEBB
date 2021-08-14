@@ -22,16 +22,24 @@
 // Defines macros.
 #define Bars (ChartStatic::iBars(_Symbol, _Period))
 
+// Includes the main file.
+#include "SVE_Bollinger_Band.mq4"
+
+// Custom indicator initialization function.
+void OnInit() {
+  init();
+  PlotIndexSetInteger(0, PLOT_DRAW_BEGIN, fmax(SvePeriod, TEMAPeriod));
+  PlotIndexSetInteger(1, PLOT_DRAW_BEGIN, fmax(SvePeriod, TEMAPeriod));
+  PlotIndexSetInteger(2, PLOT_DRAW_BEGIN, fmax(SvePeriod, TEMAPeriod));
+  SetIndexStyle(0, DRAW_HISTOGRAM, STYLE_SOLID, 1);
+  SetIndexStyle(1, DRAW_HISTOGRAM, STYLE_DOT, 1);
+  SetIndexStyle(2, DRAW_HISTOGRAM, STYLE_DOT, 1);
+}
+
 // Custom indicator iteration function.
 int OnCalculate(const int rates_total, const int prev_calculated, const int begin, const double &price[]) {
-  if (begin > 0) PlotIndexSetInteger(0, PLOT_DRAW_BEGIN, begin + SvePeriod);
-  if (begin > 0) PlotIndexSetInteger(1, PLOT_DRAW_BEGIN, begin + SvePeriod);
-  if (begin > 0) PlotIndexSetInteger(2, PLOT_DRAW_BEGIN, begin + SvePeriod);
   int pos = fmax(0, prev_calculated - 1);
   IndicatorCounted(prev_calculated);
   start();
   return (rates_total);
 }
-
-// Includes the main file.
-#include "SVE_Bollinger_Band.mq4"
