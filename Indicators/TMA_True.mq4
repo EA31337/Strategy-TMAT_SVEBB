@@ -14,9 +14,7 @@
 #property indicator_width3 1
 #property indicator_style1 STYLE_DOT
 #property indicator_style2 STYLE_SOLID
-#property indicator_style2 STYLE_SOLID
-
-#include <EA31337-classes/Indicators/Indi_ATR.mqh>
+#property indicator_style3 STYLE_SOLID
 
 //---- input parameters
 extern int eintTimeframe = 0;
@@ -58,7 +56,7 @@ int init() {
   SetIndexLabel(2, "TMA Lower");
 
   //---- name for DataWindow and indicator subwindow label
-  IndicatorShortName("TmaTrue(" + IntegerToString(eintHalfLength) + ",M" + IntegerToString(gintTF) + ")");
+  IndicatorShortName("TmaTrue(" + (string)eintHalfLength + ",M" + (string)gintTF + ")");
 
   return (0);
 }
@@ -76,19 +74,16 @@ int start() {
 
   if (counted_bars < 0) return (-1);
   if (counted_bars > 0) counted_bars--;
-  int intLimit = Bars - counted_bars;
+  int intLimit = fmin(Bars - counted_bars - 1, 10000);
   double dblTma, dblRange;
   int intBarShift;
 
   if (eintBarsToProcess > 0 && intLimit > eintBarsToProcess) intLimit = eintBarsToProcess;
 
-  // We don't want to process more that 1000 historic bars.
-  intLimit = MathMin(intLimit, 1000);
-
-  for (int inx = intLimit - 1; inx >= 0; inx--) {
+  for (int inx = intLimit; inx >= 0 && !IsStopped(); inx--) {
     if (gintTF == Period()) {
       dblRange = iATR(Symbol(), gintTF, eintAtrPeriod, inx + 10);
-      dblTma = calcTma(eintHalfLength, inx);
+      dblTma = calcTma(eintHalfLength, inx, intLimit);
     } else {
       intBarShift = iBarShift(Symbol(), gintTF, Time[inx]);
       dblRange = iATR(Symbol(), gintTF, eintAtrPeriod, intBarShift + 10);
@@ -118,7 +113,7 @@ int start() {
 //+------------------------------------------------------------------+
 //| calcTma()                                                        |
 //+------------------------------------------------------------------+
-double calcTma(int intHalfLength, int intShift) {
+double calcTma(int intHalfLength, int intShift, int intLimit) {
   double dblResult, dblSum, dblSumW;
   int inx, jnx;
 
@@ -126,7 +121,7 @@ double calcTma(int intHalfLength, int intShift) {
   dblSum = dblSumW * Close[intShift];
   jnx = intHalfLength;
 
-  for (inx = 1, jnx = intHalfLength; inx <= intHalfLength; inx++, jnx--) {
+  for (inx = 1, jnx = intHalfLength; inx <= intHalfLength && intShift + inx <= intLimit; inx++, jnx--) {
     dblSumW += jnx;
     dblSum += (jnx * Close[intShift + inx]);
   }

@@ -103,7 +103,7 @@ int start() {
   if (ArrayRange(tBuffer, 0) != Bars) ArrayResize(tBuffer, Bars, Bars - Bars % 4096 + 4096);
 
   // We don't want to process more that 1000 historic bars.
-  limit = MathMin(limit, 1000);
+  limit = fmin(limit, 1000);
 
   for (i = limit, r = Bars - i - 1; i >= 0; i--, r++) {
     if (i == (Bars - 1)) {
@@ -126,7 +126,9 @@ int start() {
     double sdev = iDeviation(tmaZima, SvePeriod, i);
     if (sdev != 0)
       svePerB[i] =
-          25.0 * (tmaZima[i] + 2.0 * sdev - Indi_MA::iMAOnArray(tmaZima, 0, SvePeriod, 0, MODE_LWMA, i)) / sdev;
+          25.0 *
+          (tmaZima[i] + 2.0 * sdev - Indi_MA::iMAOnArray(tmaZima, 0, SvePeriod, 0, MODE_LWMA, i, "SVE_BB_iMACache_1")) /
+          sdev;
     else
       svePerB[i] = 0;
 
