@@ -19,6 +19,10 @@
  *
  */
 
+// Prevents processing the same indicator file twice.
+#ifndef INDI_TMA_TRUE_MQH
+#define INDI_TMA_TRUE_MQH
+
 // Indicator line identifiers used in the indicator.
 enum ENUM_TMA_TRUE_MODE {
   TMA_TRUE_MAIN = 0,   // Main line.
@@ -105,9 +109,10 @@ class Indi_TMA_True : public Indicator {
     double _value = EMPTY_VALUE;
     switch (params.idstype) {
       case IDATA_ICUSTOM:
-        _value = iCustom(istate.handle, Get<string>(CHART_PARAM_SYMBOL), Get<ENUM_TIMEFRAMES>(CHART_PARAM_TF),
-                         params.custom_indi_name, params.tf.GetTf(), params.GetHalfLength(), params.GetAtrMultiplier(),
-                         params.GetAtrPeriod(), params.GetBarsToProcess(), /*alerts*/ false, _mode, _shift);
+        _value =
+            iCustom(istate.handle, Get<string>(CHART_PARAM_SYMBOL), Get<ENUM_TIMEFRAMES>(CHART_PARAM_TF),
+                    params.custom_indi_name, (int)params.tf.GetTf(), params.GetHalfLength(), params.GetAtrMultiplier(),
+                    params.GetAtrPeriod(), params.GetBarsToProcess(), false, _mode, _shift);
         break;
       default:
         SetUserError(ERR_USER_NOT_SUPPORTED);
@@ -142,3 +147,5 @@ class Indi_TMA_True : public Indicator {
     return _entry;
   }
 };
+
+#endif  // INDI_TMA_TRUE_MQH

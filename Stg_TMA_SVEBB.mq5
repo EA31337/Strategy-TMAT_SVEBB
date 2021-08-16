@@ -1,6 +1,6 @@
 /**
  * @file
- * Implements TMA Band SVE True strategy.
+ * Implements TMA SVEBB strategy.
  *
  * @see: https://www.forexstrategiesresources.com/trading-system-metatrader-4-iii/397-tma-band-true/
  */
@@ -20,13 +20,13 @@ input ENUM_LOG_LEVEL Log_Level = V_INFO;  // Log level.
 input bool Info_On_Chart = true;          // Display info on chart.
 
 // Includes main strategy class.
-#include "Stg_TMA_Band_SVE_True.mqh"
+#include "Stg_TMA_SVEBB.mqh"
 
 // Defines.
-#define ea_name "Strategy TMA Band SVE True"
+#define ea_name "Strategy TMA SVEBB"
 #define ea_version "1.005"
 #define ea_desc "Strategy based on EA31337 framework."
-#define ea_link "https://github.com/EA31337/Strategy-TMA_Band_SVE_True"
+#define ea_link "https://github.com/EA31337/Strategy-TMA_SVEBB"
 #define ea_author "EA31337 Ltd"
 
 // Properties.
@@ -68,7 +68,7 @@ int OnInit() {
   EAParams ea_params(__FILE__, Log_Level);
   ea_params.Set(EA_PARAM_CHART_INFO_FREQ, Info_On_Chart ? 2 : 0);
   ea = new EA(ea_params);
-  _result &= ea.StrategyAdd<Stg_TMA_Band_SVE_True>(Active_Tfs);
+  _result &= ea.StrategyAdd<Stg_TMA_SVEBB>(Active_Tfs);
   return (_result ? INIT_SUCCEEDED : INIT_FAILED);
 }
 
