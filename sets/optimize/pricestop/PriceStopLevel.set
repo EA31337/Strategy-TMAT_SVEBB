@@ -1,7 +1,7 @@
 ; Optimize price stop level param.
-TMA_Band_SVE_True_PriceStopLevel,1=10
-TMA_Band_SVE_True_PriceStopLevel,2=5
-TMA_Band_SVE_True_PriceStopLevel,3=40
-TMA_Band_SVE_True_PriceStopLevel,F=1
-TMA_Band_SVE_True_SignalOpenFilterMethod=1
-TMA_Band_SVE_True_TickFilterMethod=1
+TMAT_SVEBB_PriceStopLevel,1=10
+TMAT_SVEBB_PriceStopLevel,2=5
+TMAT_SVEBB_PriceStopLevel,3=40
+TMAT_SVEBB_PriceStopLevel,F=1
+TMAT_SVEBB_SignalOpenFilterMethod=1
+TMAT_SVEBB_TickFilterMethod=1

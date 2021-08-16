@@ -1,7 +1,7 @@
 ; Optimize signal open level param.
-TMA_Band_SVE_True_SignalOpenFilterMethod=1
-TMA_Band_SVE_True_SignalOpenLevel,1=0
-TMA_Band_SVE_True_SignalOpenLevel,2=1
-TMA_Band_SVE_True_SignalOpenLevel,3=10
-TMA_Band_SVE_True_SignalOpenLevel,F=1
-TMA_Band_SVE_True_TickFilterMethod=1
+TMAT_SVEBB_SignalOpenFilterMethod=1
+TMAT_SVEBB_SignalOpenLevel,1=0
+TMAT_SVEBB_SignalOpenLevel,2=1
+TMAT_SVEBB_SignalOpenLevel,3=10
+TMAT_SVEBB_SignalOpenLevel,F=1
+TMAT_SVEBB_TickFilterMethod=1

@@ -21,40 +21,40 @@ struct Indi_TMA_True_Params_ {
 indi_tmat_{{Timeframe | lower}};
 
 // Defines indicator's parameter values for the given pair symbol and timeframe.
-struct Indi_TMA_Band_SVE_True_Params_ {
+struct Indi_SVEBB_Params_ {
   {
     Timeframe
   }
-} : Indi_TMA_Band_SVE_True_Params {
-  Indi_TMA_Band_SVE_True_Params_{{Timeframe}}()
-      : Indi_TMA_Band_SVE_True_Params(indi_tbst_defaults, PERIOD_{{Timeframe}}) {
-    applied_price = (ENUM_APPLIED_PRICE){{TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Applied_Price | default(0)}};
-    ma_method = (ENUM_MA_METHOD){{TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_MA_Method | default(0)}};
-    period = {{TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Period | default(0)}};
-    shift = {{TMA_Band_SVE_True_Shift | default(0)}};
+} : Indi_SVEBB_Params {
+  Indi_SVEBB_Params_{{Timeframe}}()
+      : Indi_SVEBB_Params(indi_tmat_svebb_defaults, PERIOD_{{Timeframe}}) {
+    applied_price = (ENUM_APPLIED_PRICE){{TMAT_SVEBB_Indi_SVEBB_Applied_Price | default(0)}};
+    ma_method = (ENUM_MA_METHOD){{TMAT_SVEBB_Indi_SVEBB_MA_Method | default(0)}};
+    period = {{TMAT_SVEBB_Indi_SVEBB_Period | default(0)}};
+    shift = {{TMAT_SVEBB_Shift | default(0)}};
   }
 }
-indi_tbst_{{Timeframe | lower}};
+indi_tmat_svebb_{{Timeframe | lower}};
 
 // Defines strategy's parameter values for the given pair symbol and timeframe.
-struct Stg_TMA_Band_SVE_True_Params_ {
+struct Stg_TMAT_SVEBB_Params_ {
   {
     Timeframe
   }
 } : StgParams {
   // Struct constructor.
-  Stg_TMA_Band_SVE_True_Params_{{Timeframe}}() : StgParams(stg_tbst_defaults) {
-    lot_size = {{TMA_Band_SVE_True_LotSize | default(0)}};
-    signal_open_method = {{TMA_Band_SVE_True_SignalOpenMethod | default(0)}};
-    signal_open_filter_method = {{TMA_Band_SVE_True_SignalOpenFilterMethod | default(1)}};
-    signal_open_level = (float){{TMA_Band_SVE_True_SignalOpenLevel | default(0)}};
-    signal_open_boost = {{TMA_Band_SVE_True_SignalOpenBoostMethod | default(0)}};
-    signal_close_method = {{TMA_Band_SVE_True_SignalCloseMethod | default(0)}};
-    signal_close_level = (float){{TMA_Band_SVE_True_SignalCloseLevel | default(0)}};
-    price_stop_method = {{TMA_Band_SVE_True_PriceStopMethod | default(0)}};
-    price_stop_level = (float){{TMA_Band_SVE_True_SignalCloseLevel | default(1)}};
-    tick_filter_method = {{TMA_Band_SVE_True_TickFilterMethod | default(1)}};
-    max_spread = {{TMA_Band_SVE_True_MaxSpread | default(0)}};
+  Stg_TMAT_SVEBB_Params_{{Timeframe}}() : StgParams(stg_tmat_svebb_defaults) {
+    lot_size = {{TMAT_SVEBB_LotSize | default(0)}};
+    signal_open_method = {{TMAT_SVEBB_SignalOpenMethod | default(0)}};
+    signal_open_filter_method = {{TMAT_SVEBB_SignalOpenFilterMethod | default(1)}};
+    signal_open_level = (float){{TMAT_SVEBB_SignalOpenLevel | default(0)}};
+    signal_open_boost = {{TMAT_SVEBB_SignalOpenBoostMethod | default(0)}};
+    signal_close_method = {{TMAT_SVEBB_SignalCloseMethod | default(0)}};
+    signal_close_level = (float){{TMAT_SVEBB_SignalCloseLevel | default(0)}};
+    price_stop_method = {{TMAT_SVEBB_PriceStopMethod | default(0)}};
+    price_stop_level = (float){{TMAT_SVEBB_SignalCloseLevel | default(1)}};
+    tick_filter_method = {{TMAT_SVEBB_TickFilterMethod | default(1)}};
+    max_spread = {{TMAT_SVEBB_MaxSpread | default(0)}};
   }
 }
-stg_tbst_{{Timeframe | lower}};
+stg_tmat_svebb_{{Timeframe | lower}};

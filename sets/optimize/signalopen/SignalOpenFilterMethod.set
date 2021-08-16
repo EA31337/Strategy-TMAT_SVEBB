@@ -1,6 +1,6 @@
 ; Optimize signal open filter method param.
-TMA_Band_SVE_True_SignalOpenFilterMethod,1=0
-TMA_Band_SVE_True_SignalOpenFilterMethod,2=1
-TMA_Band_SVE_True_SignalOpenFilterMethod,3=31
-TMA_Band_SVE_True_SignalOpenFilterMethod,F=1
-TMA_Band_SVE_True_TickFilterMethod=1
+TMAT_SVEBB_SignalOpenFilterMethod,1=0
+TMAT_SVEBB_SignalOpenFilterMethod,2=1
+TMAT_SVEBB_SignalOpenFilterMethod,3=31
+TMAT_SVEBB_SignalOpenFilterMethod,F=1
+TMAT_SVEBB_TickFilterMethod=1

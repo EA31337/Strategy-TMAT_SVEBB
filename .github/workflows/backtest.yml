@@ -42,7 +42,7 @@ jobs:
           include: .
           init-platform: true
           mt-version: 5.0.0.2361
-          path: Stg_TMA_SVEBB.mq4
+          path: Stg_TMAT_SVEBB.mq4
           verbose: true
       - name: Enables config mode only
         run: echo '#define __config__' > config/define.h
@@ -51,7 +51,7 @@ jobs:
         with:
           include: .
           mt-version: 5.0.0.2515
-          path: Stg_TMA_SVEBB.mq5
+          path: Stg_TMAT_SVEBB.mq5
           verbose: true
       - name: List compiled files
         run: '(Get-ChildItem -Recurse -Path . -Include *.ex[45]).fullname'
@@ -69,7 +69,7 @@ jobs:
     strategy:
       matrix:
         file:
-          - SVE_Bollinger_Band
+          - SVE_Bollinger_Bands
           - TMA_True
     steps:
       - uses: actions/checkout@v2
@@ -126,7 +126,7 @@ jobs:
           OptFormatBrief: true
           OptFormatJson: true
           OptVerbose: true
-          TestExpert: "Stg_TMA_SVEBB"
+          TestExpert: "Stg_TMAT_SVEBB"
           TestPeriod: M1
           TestReportName: Report-${{ matrix.year }}-${{ matrix.month }}
       - name: Upload results
