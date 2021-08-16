@@ -8,7 +8,7 @@
 // Includes.
 #include <EA31337-classes/Indicator.enum.h>
 
-#include "Indi_SVE_Bollinger_Band.mqh"
+#include "Indi_SVE_Bollinger_Bands.mqh"
 
 // User input params.
 INPUT_GROUP("TMA_Band_SVE_True strategy: strategy params");
@@ -48,11 +48,11 @@ INPUT int TMA_Band_SVE_True_Indi_TMA_True_Shift = 0;               // TMA True: 
 
 // Defines struct with default user indicator values.
 /*
-struct Indi_SVE_Band_Params_Defaults : SVEBandParams {
+struct Indi_SVE_Band_Params_Defaults : Indi_SVE_Bollinger_Bands_Params {
   Indi_SVE_Band_Params_Defaults()
       : SVE_Band_Params(::TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Period,
 ::TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_MA_Method, ::TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Applied_Price,
-::TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Shift) {} } indi_sveband_defaults;
+::TMA_Band_SVE_True_Indi_TMA_Band_SVE_True_Shift) {} } Indi_SVE_Bollinger_Bands_defaults;
 */
 
 // Struct to define strategy parameters to override.
@@ -141,7 +141,7 @@ class Stg_TMA_Band_SVE_True : public Strategy {
         TMA_Band_SVE_True_Indi_TMA_True_AtrMultiplier, TMA_Band_SVE_True_Indi_TMA_True_AtrPeriod,
         TMA_Band_SVE_True_Indi_TMA_True_BarsToProcess, TMA_Band_SVE_True_Indi_TMA_True_Shift);
 
-    SVEBandParams _sve_params(
+    Indi_SVE_Bollinger_Bands_Params _sve_params(
         TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_TEMAPeriod, TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_SvePeriod,
         TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_BBUpDeviations,
         TMA_Band_SVE_True_Indi_SVE_Bollinger_Band_BBDnDeviations,
@@ -157,7 +157,7 @@ class Stg_TMA_Band_SVE_True : public Strategy {
 #endif
     // Initialize strategy parameters.
     Indicator *_tma = new Indi_TMA_True(_tma_params);
-    Indicator *_sve_bb = new Indi_SVEBand(_sve_params);
+    Indicator *_sve_bb = new Indi_SVE_Bollinger_Bands(_sve_params);
     _stg_params.SetIndicator(_tma, INDI_TMA_TRUE);
     _stg_params.SetIndicator(_sve_bb, INDI_SVE_BB);
     // Initialize Strategy instance.
@@ -184,7 +184,7 @@ class Stg_TMA_Band_SVE_True : public Strategy {
     double lowest_price, highest_price;
 
     double _change_pc_tma = Math::ChangeInPct(_indi_tma[1][(int)TMA_TRUE_MAIN], _indi_tma[0][(int)TMA_TRUE_MAIN], true);
-    double _change_pc_sve = Math::ChangeInPct(_indi_sve[1][(int)SVE_BAND_BASE], _indi_sve[0][(int)SVE_BAND_BASE], true);
+    double _change_pc_sve = Math::ChangeInPct(_indi_sve[1][(int)SVE_BAND_MAIN], _indi_sve[0][(int)SVE_BAND_MAIN], true);
 
     switch (_cmd) {
       case ORDER_TYPE_BUY:
@@ -214,12 +214,12 @@ class Stg_TMA_Band_SVE_True : public Strategy {
           if (METHOD(_method, 1))
             _result &= (_indi_sve[CURR][(int)SVE_BAND_LOWER] > _indi_sve[PPREV][(int)SVE_BAND_LOWER]);
           if (METHOD(_method, 2))
-            _result &= (_indi_sve[CURR][(int)SVE_BAND_BASE] > _indi_sve[PPREV][(int)SVE_BAND_BASE]);
+            _result &= (_indi_sve[CURR][(int)SVE_BAND_MAIN] > _indi_sve[PPREV][(int)SVE_BAND_MAIN]);
           if (METHOD(_method, 3))
             _result &= (_indi_sve[CURR][(int)SVE_BAND_UPPER] > _indi_sve[PPREV][(int)SVE_BAND_UPPER]);
-          if (METHOD(_method, 4)) _result &= lowest_price < _indi_sve[CURR][(int)SVE_BAND_BASE];
-          if (METHOD(_method, 5)) _result &= Open[CURR] < _indi_sve[CURR][(int)SVE_BAND_BASE];
-          if (METHOD(_method, 6)) _result &= fmin(Close[PREV], Close[PPREV]) > _indi_sve[CURR][(int)SVE_BAND_BASE];
+          if (METHOD(_method, 4)) _result &= lowest_price < _indi_sve[CURR][(int)SVE_BAND_MAIN];
+          if (METHOD(_method, 5)) _result &= Open[CURR] < _indi_sve[CURR][(int)SVE_BAND_MAIN];
+          if (METHOD(_method, 6)) _result &= fmin(Close[PREV], Close[PPREV]) > _indi_sve[CURR][(int)SVE_BAND_MAIN];
         }
         break;
 
@@ -252,12 +252,12 @@ class Stg_TMA_Band_SVE_True : public Strategy {
           if (METHOD(_method, 1))
             _result &= (_indi_sve[CURR][(int)SVE_BAND_LOWER] < _indi_sve[PPREV][(int)SVE_BAND_LOWER]);
           if (METHOD(_method, 2))
-            _result &= (_indi_sve[CURR][(int)SVE_BAND_BASE] < _indi_sve[PPREV][(int)SVE_BAND_BASE]);
+            _result &= (_indi_sve[CURR][(int)SVE_BAND_MAIN] < _indi_sve[PPREV][(int)SVE_BAND_MAIN]);
           if (METHOD(_method, 3))
             _result &= (_indi_sve[CURR][(int)SVE_BAND_UPPER] < _indi_sve[PPREV][(int)SVE_BAND_UPPER]);
-          if (METHOD(_method, 4)) _result &= highest_price > _indi_sve[CURR][(int)SVE_BAND_BASE];
-          if (METHOD(_method, 5)) _result &= Open[CURR] > _indi_sve[CURR][(int)SVE_BAND_BASE];
-          if (METHOD(_method, 6)) _result &= fmin(Close[PREV], Close[PPREV]) < _indi_sve[CURR][(int)SVE_BAND_BASE];
+          if (METHOD(_method, 4)) _result &= highest_price > _indi_sve[CURR][(int)SVE_BAND_MAIN];
+          if (METHOD(_method, 5)) _result &= Open[CURR] > _indi_sve[CURR][(int)SVE_BAND_MAIN];
+          if (METHOD(_method, 6)) _result &= fmin(Close[PREV], Close[PPREV]) < _indi_sve[CURR][(int)SVE_BAND_MAIN];
         }
 
         break;

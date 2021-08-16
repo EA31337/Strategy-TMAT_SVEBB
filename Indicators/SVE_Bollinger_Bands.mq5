@@ -23,7 +23,7 @@
 #define Bars (ChartStatic::iBars(_Symbol, _Period))
 
 // Includes the main file.
-#include "SVE_Bollinger_Band.mq4"
+#include "SVE_Bollinger_Bands.mq4"
 
 // Custom indicator initialization function.
 void OnInit() {

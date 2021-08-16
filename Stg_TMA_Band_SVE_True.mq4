@@ -10,6 +10,6 @@
 
 // Load external resources.
 #ifdef __resource__
-#resource "\\Indicators\\SVE_Bollinger_Band.ex4"
+#resource "\\Indicators\\SVE_Bollinger_Bands.ex4"
 #resource "\\Indicators\\TMA_True.ex4"
 #endif
