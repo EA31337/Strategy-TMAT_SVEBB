@@ -117,7 +117,7 @@ class Stg_TMAT_SVEBB : public Strategy {
   Stg_TMAT_SVEBB(StgParams &_sparams, TradeParams &_tparams, ChartParams &_cparams, string _name = "")
       : Strategy(_sparams, _tparams, _cparams, _name) {}
 
-  static Stg_TMAT_SVEBB *Init(ENUM_TIMEFRAMES _tf = NULL, long _magic_no = NULL, ENUM_LOG_LEVEL _log_level = V_INFO) {
+  static Stg_TMAT_SVEBB *Init(ENUM_TIMEFRAMES _tf = NULL) {
     // Initialize strategy initial values.
     Indi_SVE_Bollinger_Bands_Params _svebb_params(stg_tmat_svebb_indi_svebb_defaults, _tf);
     Indi_TMA_True_Params _tmat_params(stg_tmat_svebb_indi_tmat_defaults, _tf);
@@ -136,7 +136,7 @@ class Stg_TMAT_SVEBB : public Strategy {
     _stg_params.SetIndicator(_sve_bb, INDI_SVE_BB);
     // Initialize Strategy instance.
     ChartParams _cparams(_tf, _Symbol);
-    TradeParams _tparams(_magic_no, _log_level);
+    TradeParams _tparams;
     Strategy *_strat = new Stg_TMAT_SVEBB(_stg_params, _tparams, _cparams, "TMAT_SVEBB");
     return _strat;
   }
