@@ -64,6 +64,7 @@ struct Stg_TMAT_SVEBB_Params : StgParams {
                   ::TMAT_SVEBB_SignalOpenBoostMethod, ::TMAT_SVEBB_SignalCloseMethod, ::TMAT_SVEBB_SignalCloseFilter,
                   ::TMAT_SVEBB_SignalCloseLevel, ::TMAT_SVEBB_PriceStopMethod, ::TMAT_SVEBB_PriceStopLevel,
                   ::TMAT_SVEBB_TickFilterMethod, ::TMAT_SVEBB_MaxSpread, ::TMAT_SVEBB_Shift) {
+    Set(STRAT_PARAM_LS, TMAT_SVEBB_LotSize);
     Set(STRAT_PARAM_OCL, TMAT_SVEBB_OrderCloseLoss);
     Set(STRAT_PARAM_OCP, TMAT_SVEBB_OrderCloseProfit);
     Set(STRAT_PARAM_OCT, TMAT_SVEBB_OrderCloseTime);
