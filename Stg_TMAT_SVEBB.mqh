@@ -23,8 +23,8 @@ INPUT float TMAT_SVEBB_PriceStopLevel = 2;         // Price stop level
 INPUT int TMAT_SVEBB_TickFilterMethod = 32;        // Tick filter method
 INPUT float TMAT_SVEBB_MaxSpread = 4.0;            // Max spread to trade (in pips)
 INPUT short TMAT_SVEBB_Shift = 0;                  // Shift (relative to the current bar, 0 - default)
-INPUT float TMAT_SVEBB_OrderCloseLoss = 0;         // Order close loss
-INPUT float TMAT_SVEBB_OrderCloseProfit = 0;       // Order close profit
+INPUT float TMAT_SVEBB_OrderCloseLoss = 80;        // Order close loss
+INPUT float TMAT_SVEBB_OrderCloseProfit = 80;      // Order close profit
 INPUT int TMAT_SVEBB_OrderCloseTime = -30;         // Order close time in mins (>0) or bars (<0)
 INPUT_GROUP("TMAT_SVEBB strategy: SVE Bollinger Band indicator params");
 INPUT int TMAT_SVEBB_Indi_SVEBB_TEMAPeriod = 8;           // SVE Band: TEMA Period
