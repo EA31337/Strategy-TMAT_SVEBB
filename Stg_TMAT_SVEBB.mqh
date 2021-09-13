@@ -42,8 +42,8 @@ INPUT int TMAT_SVEBB_Indi_TMA_True_BarsToProcess = 0;       // TMA True: Bars to
 INPUT int TMAT_SVEBB_Indi_TMA_True_Shift = 0;               // TMA True: Shift
 
 // Includes indicator file.
-#include "Indi_TMA_True.mqh"
 #include "Indi_SVE_Bollinger_Bands.mqh"
+#include "Indi_TMA_True.mqh"
 
 // Structs.
 
@@ -75,7 +75,6 @@ struct Stg_TMAT_SVEBB_Params : StgParams {
     Set(STRAT_PARAM_SOFT, TMAT_SVEBB_SignalOpenFilterTime);
   }
 };
-
 
 // Defines struct with default user strategy values.
 struct Stg_TMAT_SVEBB_Params_Defaults : StgParams {
