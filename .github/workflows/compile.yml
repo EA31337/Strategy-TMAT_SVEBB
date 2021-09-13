@@ -31,8 +31,6 @@ jobs:
           path: Include/EA31337-classes
           ref: dev
           repository: EA31337/EA31337-classes
-      - name: Enables config mode
-        run: echo '#define __config__' > config/define.h
       - name: Enables resource mode
         if: false
         run: echo '#define __resource__' >> config/define.h
@@ -44,8 +42,6 @@ jobs:
           mt-version: 5.0.0.2361
           path: Stg_TMAT_SVEBB.mq4
           verbose: true
-      - name: Enables config mode only
-        run: echo '#define __config__' > config/define.h
       - name: Compile strategy for MQL5
         uses: fx31337/mql-compile-action@master
         with:
