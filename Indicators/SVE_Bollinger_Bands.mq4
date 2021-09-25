@@ -94,6 +94,7 @@ int deinit() { return (0); }
 //
 
 int start() {
+  INDICATOR_CALCULATE_POPULATE_CACHE(_Symbol, 0, Util::MakeKey("SVE_BB", TEMAPeriod, SvePeriod, BBUpDeviations, BBDnDeviations, DeviationsPeriod));
   int counted_bars = IndicatorCounted();
   int i, r, limit;
 
@@ -127,7 +128,7 @@ int start() {
     if (sdev != 0)
       svePerB[i] =
           25.0 *
-          (tmaZima[i] + 2.0 * sdev - Indi_MA::iMAOnArray(tmaZima, 0, SvePeriod, 0, MODE_LWMA, i, "SVE_BB_iMACache_1")) /
+          (tmaZima[i] + 2.0 * sdev - Indi_MA::iMAOnArray(tmaZima, 0, SvePeriod, 0, MODE_LWMA, i, _cache)) /
           sdev;
     else
       svePerB[i] = 0;

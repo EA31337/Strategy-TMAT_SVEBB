@@ -25,6 +25,7 @@
 // Includes EA31337 framework.
 #include <EA31337-classes/Indicator.mqh>
 #include <EA31337-classes/Indicators/Indi_MA.mqh>
+#include <EA31337-classes/Storage/ValueStorage.h>
 
 // Defines macros.
 #define Bars (ChartStatic::iBars(_Symbol, _Period))
