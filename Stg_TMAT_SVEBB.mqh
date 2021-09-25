@@ -12,7 +12,7 @@ INPUT_GROUP("TMAT_SVEBB strategy: strategy params");
 INPUT float TMAT_SVEBB_LotSize = 0;                // Lot size
 INPUT int TMAT_SVEBB_SignalOpenMethod = 0;         // Signal open method
 INPUT int TMAT_SVEBB_SignalOpenFilterMethod = 32;  // Signal open filter method
-INPUT int TMAT_SVEBB_SignalOpenFilterTime = 9;     // Signal open filter time
+INPUT int TMAT_SVEBB_SignalOpenFilterTime = 3;     // Signal open filter time
 INPUT float TMAT_SVEBB_SignalOpenLevel = 0.0f;     // Signal open level
 INPUT int TMAT_SVEBB_SignalOpenBoostMethod = 0;    // Signal open boost method
 INPUT int TMAT_SVEBB_SignalCloseMethod = 0;        // Signal close method
