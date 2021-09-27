@@ -135,12 +135,12 @@ class Stg_TMAT_SVEBB : public Strategy {
     // Initialize strategy parameters.
     Indicator *_tma = new Indi_TMA_True(_tmat_params);
     Indicator *_sve_bb = new Indi_SVE_Bollinger_Bands(_svebb_params);
-    _stg_params.SetIndicator(_tma, INDI_TMA_TRUE);
-    _stg_params.SetIndicator(_sve_bb, INDI_SVE_BB);
     // Initialize Strategy instance.
     ChartParams _cparams(_tf, _Symbol);
     TradeParams _tparams;
     Strategy *_strat = new Stg_TMAT_SVEBB(_stg_params, _tparams, _cparams, "TMAT_SVEBB");
+    _strat.SetIndicator(_sve_bb, INDI_SVE_BB);
+    _strat.SetIndicator(_tma, INDI_TMA_TRUE);
     return _strat;
   }
 
