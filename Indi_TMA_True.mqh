@@ -42,21 +42,20 @@ struct Indi_TMA_True_Params : public IndicatorParams {
   int atr_period;
   int bars_to_process;
   // Struct constructors.
-  Indi_TMA_True_Params(int _atr_tf, int _half_length, double _atr_multiplier, int _atr_period, int _bars_to_process,
-                       int _shift)
+  Indi_TMA_True_Params(int _atr_tf = 0, int _half_length = 3, double _atr_multiplier = 0.5, int _atr_period = 6,
+                       int _bars_to_process = 0, int _shift = 0)
       : atr_tf(_atr_tf),
         half_length(_half_length),
         atr_multiplier(_atr_multiplier),
         atr_period(_atr_period),
-        bars_to_process(_bars_to_process) {
-    max_modes = FINAL_TMA_TRUE_MODE_ENTRY;
+        bars_to_process(_bars_to_process),
+        IndicatorParams(INDI_TMA_TRUE, FINAL_TMA_TRUE_MODE_ENTRY, TYPE_DOUBLE) {
 #ifdef __resource__
     custom_indi_name = "::Indicators\\TMA_True";
 #else
     custom_indi_name = "TMA_True";
 #endif
     SetDataSourceType(IDATA_ICUSTOM);
-    SetDataValueType(TYPE_DOUBLE);
   };
 
   Indi_TMA_True_Params(Indi_TMA_True_Params &_params, ENUM_TIMEFRAMES _tf) {
@@ -80,20 +79,14 @@ struct Indi_TMA_True_Params : public IndicatorParams {
 /**
  * Implements indicator class.
  */
-class Indi_TMA_True : public Indicator {
+class Indi_TMA_True : public Indicator<Indi_TMA_True_Params> {
  public:
-  // Structs.
-  Indi_TMA_True_Params params;
-
   /**
    * Class constructor.
    */
-  Indi_TMA_True(Indi_TMA_True_Params &_p)
-      : params(_p.atr_tf, _p.half_length, _p.atr_multiplier, _p.atr_period, _p.bars_to_process, _p.shift),
-        Indicator((IndicatorParams)_p) {}
-  Indi_TMA_True(Indi_TMA_True_Params &_p, ENUM_TIMEFRAMES _tf)
-      : params(_p.atr_tf, _p.half_length, _p.atr_multiplier, _p.atr_period, _p.bars_to_process, _p.shift),
-        Indicator((IndicatorParams)_p, _tf) {}
+  Indi_TMA_True(Indi_TMA_True_Params &_p, IndicatorBase *_indi_src = NULL)
+      : Indicator<Indi_TMA_True_Params>(_p, _indi_src) {}
+  Indi_TMA_True(ENUM_TIMEFRAMES _tf = PERIOD_CURRENT) : Indicator(INDI_TMA_TRUE, _tf){};
 
   /**
    * Gets indicator's params.
@@ -107,12 +100,12 @@ class Indi_TMA_True : public Indicator {
   double GetValue(ENUM_TMA_TRUE_MODE _mode, int _shift = 0) {
     ResetLastError();
     double _value = EMPTY_VALUE;
-    switch (params.idstype) {
+    switch (iparams.idstype) {
       case IDATA_ICUSTOM:
-        _value =
-            iCustom(istate.handle, Get<string>(CHART_PARAM_SYMBOL), Get<ENUM_TIMEFRAMES>(CHART_PARAM_TF),
-                    params.custom_indi_name, (int)params.tf.GetTf(), params.GetHalfLength(), params.GetAtrMultiplier(),
-                    params.GetAtrPeriod(), params.GetBarsToProcess(), false, _mode, _shift);
+        _value = iCustom(istate.handle, Get<string>(CHART_PARAM_SYMBOL), Get<ENUM_TIMEFRAMES>(CHART_PARAM_TF),
+                         iparams.custom_indi_name, (int)iparams.tf.GetTf(), iparams.GetHalfLength(),
+                         iparams.GetAtrMultiplier(), iparams.GetAtrPeriod(), iparams.GetBarsToProcess(), false, _mode,
+                         _shift);
         break;
       default:
         SetUserError(ERR_USER_NOT_SUPPORTED);
@@ -124,27 +117,11 @@ class Indi_TMA_True : public Indicator {
   }
 
   /**
-   * Returns the indicator's struct value.
+   * Checks if indicator entry values are valid.
    */
-  IndicatorDataEntry GetEntry(int _shift = 0) {
-    long _bar_time = GetBarTime(_shift);
-    unsigned int _position;
-    IndicatorDataEntry _entry(params.max_modes);
-    if (idata.KeyExists(_bar_time, _position)) {
-      _entry = idata.GetByPos(_position);
-    } else {
-      _entry.timestamp = GetBarTime(_shift);
-      for (ENUM_TMA_TRUE_MODE _mode = 0; _mode < FINAL_TMA_TRUE_MODE_ENTRY; _mode++) {
-        _entry.values[_mode] = GetValue(_mode, _shift);
-      }
-      _entry.SetFlag(
-          INDI_ENTRY_FLAG_IS_VALID,
-          _entry.GetMin<double>() > 0 && _entry.values[TMA_TRUE_UPPER].IsGt<double>(_entry[(int)TMA_TRUE_LOWER]));
-      if (_entry.IsValid()) {
-        idata.Add(_entry, _bar_time);
-      }
-    }
-    return _entry;
+  virtual bool IsValidEntry(IndicatorDataEntry &_entry) {
+    return Indicator<Indi_TMA_True_Params>::IsValidEntry(_entry) && _entry.GetMin<double>() > 0 &&
+           _entry.values[TMA_TRUE_UPPER].IsGt<double>(_entry[(int)TMA_TRUE_LOWER]);
   }
 };
 

@@ -42,21 +42,20 @@ struct Indi_SVE_Bollinger_Bands_Params : public IndicatorParams {
   double BBDnDeviations;
   int DeviationsPeriod;
   // Struct constructors.
-  void Indi_SVE_Bollinger_Bands_Params(int _tema_period, int _sve_period, double _deviations_up,
-                                       double _deviations_down, int _deviations_period, int _shift)
+  void Indi_SVE_Bollinger_Bands_Params(int _tema_period = 8, int _sve_period = 18, double _deviations_up = 1.6,
+                                       double _deviations_down = 1.6, int _deviations_period = 63, int _shift = 0)
       : TEMAPeriod(_tema_period),
         SvePeriod(_sve_period),
         BBUpDeviations(_deviations_up),
         BBDnDeviations(_deviations_down),
-        DeviationsPeriod(_deviations_period) {
-    max_modes = FINAL_SVE_BAND_LINE_ENTRY;
+        DeviationsPeriod(_deviations_period),
+        IndicatorParams(INDI_SVE_BB, FINAL_SVE_BAND_LINE_ENTRY, TYPE_DOUBLE) {
 #ifdef __resource__
     custom_indi_name = "::Indicators\\SVE_Bollinger_Bands";
 #else
     custom_indi_name = "SVE_Bollinger_Bands";
 #endif
     SetDataSourceType(IDATA_ICUSTOM);
-    SetDataValueType(TYPE_DOUBLE);
   };
   void Indi_SVE_Bollinger_Bands_Params(Indi_SVE_Bollinger_Bands_Params &_params, ENUM_TIMEFRAMES _tf) {
     this = _params;
@@ -79,24 +78,14 @@ struct Indi_SVE_Bollinger_Bands_Params : public IndicatorParams {
 /**
  * Implements indicator class.
  */
-class Indi_SVE_Bollinger_Bands : public Indicator {
+class Indi_SVE_Bollinger_Bands : public Indicator<Indi_SVE_Bollinger_Bands_Params> {
  public:
-  // Structs.
-  Indi_SVE_Bollinger_Bands_Params params;
-
   /**
    * Class constructor.
    */
-  Indi_SVE_Bollinger_Bands(Indi_SVE_Bollinger_Bands_Params &_p)
-      : params(_p.TEMAPeriod, _p.SvePeriod, _p.BBUpDeviations, _p.BBDnDeviations, _p.DeviationsPeriod, _p.shift),
-        Indicator((IndicatorParams)_p) {
-    params = _p;
-  }
-  Indi_SVE_Bollinger_Bands(Indi_SVE_Bollinger_Bands_Params &_p, ENUM_TIMEFRAMES _tf)
-      : params(_p.TEMAPeriod, _p.SvePeriod, _p.BBUpDeviations, _p.BBDnDeviations, _p.DeviationsPeriod, _p.shift),
-        Indicator(NULL, _tf) {
-    params = _p;
-  }
+  Indi_SVE_Bollinger_Bands(Indi_SVE_Bollinger_Bands_Params &_p, IndicatorBase *_indi_src = NULL)
+      : Indicator<Indi_SVE_Bollinger_Bands_Params>(_p, _indi_src) {}
+  Indi_SVE_Bollinger_Bands(ENUM_TIMEFRAMES _tf = PERIOD_CURRENT) : Indicator(INDI_SVE_BB, _tf){};
 
   /**
    * Returns the indicator's value.
@@ -105,12 +94,12 @@ class Indi_SVE_Bollinger_Bands : public Indicator {
   double GetValue(ENUM_SVE_BAND_LINE _mode, int _shift = 0) {
     ResetLastError();
     double _value = EMPTY_VALUE;
-    switch (params.idstype) {
+    switch (iparams.idstype) {
       case IDATA_ICUSTOM:
-        _value =
-            iCustom(istate.handle, Get<string>(CHART_PARAM_SYMBOL), Get<ENUM_TIMEFRAMES>(CHART_PARAM_TF),
-                    params.custom_indi_name, params.GetTEMAPeriod(), params.GetSvePeriod(), params.GetBBUpDeviations(),
-                    params.GetBBDnDeviations(), params.GetDeviationsPeriod(), _mode, _shift);
+        _value = iCustom(istate.handle, Get<string>(CHART_PARAM_SYMBOL), Get<ENUM_TIMEFRAMES>(CHART_PARAM_TF),
+                         iparams.custom_indi_name, iparams.GetTEMAPeriod(), iparams.GetSvePeriod(),
+                         iparams.GetBBUpDeviations(), iparams.GetBBDnDeviations(), iparams.GetDeviationsPeriod(), _mode,
+                         _shift);
         break;
       default:
         SetUserError(ERR_USER_NOT_SUPPORTED);
@@ -122,26 +111,11 @@ class Indi_SVE_Bollinger_Bands : public Indicator {
   }
 
   /**
-   * Returns the indicator's struct value.
+   * Checks if indicator entry values are valid.
    */
-  IndicatorDataEntry GetEntry(int _shift = 0) {
-    long _bar_time = GetBarTime(_shift);
-    unsigned int _position;
-    IndicatorDataEntry _entry(params.max_modes);
-    if (idata.KeyExists(_bar_time, _position)) {
-      _entry = idata.GetByPos(_position);
-    } else {
-      _entry.timestamp = GetBarTime(_shift);
-      for (ENUM_SVE_BAND_LINE _mode = 0; _mode < FINAL_SVE_BAND_LINE_ENTRY; _mode++) {
-        _entry.values[_mode] = GetValue(_mode, _shift);
-      }
-      _entry.SetFlag(INDI_ENTRY_FLAG_IS_VALID,
-                     _entry.GetMin<double>() > 0 && _entry.values[(int)SVE_BAND_UPPER].IsGt<double>(SVE_BAND_LOWER));
-      if (_entry.IsValid()) {
-        idata.Add(_entry, _bar_time);
-      }
-    }
-    return _entry;
+  virtual bool IsValidEntry(IndicatorDataEntry &_entry) {
+    return Indicator<Indi_SVE_Bollinger_Bands_Params>::IsValidEntry(_entry) && _entry.GetMin<double>() > 0 &&
+           _entry.values[(int)SVE_BAND_UPPER].IsGt<double>(SVE_BAND_LOWER);
   }
 };
 

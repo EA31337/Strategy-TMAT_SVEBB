@@ -63,7 +63,7 @@ struct Stg_TMAT_SVEBB_Params : StgParams {
   float TMAT_SVEBB_MaxSpread;
 
   // Constructor: Set default param values.
-  Stg_TMAT_SVEBB_Params(Trade *_trade = NULL, Indicator *_data = NULL, Strategy *_sl = NULL, Strategy *_tp = NULL)
+  Stg_TMAT_SVEBB_Params(Trade *_trade = NULL, IndicatorBase *_data = NULL, Strategy *_sl = NULL, Strategy *_tp = NULL)
       : StgParams(::TMAT_SVEBB_SignalOpenMethod, ::TMAT_SVEBB_SignalOpenFilterMethod, ::TMAT_SVEBB_SignalOpenLevel,
                   ::TMAT_SVEBB_SignalOpenBoostMethod, ::TMAT_SVEBB_SignalCloseMethod, ::TMAT_SVEBB_SignalCloseFilter,
                   ::TMAT_SVEBB_SignalCloseLevel, ::TMAT_SVEBB_PriceStopMethod, ::TMAT_SVEBB_PriceStopLevel,
@@ -133,8 +133,8 @@ class Stg_TMAT_SVEBB : public Strategy {
                                          stg_tmat_svebb_m30, stg_tmat_svebb_h1, stg_tmat_svebb_h4, stg_tmat_svebb_h4);
 #endif
     // Initialize strategy parameters.
-    Indicator *_tma = new Indi_TMA_True(_tmat_params);
-    Indicator *_sve_bb = new Indi_SVE_Bollinger_Bands(_svebb_params);
+    IndicatorBase *_tma = new Indi_TMA_True(_tmat_params);
+    IndicatorBase *_sve_bb = new Indi_SVE_Bollinger_Bands(_svebb_params);
     // Initialize Strategy instance.
     ChartParams _cparams(_tf, _Symbol);
     TradeParams _tparams;
@@ -148,8 +148,8 @@ class Stg_TMAT_SVEBB : public Strategy {
    * Check strategy's opening signal.
    */
   bool SignalOpen(ENUM_ORDER_TYPE _cmd, int _method = 0, float _level = 0.0f, int _shift = 0) {
-    Indicator *_indi_tma = GetIndicator(INDI_TMA_TRUE);
-    Indicator *_indi_sve = GetIndicator(INDI_SVE_BB);
+    Indi_TMA_True *_indi_tma = GetIndicator(INDI_TMA_TRUE);
+    Indi_SVE_Bollinger_Bands *_indi_sve = GetIndicator(INDI_SVE_BB);
     bool _result =
         _indi_tma.GetFlag(INDI_ENTRY_FLAG_IS_VALID, _shift) && _indi_sve.GetFlag(INDI_ENTRY_FLAG_IS_VALID, _shift + 2);
     _result &=
