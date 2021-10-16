@@ -31,8 +31,14 @@ jobs:
           path: Include/EA31337-classes
           ref: dev
           repository: EA31337/EA31337-classes
+      - uses: actions/checkout@v2
+        with:
+          path: Indicators/Include/EA31337-classes
+          ref: dev
+          repository: EA31337/EA31337-classes
+      - name: Enables optimization mode
+        run: echo '#define __input__' > config/define.h
       - name: Enables resource mode
-        if: false
         run: echo '#define __resource__' >> config/define.h
       - name: Compile strategy for MQL4
         uses: fx31337/mql-compile-action@master
@@ -122,7 +128,7 @@ jobs:
           OptFormatBrief: true
           OptFormatJson: true
           OptVerbose: true
-          TestExpert: "Stg_TMAT_SVEBB"
+          TestExpert: Stg_TMAT_SVEBB
           TestPeriod: M1
           TestReportName: Report-${{ matrix.year }}-${{ matrix.month }}
       - name: Upload results
