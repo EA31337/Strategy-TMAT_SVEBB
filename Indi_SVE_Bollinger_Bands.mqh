@@ -91,7 +91,7 @@ class Indi_SVE_Bollinger_Bands : public Indicator<Indi_SVE_Bollinger_Bands_Param
    * Returns the indicator's value.
    *
    */
-  double GetValue(ENUM_SVE_BAND_LINE _mode, int _shift = 0) {
+  virtual double GetValue(int _mode = 0, int _shift = 0) {
     ResetLastError();
     double _value = EMPTY_VALUE;
     switch (iparams.idstype) {

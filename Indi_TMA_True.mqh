@@ -97,7 +97,7 @@ class Indi_TMA_True : public Indicator<Indi_TMA_True_Params> {
    * Returns the indicator's value.
    *
    */
-  double GetValue(ENUM_TMA_TRUE_MODE _mode, int _shift = 0) {
+  virtual double GetValue(int _mode = 0, int _shift = 0) {
     ResetLastError();
     double _value = EMPTY_VALUE;
     switch (iparams.idstype) {
