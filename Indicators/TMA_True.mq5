@@ -23,6 +23,7 @@
 #include <EA31337-classes/Indicators/Indi_ATR.mqh>
 
 // Defines macros.
+#define extern input
 #define Bars (ChartStatic::iBars(_Symbol, _Period))
 
 // Includes the main file.
