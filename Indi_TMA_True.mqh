@@ -59,7 +59,7 @@ struct Indi_TMA_True_Params : public IndicatorParams {
   };
 
   Indi_TMA_True_Params(Indi_TMA_True_Params &_params, ENUM_TIMEFRAMES _tf) {
-    this = _params;
+    THIS_REF = _params;
     tf = _tf;
   }
   // Getters.

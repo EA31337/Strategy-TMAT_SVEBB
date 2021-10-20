@@ -58,8 +58,8 @@ struct Indi_SVE_Bollinger_Bands_Params : public IndicatorParams {
     SetDataSourceType(IDATA_ICUSTOM);
   };
   void Indi_SVE_Bollinger_Bands_Params(Indi_SVE_Bollinger_Bands_Params &_params, ENUM_TIMEFRAMES _tf) {
-    this = _params;
-    _params.tf = _tf;
+    THIS_REF = _params;
+    tf = _tf;
   }
   // Getters.
   int GetTEMAPeriod() { return TEMAPeriod; }
