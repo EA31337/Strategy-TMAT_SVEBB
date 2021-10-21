@@ -159,7 +159,7 @@ class Stg_TMAT_SVEBB : public Strategy {
       return false;
     }
 
-    Chart *_chart = trade.GetChart();
+    Chart *_chart = (Chart *)_indi_tma;
 
     double lowest_price, highest_price;
     double _change_pc_tma = Math::ChangeInPct(_indi_tma[1][(int)TMA_TRUE_MAIN], _indi_tma[0][(int)TMA_TRUE_MAIN], true);
