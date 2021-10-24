@@ -1,6 +1,6 @@
 // Defines indicator's parameter values for the given pair symbol and timeframe.
-struct Indi_TMA_True_Params_H8 : Indi_TMA_True_Params {
-  Indi_TMA_True_Params_H8() : Indi_TMA_True_Params(stg_tmat_svebb_indi_tmat_defaults, PERIOD_H8) { shift = 0; }
+struct IndiTMATrueParams_H8 : IndiTMATrueParams {
+  IndiTMATrueParams_H8() : IndiTMATrueParams(stg_tmat_svebb_indi_tmat_defaults, PERIOD_H8) { shift = 0; }
 } indi_tmat_h8;
 
 // Defines strategy's parameter values for the given pair symbol and timeframe.

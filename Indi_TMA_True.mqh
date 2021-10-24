@@ -34,7 +34,7 @@ enum ENUM_TMA_TRUE_MODE {
 // Structs.
 
 // Defines struct to store indicator parameter values.
-struct Indi_TMA_True_Params : public IndicatorParams {
+struct IndiTMATrueParams : public IndicatorParams {
   // Indicator params.
   int atr_tf;
   int half_length;
@@ -42,8 +42,8 @@ struct Indi_TMA_True_Params : public IndicatorParams {
   int atr_period;
   int bars_to_process;
   // Struct constructors.
-  Indi_TMA_True_Params(int _atr_tf = 0, int _half_length = 3, double _atr_multiplier = 0.5, int _atr_period = 6,
-                       int _bars_to_process = 0, int _shift = 0)
+  IndiTMATrueParams(int _atr_tf = 0, int _half_length = 3, double _atr_multiplier = 0.5, int _atr_period = 6,
+                    int _bars_to_process = 0, int _shift = 0)
       : atr_tf(_atr_tf),
         half_length(_half_length),
         atr_multiplier(_atr_multiplier),
@@ -58,7 +58,7 @@ struct Indi_TMA_True_Params : public IndicatorParams {
     SetDataSourceType(IDATA_ICUSTOM);
   };
 
-  Indi_TMA_True_Params(Indi_TMA_True_Params &_params, ENUM_TIMEFRAMES _tf) {
+  IndiTMATrueParams(IndiTMATrueParams &_params, ENUM_TIMEFRAMES _tf) {
     THIS_REF = _params;
     tf = _tf;
   }
@@ -79,19 +79,18 @@ struct Indi_TMA_True_Params : public IndicatorParams {
 /**
  * Implements indicator class.
  */
-class Indi_TMA_True : public Indicator<Indi_TMA_True_Params> {
+class Indi_TMA_True : public Indicator<IndiTMATrueParams> {
  public:
   /**
    * Class constructor.
    */
-  Indi_TMA_True(Indi_TMA_True_Params &_p, IndicatorBase *_indi_src = NULL)
-      : Indicator<Indi_TMA_True_Params>(_p, _indi_src) {}
+  Indi_TMA_True(IndiTMATrueParams &_p, IndicatorBase *_indi_src = NULL) : Indicator<IndiTMATrueParams>(_p, _indi_src) {}
   Indi_TMA_True(ENUM_TIMEFRAMES _tf = PERIOD_CURRENT) : Indicator(INDI_TMA_TRUE, _tf){};
 
   /**
    * Gets indicator's params.
    */
-  // Indi_TMA_True_Params GetIndiParams() const { return params; }
+  // IndiTMATrueParams GetIndiParams() const { return params; }
 
   /**
    * Returns the indicator's value.
@@ -120,7 +119,7 @@ class Indi_TMA_True : public Indicator<Indi_TMA_True_Params> {
    * Checks if indicator entry values are valid.
    */
   virtual bool IsValidEntry(IndicatorDataEntry &_entry) {
-    return Indicator<Indi_TMA_True_Params>::IsValidEntry(_entry) && _entry.GetMin<double>() > 0 &&
+    return Indicator<IndiTMATrueParams>::IsValidEntry(_entry) && _entry.GetMin<double>() > 0 &&
            _entry.values[TMA_TRUE_UPPER].IsGt<double>(_entry[(int)TMA_TRUE_LOWER]);
   }
 };

@@ -34,7 +34,7 @@ enum ENUM_SVE_BAND_LINE {
 // Structs.
 
 // Defines struct to store indicator parameter values.
-struct Indi_SVE_Bollinger_Bands_Params : public IndicatorParams {
+struct IndiSVEBBParams : public IndicatorParams {
   // Indicator params.
   int TEMAPeriod;
   int SvePeriod;
@@ -42,8 +42,8 @@ struct Indi_SVE_Bollinger_Bands_Params : public IndicatorParams {
   double BBDnDeviations;
   int DeviationsPeriod;
   // Struct constructors.
-  void Indi_SVE_Bollinger_Bands_Params(int _tema_period = 8, int _sve_period = 18, double _deviations_up = 1.6,
-                                       double _deviations_down = 1.6, int _deviations_period = 63, int _shift = 0)
+  void IndiSVEBBParams(int _tema_period = 8, int _sve_period = 18, double _deviations_up = 1.6,
+                       double _deviations_down = 1.6, int _deviations_period = 63, int _shift = 0)
       : TEMAPeriod(_tema_period),
         SvePeriod(_sve_period),
         BBUpDeviations(_deviations_up),
@@ -57,7 +57,7 @@ struct Indi_SVE_Bollinger_Bands_Params : public IndicatorParams {
 #endif
     SetDataSourceType(IDATA_ICUSTOM);
   };
-  void Indi_SVE_Bollinger_Bands_Params(Indi_SVE_Bollinger_Bands_Params &_params, ENUM_TIMEFRAMES _tf) {
+  void IndiSVEBBParams(IndiSVEBBParams &_params, ENUM_TIMEFRAMES _tf) {
     THIS_REF = _params;
     tf = _tf;
   }
@@ -78,13 +78,13 @@ struct Indi_SVE_Bollinger_Bands_Params : public IndicatorParams {
 /**
  * Implements indicator class.
  */
-class Indi_SVE_Bollinger_Bands : public Indicator<Indi_SVE_Bollinger_Bands_Params> {
+class Indi_SVE_Bollinger_Bands : public Indicator<IndiSVEBBParams> {
  public:
   /**
    * Class constructor.
    */
-  Indi_SVE_Bollinger_Bands(Indi_SVE_Bollinger_Bands_Params &_p, IndicatorBase *_indi_src = NULL)
-      : Indicator<Indi_SVE_Bollinger_Bands_Params>(_p, _indi_src) {}
+  Indi_SVE_Bollinger_Bands(IndiSVEBBParams &_p, IndicatorBase *_indi_src = NULL)
+      : Indicator<IndiSVEBBParams>(_p, _indi_src) {}
   Indi_SVE_Bollinger_Bands(ENUM_TIMEFRAMES _tf = PERIOD_CURRENT) : Indicator(INDI_SVE_BB, _tf){};
 
   /**
@@ -114,7 +114,7 @@ class Indi_SVE_Bollinger_Bands : public Indicator<Indi_SVE_Bollinger_Bands_Param
    * Checks if indicator entry values are valid.
    */
   virtual bool IsValidEntry(IndicatorDataEntry &_entry) {
-    return Indicator<Indi_SVE_Bollinger_Bands_Params>::IsValidEntry(_entry) && _entry.GetMin<double>() > 0 &&
+    return Indicator<IndiSVEBBParams>::IsValidEntry(_entry) && _entry.GetMin<double>() > 0 &&
            _entry.values[(int)SVE_BAND_UPPER].IsGt<double>(SVE_BAND_LOWER);
   }
 };

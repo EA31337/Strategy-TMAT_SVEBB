@@ -86,19 +86,19 @@ struct Stg_TMAT_SVEBB_Params_Defaults : StgParams {
 };
 
 // Defines struct with default user indicator values.
-struct Stg_TMAT_SVEBB_Indi_SVEBB_Params_Defaults : Indi_SVE_Bollinger_Bands_Params {
+struct Stg_TMAT_SVEBB_Indi_SVEBB_Params_Defaults : IndiSVEBBParams {
   Stg_TMAT_SVEBB_Indi_SVEBB_Params_Defaults()
-      : Indi_SVE_Bollinger_Bands_Params(::TMAT_SVEBB_Indi_SVEBB_TEMAPeriod, ::TMAT_SVEBB_Indi_SVEBB_SvePeriod,
-                                        ::TMAT_SVEBB_Indi_SVEBB_BBUpDeviations, ::TMAT_SVEBB_Indi_SVEBB_BBDnDeviations,
-                                        ::TMAT_SVEBB_Indi_SVEBB_DeviationsPeriod, ::TMAT_SVEBB_Indi_SVEBB_Shift) {}
+      : IndiSVEBBParams(::TMAT_SVEBB_Indi_SVEBB_TEMAPeriod, ::TMAT_SVEBB_Indi_SVEBB_SvePeriod,
+                        ::TMAT_SVEBB_Indi_SVEBB_BBUpDeviations, ::TMAT_SVEBB_Indi_SVEBB_BBDnDeviations,
+                        ::TMAT_SVEBB_Indi_SVEBB_DeviationsPeriod, ::TMAT_SVEBB_Indi_SVEBB_Shift) {}
 };
 
 // Defines struct with default user indicator values.
-struct Stg_TMAT_SVEBB_Indi_TMA_True_Params_Defaults : Indi_TMA_True_Params {
-  Stg_TMAT_SVEBB_Indi_TMA_True_Params_Defaults()
-      : Indi_TMA_True_Params(::TMAT_SVEBB_Indi_TMA_True_Timeframe, ::TMAT_SVEBB_Indi_TMA_True_HalfLength,
-                             ::TMAT_SVEBB_Indi_TMA_True_AtrMultiplier, ::TMAT_SVEBB_Indi_TMA_True_AtrPeriod,
-                             ::TMAT_SVEBB_Indi_TMA_True_BarsToProcess, ::TMAT_SVEBB_Indi_TMA_True_Shift) {}
+struct Stg_TMAT_SVEBB_IndiTMATrueParams_Defaults : IndiTMATrueParams {
+  Stg_TMAT_SVEBB_IndiTMATrueParams_Defaults()
+      : IndiTMATrueParams(::TMAT_SVEBB_Indi_TMA_True_Timeframe, ::TMAT_SVEBB_Indi_TMA_True_HalfLength,
+                          ::TMAT_SVEBB_Indi_TMA_True_AtrMultiplier, ::TMAT_SVEBB_Indi_TMA_True_AtrPeriod,
+                          ::TMAT_SVEBB_Indi_TMA_True_BarsToProcess, ::TMAT_SVEBB_Indi_TMA_True_Shift) {}
 };
 
 #ifdef __config__
@@ -120,14 +120,14 @@ class Stg_TMAT_SVEBB : public Strategy {
   static Stg_TMAT_SVEBB *Init(ENUM_TIMEFRAMES _tf = NULL) {
     // Initialize strategy initial values.
     Stg_TMAT_SVEBB_Indi_SVEBB_Params_Defaults stg_tmat_svebb_indi_svebb_defaults;
-    Stg_TMAT_SVEBB_Indi_TMA_True_Params_Defaults stg_tmat_svebb_indi_tmat_defaults;
-    Indi_SVE_Bollinger_Bands_Params _svebb_params(stg_tmat_svebb_indi_svebb_defaults, _tf);
-    Indi_TMA_True_Params _tmat_params(stg_tmat_svebb_indi_tmat_defaults, _tf);
+    Stg_TMAT_SVEBB_IndiTMATrueParams_Defaults stg_tmat_svebb_indi_tmat_defaults;
+    IndiSVEBBParams _svebb_params(stg_tmat_svebb_indi_svebb_defaults, _tf);
+    IndiTMATrueParams _tmat_params(stg_tmat_svebb_indi_tmat_defaults, _tf);
     Stg_TMAT_SVEBB_Params_Defaults stg_tmat_svebb_defaults;
     StgParams _stg_params(stg_tmat_svebb_defaults);
 #ifdef __config__
-    SetParamsByTf<Indi_TMA_True_Params>(_tmat_params, _tf, indi_tmat_m1, indi_tmat_m5, indi_tmat_m15, indi_tmat_m30,
-                                        indi_tmat_h1, indi_tmat_h4, indi_tmat_h8);
+    SetParamsByTf<IndiTMATrueParams>(_tmat_params, _tf, indi_tmat_m1, indi_tmat_m5, indi_tmat_m15, indi_tmat_m30,
+                                     indi_tmat_h1, indi_tmat_h4, indi_tmat_h8);
 
     SetParamsByTf<Stg_TMAT_SVEBB_Params>(_stg_params, _tf, stg_tmat_svebb_m1, stg_tmat_svebb_m5, stg_tmat_svebb_m15,
                                          stg_tmat_svebb_m30, stg_tmat_svebb_h1, stg_tmat_svebb_h4, stg_tmat_svebb_h4);
