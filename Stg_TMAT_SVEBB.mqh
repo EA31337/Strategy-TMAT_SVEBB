@@ -119,29 +119,31 @@ class Stg_TMAT_SVEBB : public Strategy {
 
   static Stg_TMAT_SVEBB *Init(ENUM_TIMEFRAMES _tf = NULL) {
     // Initialize strategy initial values.
-    Stg_TMAT_SVEBB_Indi_SVEBB_Params_Defaults stg_tmat_svebb_indi_svebb_defaults;
-    Stg_TMAT_SVEBB_IndiTMATrueParams_Defaults stg_tmat_svebb_indi_tmat_defaults;
-    IndiSVEBBParams _svebb_params(stg_tmat_svebb_indi_svebb_defaults, _tf);
-    IndiTMATrueParams _tmat_params(stg_tmat_svebb_indi_tmat_defaults, _tf);
     Stg_TMAT_SVEBB_Params_Defaults stg_tmat_svebb_defaults;
     StgParams _stg_params(stg_tmat_svebb_defaults);
 #ifdef __config__
-    SetParamsByTf<IndiTMATrueParams>(_tmat_params, _tf, indi_tmat_m1, indi_tmat_m5, indi_tmat_m15, indi_tmat_m30,
-                                     indi_tmat_h1, indi_tmat_h4, indi_tmat_h8);
-
     SetParamsByTf<Stg_TMAT_SVEBB_Params>(_stg_params, _tf, stg_tmat_svebb_m1, stg_tmat_svebb_m5, stg_tmat_svebb_m15,
                                          stg_tmat_svebb_m30, stg_tmat_svebb_h1, stg_tmat_svebb_h4, stg_tmat_svebb_h4);
 #endif
     // Initialize strategy parameters.
-    IndicatorBase *_tma = new Indi_TMA_True(_tmat_params);
-    IndicatorBase *_sve_bb = new Indi_SVE_Bollinger_Bands(_svebb_params);
     // Initialize Strategy instance.
     ChartParams _cparams(_tf, _Symbol);
     TradeParams _tparams;
     Strategy *_strat = new Stg_TMAT_SVEBB(_stg_params, _tparams, _cparams, "TMAT_SVEBB");
-    _strat.SetIndicator(_sve_bb, INDI_SVE_BB);
-    _strat.SetIndicator(_tma, INDI_TMA_TRUE);
     return _strat;
+  }
+
+  /**
+   * Event on strategy's init.
+   */
+  void OnInit() {
+    Stg_TMAT_SVEBB_IndiTMATrueParams_Defaults stg_tmat_svebb_indi_tmat_defaults;
+    IndiTMATrueParams _tmat_params(stg_tmat_svebb_indi_tmat_defaults, Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF));
+    SetIndicator(new Indi_TMA_True(_tmat_params), INDI_TMA_TRUE);
+
+    Stg_TMAT_SVEBB_Indi_SVEBB_Params_Defaults stg_tmat_svebb_indi_svebb_defaults;
+    IndiSVEBBParams _svebb_params(stg_tmat_svebb_indi_svebb_defaults, Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF));
+    SetIndicator(new Indi_SVE_Bollinger_Bands(_svebb_params), INDI_SVE_BB);
   }
 
   /**
