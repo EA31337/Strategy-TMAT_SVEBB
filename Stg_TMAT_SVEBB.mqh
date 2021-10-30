@@ -85,22 +85,6 @@ struct Stg_TMAT_SVEBB_Params_Defaults : StgParams {
                   ::TMAT_SVEBB_TickFilterMethod, ::TMAT_SVEBB_MaxSpread, ::TMAT_SVEBB_Shift) {}
 };
 
-// Defines struct with default user indicator values.
-struct Stg_TMAT_SVEBB_Indi_SVEBB_Params_Defaults : IndiSVEBBParams {
-  Stg_TMAT_SVEBB_Indi_SVEBB_Params_Defaults()
-      : IndiSVEBBParams(::TMAT_SVEBB_Indi_SVEBB_TEMAPeriod, ::TMAT_SVEBB_Indi_SVEBB_SvePeriod,
-                        ::TMAT_SVEBB_Indi_SVEBB_BBUpDeviations, ::TMAT_SVEBB_Indi_SVEBB_BBDnDeviations,
-                        ::TMAT_SVEBB_Indi_SVEBB_DeviationsPeriod, ::TMAT_SVEBB_Indi_SVEBB_Shift) {}
-};
-
-// Defines struct with default user indicator values.
-struct Stg_TMAT_SVEBB_IndiTMATrueParams_Defaults : IndiTMATrueParams {
-  Stg_TMAT_SVEBB_IndiTMATrueParams_Defaults()
-      : IndiTMATrueParams(::TMAT_SVEBB_Indi_TMA_True_Timeframe, ::TMAT_SVEBB_Indi_TMA_True_HalfLength,
-                          ::TMAT_SVEBB_Indi_TMA_True_AtrMultiplier, ::TMAT_SVEBB_Indi_TMA_True_AtrPeriod,
-                          ::TMAT_SVEBB_Indi_TMA_True_BarsToProcess, ::TMAT_SVEBB_Indi_TMA_True_Shift) {}
-};
-
 #ifdef __config__
 // Loads pair specific param values.
 #include "config/H1.h"
@@ -137,13 +121,17 @@ class Stg_TMAT_SVEBB : public Strategy {
    * Event on strategy's init.
    */
   void OnInit() {
-    Stg_TMAT_SVEBB_IndiTMATrueParams_Defaults stg_tmat_svebb_indi_tmat_defaults;
-    IndiTMATrueParams _tmat_params(stg_tmat_svebb_indi_tmat_defaults, Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF));
-    SetIndicator(new Indi_TMA_True(_tmat_params), INDI_TMA_TRUE);
-
-    Stg_TMAT_SVEBB_Indi_SVEBB_Params_Defaults stg_tmat_svebb_indi_svebb_defaults;
-    IndiSVEBBParams _svebb_params(stg_tmat_svebb_indi_svebb_defaults, Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF));
+    IndiSVEBBParams _svebb_params(::TMAT_SVEBB_Indi_SVEBB_TEMAPeriod, ::TMAT_SVEBB_Indi_SVEBB_SvePeriod,
+                                  ::TMAT_SVEBB_Indi_SVEBB_BBUpDeviations, ::TMAT_SVEBB_Indi_SVEBB_BBDnDeviations,
+                                  ::TMAT_SVEBB_Indi_SVEBB_DeviationsPeriod, ::TMAT_SVEBB_Indi_SVEBB_Shift);
+    _svebb_params.SetTf(Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF));
     SetIndicator(new Indi_SVE_Bollinger_Bands(_svebb_params), INDI_SVE_BB);
+
+    IndiTMATrueParams _tmat_params(::TMAT_SVEBB_Indi_TMA_True_Timeframe, ::TMAT_SVEBB_Indi_TMA_True_HalfLength,
+                                   ::TMAT_SVEBB_Indi_TMA_True_AtrMultiplier, ::TMAT_SVEBB_Indi_TMA_True_AtrPeriod,
+                                   ::TMAT_SVEBB_Indi_TMA_True_BarsToProcess, ::TMAT_SVEBB_Indi_TMA_True_Shift);
+    _tmat_params.SetTf(Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF));
+    SetIndicator(new Indi_TMA_True(_tmat_params), INDI_TMA_TRUE);
   }
 
   /**
