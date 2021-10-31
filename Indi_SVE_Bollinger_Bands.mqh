@@ -24,7 +24,7 @@
 #define INDI_SVE_BOLLINGER_BANDS_MQH
 
 // Defines.
-#define INDI_SVEBB_PATH "indicators-other\\Prices"
+#define INDI_SVEBB_PATH "indicators-other\\Oscillator"
 
 // Indicator line identifiers used in the indicator.
 enum ENUM_SVE_BAND_LINE {
