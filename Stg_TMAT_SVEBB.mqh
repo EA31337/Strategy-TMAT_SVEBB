@@ -157,37 +157,43 @@ class Stg_TMAT_SVEBB : public Strategy {
     switch (_cmd) {
       case ORDER_TYPE_BUY:
         lowest_price = fmin3(_chart.GetLow(CURR), _chart.GetLow(PREV), _chart.GetLow(PPREV));
-        _result = (lowest_price < fmax3(_indi_tma[CURR][(int)TMA_TRUE_LOWER], _indi_tma[PREV][(int)TMA_TRUE_LOWER],
-                                        _indi_tma[PPREV][(int)TMA_TRUE_LOWER]));
+        _result =
+            (lowest_price < fmax3(_indi_tma[_shift][(int)TMA_TRUE_LOWER], _indi_tma[_shift + 1][(int)TMA_TRUE_LOWER],
+                                  _indi_tma[_shift + 2][(int)TMA_TRUE_LOWER]));
         _result &= _change_pc_tma > _level;
         if (_method != 0) {
-          if (METHOD(_method, 0)) _result &= fmin(Close[PREV], Close[PPREV]) < _indi_tma[CURR][(int)TMA_TRUE_LOWER];
+          if (METHOD(_method, 0))
+            _result &= fmin(Close[_shift + 1], Close[_shift + 2]) < _indi_tma[_shift][(int)TMA_TRUE_LOWER];
           if (METHOD(_method, 1))
-            _result &= (_indi_tma[CURR][(int)TMA_TRUE_LOWER] > _indi_tma[PPREV][(int)TMA_TRUE_LOWER]);
+            _result &= (_indi_tma[_shift][(int)TMA_TRUE_LOWER] > _indi_tma[_shift + 2][(int)TMA_TRUE_LOWER]);
           if (METHOD(_method, 2))
-            _result &= (_indi_tma[CURR][(int)TMA_TRUE_MAIN] > _indi_tma[PPREV][(int)TMA_TRUE_MAIN]);
+            _result &= (_indi_tma[_shift][(int)TMA_TRUE_MAIN] > _indi_tma[_shift + 2][(int)TMA_TRUE_MAIN]);
           if (METHOD(_method, 3))
-            _result &= (_indi_tma[CURR][(int)TMA_TRUE_UPPER] > _indi_tma[PPREV][(int)TMA_TRUE_UPPER]);
-          if (METHOD(_method, 4)) _result &= Open[CURR] < _indi_tma[CURR][(int)TMA_TRUE_MAIN];
-          if (METHOD(_method, 5)) _result &= fmin(Close[PREV], Close[PPREV]) > _indi_tma[CURR][(int)TMA_TRUE_MAIN];
+            _result &= (_indi_tma[_shift][(int)TMA_TRUE_UPPER] > _indi_tma[_shift + 2][(int)TMA_TRUE_UPPER]);
+          if (METHOD(_method, 4)) _result &= Open[_shift] < _indi_tma[_shift][(int)TMA_TRUE_MAIN];
+          if (METHOD(_method, 5))
+            _result &= fmin(Close[_shift + 1], Close[_shift + 2]) > _indi_tma[_shift][(int)TMA_TRUE_MAIN];
         }
 
         // Price value was lower than the lower band.
         lowest_price = fmin3(_chart.GetLow(CURR), _chart.GetLow(PREV), _chart.GetLow(PPREV));
-        _result = (lowest_price < fmax3(_indi_sve[CURR][(int)SVE_BAND_LOWER], _indi_sve[PREV][(int)SVE_BAND_LOWER],
-                                        _indi_sve[PPREV][(int)SVE_BAND_LOWER]));
+        _result =
+            (lowest_price < fmax3(_indi_sve[_shift][(int)SVE_BAND_LOWER], _indi_sve[_shift + 1][(int)SVE_BAND_LOWER],
+                                  _indi_sve[_shift + 2][(int)SVE_BAND_LOWER]));
         _result &= _change_pc_sve > _level;
         if (_result && _method != 0) {
-          if (METHOD(_method, 0)) _result &= fmin(Close[PREV], Close[PPREV]) < _indi_sve[CURR][(int)SVE_BAND_LOWER];
+          if (METHOD(_method, 0))
+            _result &= fmin(Close[_shift + 1], Close[_shift + 2]) < _indi_sve[_shift][(int)SVE_BAND_LOWER];
           if (METHOD(_method, 1))
-            _result &= (_indi_sve[CURR][(int)SVE_BAND_LOWER] > _indi_sve[PPREV][(int)SVE_BAND_LOWER]);
+            _result &= (_indi_sve[_shift][(int)SVE_BAND_LOWER] > _indi_sve[_shift + 2][(int)SVE_BAND_LOWER]);
           if (METHOD(_method, 2))
-            _result &= (_indi_sve[CURR][(int)SVE_BAND_MAIN] > _indi_sve[PPREV][(int)SVE_BAND_MAIN]);
+            _result &= (_indi_sve[_shift][(int)SVE_BAND_MAIN] > _indi_sve[_shift + 2][(int)SVE_BAND_MAIN]);
           if (METHOD(_method, 3))
-            _result &= (_indi_sve[CURR][(int)SVE_BAND_UPPER] > _indi_sve[PPREV][(int)SVE_BAND_UPPER]);
-          if (METHOD(_method, 4)) _result &= lowest_price < _indi_sve[CURR][(int)SVE_BAND_MAIN];
-          if (METHOD(_method, 5)) _result &= Open[CURR] < _indi_sve[CURR][(int)SVE_BAND_MAIN];
-          if (METHOD(_method, 6)) _result &= fmin(Close[PREV], Close[PPREV]) > _indi_sve[CURR][(int)SVE_BAND_MAIN];
+            _result &= (_indi_sve[_shift][(int)SVE_BAND_UPPER] > _indi_sve[_shift + 2][(int)SVE_BAND_UPPER]);
+          if (METHOD(_method, 4)) _result &= lowest_price < _indi_sve[_shift][(int)SVE_BAND_MAIN];
+          if (METHOD(_method, 5)) _result &= Open[_shift] < _indi_sve[_shift][(int)SVE_BAND_MAIN];
+          if (METHOD(_method, 6))
+            _result &= fmin(Close[_shift + 1], Close[_shift + 2]) > _indi_sve[_shift][(int)SVE_BAND_MAIN];
         }
         break;
 
@@ -195,37 +201,43 @@ class Stg_TMAT_SVEBB : public Strategy {
         // Price value was higher than the upper band.
         highest_price = fmin3(_chart.GetHigh(CURR), _chart.GetHigh(PREV), _chart.GetHigh(PPREV));
 
-        _result = (highest_price > fmin3(_indi_tma[CURR][(int)TMA_TRUE_UPPER], _indi_tma[PREV][(int)TMA_TRUE_UPPER],
-                                         _indi_tma[PPREV][(int)TMA_TRUE_UPPER]));
+        _result =
+            (highest_price > fmin3(_indi_tma[_shift][(int)TMA_TRUE_UPPER], _indi_tma[_shift + 1][(int)TMA_TRUE_UPPER],
+                                   _indi_tma[_shift + 2][(int)TMA_TRUE_UPPER]));
         _result &= _change_pc_tma < -_level;
 
-        _result = (highest_price > fmin3(_indi_sve[CURR][(int)SVE_BAND_UPPER], _indi_sve[PREV][(int)SVE_BAND_UPPER],
-                                         _indi_sve[PPREV][(int)SVE_BAND_UPPER]));
+        _result =
+            (highest_price > fmin3(_indi_sve[_shift][(int)SVE_BAND_UPPER], _indi_sve[_shift + 1][(int)SVE_BAND_UPPER],
+                                   _indi_sve[_shift + 2][(int)SVE_BAND_UPPER]));
         _result &= _change_pc_sve < _level;
 
         if (_method != 0) {
-          if (METHOD(_method, 0)) _result &= fmin(Close[PREV], Close[PPREV]) > _indi_tma[CURR][(int)TMA_TRUE_UPPER];
+          if (METHOD(_method, 0))
+            _result &= fmin(Close[_shift + 1], Close[_shift + 2]) > _indi_tma[_shift][(int)TMA_TRUE_UPPER];
           if (METHOD(_method, 1))
-            _result &= (_indi_tma[CURR][(int)TMA_TRUE_LOWER] < _indi_tma[PPREV][(int)TMA_TRUE_LOWER]);
+            _result &= (_indi_tma[_shift][(int)TMA_TRUE_LOWER] < _indi_tma[_shift + 2][(int)TMA_TRUE_LOWER]);
           if (METHOD(_method, 2))
-            _result &= (_indi_tma[CURR][(int)TMA_TRUE_MAIN] < _indi_tma[PPREV][(int)TMA_TRUE_MAIN]);
+            _result &= (_indi_tma[_shift][(int)TMA_TRUE_MAIN] < _indi_tma[_shift + 2][(int)TMA_TRUE_MAIN]);
           if (METHOD(_method, 3))
-            _result &= (_indi_tma[CURR][(int)TMA_TRUE_UPPER] < _indi_tma[PPREV][(int)TMA_TRUE_UPPER]);
-          if (METHOD(_method, 4)) _result &= Open[CURR] > _indi_tma[CURR][(int)TMA_TRUE_MAIN];
-          if (METHOD(_method, 5)) _result &= fmin(Close[PREV], Close[PPREV]) < _indi_tma[CURR][(int)TMA_TRUE_MAIN];
+            _result &= (_indi_tma[_shift][(int)TMA_TRUE_UPPER] < _indi_tma[_shift + 2][(int)TMA_TRUE_UPPER]);
+          if (METHOD(_method, 4)) _result &= Open[_shift] > _indi_tma[_shift][(int)TMA_TRUE_MAIN];
+          if (METHOD(_method, 5))
+            _result &= fmin(Close[_shift + 1], Close[_shift + 2]) < _indi_tma[_shift][(int)TMA_TRUE_MAIN];
         }
 
         if (_result && _method != 0) {
-          if (METHOD(_method, 0)) _result &= fmin(Close[PREV], Close[PPREV]) > _indi_sve[CURR][(int)SVE_BAND_UPPER];
+          if (METHOD(_method, 0))
+            _result &= fmin(Close[_shift + 1], Close[_shift + 2]) > _indi_sve[_shift][(int)SVE_BAND_UPPER];
           if (METHOD(_method, 1))
-            _result &= (_indi_sve[CURR][(int)SVE_BAND_LOWER] < _indi_sve[PPREV][(int)SVE_BAND_LOWER]);
+            _result &= (_indi_sve[_shift][(int)SVE_BAND_LOWER] < _indi_sve[_shift + 2][(int)SVE_BAND_LOWER]);
           if (METHOD(_method, 2))
-            _result &= (_indi_sve[CURR][(int)SVE_BAND_MAIN] < _indi_sve[PPREV][(int)SVE_BAND_MAIN]);
+            _result &= (_indi_sve[_shift][(int)SVE_BAND_MAIN] < _indi_sve[_shift + 2][(int)SVE_BAND_MAIN]);
           if (METHOD(_method, 3))
-            _result &= (_indi_sve[CURR][(int)SVE_BAND_UPPER] < _indi_sve[PPREV][(int)SVE_BAND_UPPER]);
-          if (METHOD(_method, 4)) _result &= highest_price > _indi_sve[CURR][(int)SVE_BAND_MAIN];
-          if (METHOD(_method, 5)) _result &= Open[CURR] > _indi_sve[CURR][(int)SVE_BAND_MAIN];
-          if (METHOD(_method, 6)) _result &= fmin(Close[PREV], Close[PPREV]) < _indi_sve[CURR][(int)SVE_BAND_MAIN];
+            _result &= (_indi_sve[_shift][(int)SVE_BAND_UPPER] < _indi_sve[_shift + 2][(int)SVE_BAND_UPPER]);
+          if (METHOD(_method, 4)) _result &= highest_price > _indi_sve[_shift][(int)SVE_BAND_MAIN];
+          if (METHOD(_method, 5)) _result &= Open[_shift] > _indi_sve[_shift][(int)SVE_BAND_MAIN];
+          if (METHOD(_method, 6))
+            _result &= fmin(Close[_shift + 1], Close[_shift + 2]) < _indi_sve[_shift][(int)SVE_BAND_MAIN];
         }
 
         break;
