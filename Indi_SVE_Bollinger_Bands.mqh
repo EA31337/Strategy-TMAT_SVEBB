@@ -92,10 +92,8 @@ class Indi_SVE_Bollinger_Bands : public Indicator<IndiSVEBBParams> {
 
   /**
    * Returns the indicator's value.
-   *
    */
-  virtual double GetValue(int _mode = 0, int _shift = 0) {
-    ResetLastError();
+  double GetValue(int _mode = 0, int _shift = 0) {
     double _value = EMPTY_VALUE;
     switch (iparams.idstype) {
       case IDATA_ICUSTOM:
@@ -105,11 +103,10 @@ class Indi_SVE_Bollinger_Bands : public Indicator<IndiSVEBBParams> {
                          _shift);
         break;
       default:
-        SetUserError(ERR_USER_NOT_SUPPORTED);
+        SetUserError(ERR_INVALID_PARAMETER);
         _value = EMPTY_VALUE;
+        break;
     }
-    istate.is_changed = false;
-    istate.is_ready = _LastError == ERR_NO_ERROR;
     return _value;
   }
 
