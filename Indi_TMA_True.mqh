@@ -23,6 +23,9 @@
 #ifndef INDI_TMA_TRUE_MQH
 #define INDI_TMA_TRUE_MQH
 
+// Defines
+#define INDI_TMA_TRUE_PATH "indicators-other\\Prices"
+
 // Indicator line identifiers used in the indicator.
 enum ENUM_TMA_TRUE_MODE {
   TMA_TRUE_MAIN = 0,   // Main line.
@@ -51,7 +54,7 @@ struct IndiTMATrueParams : public IndicatorParams {
         bars_to_process(_bars_to_process),
         IndicatorParams(INDI_TMA_TRUE, FINAL_TMA_TRUE_MODE_ENTRY, TYPE_DOUBLE) {
 #ifdef __resource__
-    custom_indi_name = "::Indicators\\TMA_True";
+    custom_indi_name = "::" + INDI_TMA_TRUE_PATH + "\\TMA_True";
 #else
     custom_indi_name = "TMA_True";
 #endif
