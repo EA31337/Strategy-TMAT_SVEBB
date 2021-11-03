@@ -27,10 +27,10 @@ Implements TMA Band SVE True strategy.
 [gh-discuss-badge]: https://img.shields.io/badge/Discussions-Q&A-blue.svg?logo=github
 [gh-discuss-link]: https://github.com/EA31337/EA31337-Strategies/discussions
 
-[gha-link-check-master]: https://github.com/EA31337/Strategy-TMA_Band_SVE_True/actions?query=workflow:Check+branch%3Amaster
-[gha-image-check-master]: https://github.com/EA31337/Strategy-TMA_Band_SVE_True/workflows/Check/badge.svg?branch=master
-[gha-link-compile-master]: https://github.com/EA31337/Strategy-TMA_Band_SVE_True/actions?query=workflow:Compile+branch%3Amaster
-[gha-image-compile-master]: https://github.com/EA31337/Strategy-TMA_Band_SVE_True/workflows/Compile/badge.svg?branch=master
+[gha-link-check-master]: https://github.com/EA31337/Strategy-TMAT_SVEBB/actions?query=workflow:Check+branch%3Amaster
+[gha-image-check-master]: https://github.com/EA31337/Strategy-TMAT_SVEBB/workflows/Check/badge.svg?branch=master
+[gha-link-compile-master]: https://github.com/EA31337/Strategy-TMAT_SVEBB/actions?query=workflow:Compile+branch%3Amaster
+[gha-image-compile-master]: https://github.com/EA31337/Strategy-TMAT_SVEBB/workflows/Compile/badge.svg?branch=master
 
 [tg-channel-image]: https://img.shields.io/badge/Telegram-join-0088CC.svg?logo=telegram
 [tg-channel-link]: https://t.me/EA31337
