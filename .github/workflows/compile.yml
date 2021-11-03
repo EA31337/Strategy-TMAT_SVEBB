@@ -68,7 +68,7 @@ jobs:
       matrix:
         file:
           - indicators-other/Oscillator/SVE_Bollinger_Bands
-          - indicators-other/Prices/TMA_True
+          - indicators-other/PriceBands/TMA_True
     steps:
       - uses: actions/checkout@v2
         with:

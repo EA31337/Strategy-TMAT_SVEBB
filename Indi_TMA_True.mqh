@@ -24,7 +24,7 @@
 #define INDI_TMA_TRUE_MQH
 
 // Defines
-#define INDI_TMA_TRUE_PATH "indicators-other\\Prices"
+#define INDI_TMA_TRUE_PATH "indicators-other\\PriceBands"
 
 // Indicator line identifiers used in the indicator.
 enum ENUM_TMA_TRUE_MODE {

@@ -40,7 +40,7 @@ jobs:
           repository: EA31337/EA31337-classes
       - uses: actions/checkout@v2
         with:
-          path: indicators-other/Prices/Include/EA31337-classes
+          path: indicators-other/PriceBands/Include/EA31337-classes
           ref: dev
           repository: EA31337/EA31337-classes
       - name: Enables input mode
@@ -80,7 +80,7 @@ jobs:
       matrix:
         file:
           - indicators-other/Oscillator/SVE_Bollinger_Bands
-          - indicators-other/Prices/TMA_True
+          - indicators-other/PriceBands/TMA_True
     steps:
       - uses: actions/checkout@v2
         with:
