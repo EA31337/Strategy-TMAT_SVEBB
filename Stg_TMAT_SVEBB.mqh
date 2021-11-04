@@ -13,11 +13,11 @@ INPUT float TMAT_SVEBB_LotSize = 0;                // Lot size
 INPUT int TMAT_SVEBB_SignalOpenMethod = 0;         // Signal open method
 INPUT int TMAT_SVEBB_SignalOpenFilterMethod = 32;  // Signal open filter method
 INPUT int TMAT_SVEBB_SignalOpenFilterTime = 3;     // Signal open filter time
-INPUT float TMAT_SVEBB_SignalOpenLevel = 0.0f;     // Signal open level
+INPUT float TMAT_SVEBB_SignalOpenLevel = 1.0f;     // Signal open level
 INPUT int TMAT_SVEBB_SignalOpenBoostMethod = 0;    // Signal open boost method
 INPUT int TMAT_SVEBB_SignalCloseMethod = 0;        // Signal close method
 INPUT int TMAT_SVEBB_SignalCloseFilter = 0;        // Signal close filter (-127-127)
-INPUT float TMAT_SVEBB_SignalCloseLevel = 0.0f;    // Signal close level
+INPUT float TMAT_SVEBB_SignalCloseLevel = 1.0f;    // Signal close level
 INPUT int TMAT_SVEBB_PriceStopMethod = 1;          // Price stop method (0-127)
 INPUT float TMAT_SVEBB_PriceStopLevel = 2;         // Price stop level
 INPUT int TMAT_SVEBB_TickFilterMethod = 32;        // Tick filter method
@@ -121,11 +121,11 @@ class Stg_TMAT_SVEBB : public Strategy {
    * Event on strategy's init.
    */
   void OnInit() {
-    IndiSVEBBParams _svebb_params(::TMAT_SVEBB_Indi_SVEBB_TEMAPeriod, ::TMAT_SVEBB_Indi_SVEBB_SvePeriod,
-                                  ::TMAT_SVEBB_Indi_SVEBB_BBUpDeviations, ::TMAT_SVEBB_Indi_SVEBB_BBDnDeviations,
-                                  ::TMAT_SVEBB_Indi_SVEBB_DeviationsPeriod, ::TMAT_SVEBB_Indi_SVEBB_Shift);
-    _svebb_params.SetTf(Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF));
-    SetIndicator(new Indi_SVE_Bollinger_Bands(_svebb_params), INDI_SVE_BB);
+    IndiSVEBBParams _sve_params(::TMAT_SVEBB_Indi_SVEBB_TEMAPeriod, ::TMAT_SVEBB_Indi_SVEBB_SvePeriod,
+                                ::TMAT_SVEBB_Indi_SVEBB_BBUpDeviations, ::TMAT_SVEBB_Indi_SVEBB_BBDnDeviations,
+                                ::TMAT_SVEBB_Indi_SVEBB_DeviationsPeriod, ::TMAT_SVEBB_Indi_SVEBB_Shift);
+    _sve_params.SetTf(Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF));
+    SetIndicator(new Indi_SVE_Bollinger_Bands(_sve_params), INDI_SVE_BB);
 
     IndiTMATrueParams _tmat_params(::TMAT_SVEBB_Indi_TMA_True_Timeframe, ::TMAT_SVEBB_Indi_TMA_True_HalfLength,
                                    ::TMAT_SVEBB_Indi_TMA_True_AtrMultiplier, ::TMAT_SVEBB_Indi_TMA_True_AtrPeriod,
@@ -140,106 +140,32 @@ class Stg_TMAT_SVEBB : public Strategy {
   bool SignalOpen(ENUM_ORDER_TYPE _cmd, int _method = 0, float _level = 0.0f, int _shift = 0) {
     Indi_TMA_True *_indi_tma = GetIndicator(INDI_TMA_TRUE);
     Indi_SVE_Bollinger_Bands *_indi_sve = GetIndicator(INDI_SVE_BB);
-    bool _result =
-        _indi_tma.GetFlag(INDI_ENTRY_FLAG_IS_VALID, _shift) && _indi_sve.GetFlag(INDI_ENTRY_FLAG_IS_VALID, _shift + 2);
-    _result &=
-        _indi_sve.GetFlag(INDI_ENTRY_FLAG_IS_VALID, _shift) && _indi_sve.GetFlag(INDI_ENTRY_FLAG_IS_VALID, _shift + 2);
+    int _ishift_tma = _shift + ::TMAT_SVEBB_Indi_TMA_True_Shift;
+    int _ishift_sve = _shift + ::TMAT_SVEBB_Indi_SVEBB_Shift;
+    bool _result = _indi_tma.GetFlag(INDI_ENTRY_FLAG_IS_VALID, _ishift_tma);
+    _result &= _indi_sve.GetFlag(INDI_ENTRY_FLAG_IS_VALID, _ishift_sve);
     if (!_result) {
       // Returns false when indicator data is not valid.
       return false;
     }
-
-    Chart *_chart = (Chart *)_indi_tma;
-
-    double lowest_price, highest_price;
-    double _change_pc_tma = Math::ChangeInPct(_indi_tma[1][(int)TMA_TRUE_MAIN], _indi_tma[0][(int)TMA_TRUE_MAIN], true);
-    double _change_pc_sve = Math::ChangeInPct(_indi_sve[1][(int)SVE_BAND_MAIN], _indi_sve[0][(int)SVE_BAND_MAIN], true);
+    Chart *_chart_tma = (Chart *)_indi_tma;
     switch (_cmd) {
       case ORDER_TYPE_BUY:
-        lowest_price = fmin3(_chart.GetLow(CURR), _chart.GetLow(PREV), _chart.GetLow(PPREV));
-        _result =
-            (lowest_price < fmax3(_indi_tma[_shift][(int)TMA_TRUE_LOWER], _indi_tma[_shift + 1][(int)TMA_TRUE_LOWER],
-                                  _indi_tma[_shift + 2][(int)TMA_TRUE_LOWER]));
-        _result &= _change_pc_tma > _level;
-        if (_method != 0) {
-          if (METHOD(_method, 0))
-            _result &= fmin(Close[_shift + 1], Close[_shift + 2]) < _indi_tma[_shift][(int)TMA_TRUE_LOWER];
-          if (METHOD(_method, 1))
-            _result &= (_indi_tma[_shift][(int)TMA_TRUE_LOWER] > _indi_tma[_shift + 2][(int)TMA_TRUE_LOWER]);
-          if (METHOD(_method, 2))
-            _result &= (_indi_tma[_shift][(int)TMA_TRUE_MAIN] > _indi_tma[_shift + 2][(int)TMA_TRUE_MAIN]);
-          if (METHOD(_method, 3))
-            _result &= (_indi_tma[_shift][(int)TMA_TRUE_UPPER] > _indi_tma[_shift + 2][(int)TMA_TRUE_UPPER]);
-          if (METHOD(_method, 4)) _result &= Open[_shift] < _indi_tma[_shift][(int)TMA_TRUE_MAIN];
-          if (METHOD(_method, 5))
-            _result &= fmin(Close[_shift + 1], Close[_shift + 2]) > _indi_tma[_shift][(int)TMA_TRUE_MAIN];
-        }
-
-        // Price value was lower than the lower band.
-        lowest_price = fmin3(_chart.GetLow(CURR), _chart.GetLow(PREV), _chart.GetLow(PPREV));
-        _result =
-            (lowest_price < fmax3(_indi_sve[_shift][(int)SVE_BAND_LOWER], _indi_sve[_shift + 1][(int)SVE_BAND_LOWER],
-                                  _indi_sve[_shift + 2][(int)SVE_BAND_LOWER]));
-        _result &= _change_pc_sve > _level;
-        if (_result && _method != 0) {
-          if (METHOD(_method, 0))
-            _result &= fmin(Close[_shift + 1], Close[_shift + 2]) < _indi_sve[_shift][(int)SVE_BAND_LOWER];
-          if (METHOD(_method, 1))
-            _result &= (_indi_sve[_shift][(int)SVE_BAND_LOWER] > _indi_sve[_shift + 2][(int)SVE_BAND_LOWER]);
-          if (METHOD(_method, 2))
-            _result &= (_indi_sve[_shift][(int)SVE_BAND_MAIN] > _indi_sve[_shift + 2][(int)SVE_BAND_MAIN]);
-          if (METHOD(_method, 3))
-            _result &= (_indi_sve[_shift][(int)SVE_BAND_UPPER] > _indi_sve[_shift + 2][(int)SVE_BAND_UPPER]);
-          if (METHOD(_method, 4)) _result &= lowest_price < _indi_sve[_shift][(int)SVE_BAND_MAIN];
-          if (METHOD(_method, 5)) _result &= Open[_shift] < _indi_sve[_shift][(int)SVE_BAND_MAIN];
-          if (METHOD(_method, 6))
-            _result &= fmin(Close[_shift + 1], Close[_shift + 2]) > _indi_sve[_shift][(int)SVE_BAND_MAIN];
-        }
+        // SVE BB
+        _result &= _indi_sve[_ishift_sve][(int)SVE_BAND_MAIN] < _indi_sve[_ishift_sve][(int)SVE_BAND_LOWER];
+        _result &= _indi_sve.IsIncreasing(1, SVE_BAND_MAIN, _ishift_sve);
+        _result &= _indi_sve.IsIncByPct(_level, SVE_BAND_MAIN, _ishift_sve, 1);
+        // TMA True
+        _result &= _chart_tma.GetLowest(MODE_LOW, 3) <= _indi_tma.GetMin<double>(0, 3);
         break;
 
       case ORDER_TYPE_SELL:
-        // Price value was higher than the upper band.
-        highest_price = fmin3(_chart.GetHigh(CURR), _chart.GetHigh(PREV), _chart.GetHigh(PPREV));
-
-        _result =
-            (highest_price > fmin3(_indi_tma[_shift][(int)TMA_TRUE_UPPER], _indi_tma[_shift + 1][(int)TMA_TRUE_UPPER],
-                                   _indi_tma[_shift + 2][(int)TMA_TRUE_UPPER]));
-        _result &= _change_pc_tma < -_level;
-
-        _result =
-            (highest_price > fmin3(_indi_sve[_shift][(int)SVE_BAND_UPPER], _indi_sve[_shift + 1][(int)SVE_BAND_UPPER],
-                                   _indi_sve[_shift + 2][(int)SVE_BAND_UPPER]));
-        _result &= _change_pc_sve < _level;
-
-        if (_method != 0) {
-          if (METHOD(_method, 0))
-            _result &= fmin(Close[_shift + 1], Close[_shift + 2]) > _indi_tma[_shift][(int)TMA_TRUE_UPPER];
-          if (METHOD(_method, 1))
-            _result &= (_indi_tma[_shift][(int)TMA_TRUE_LOWER] < _indi_tma[_shift + 2][(int)TMA_TRUE_LOWER]);
-          if (METHOD(_method, 2))
-            _result &= (_indi_tma[_shift][(int)TMA_TRUE_MAIN] < _indi_tma[_shift + 2][(int)TMA_TRUE_MAIN]);
-          if (METHOD(_method, 3))
-            _result &= (_indi_tma[_shift][(int)TMA_TRUE_UPPER] < _indi_tma[_shift + 2][(int)TMA_TRUE_UPPER]);
-          if (METHOD(_method, 4)) _result &= Open[_shift] > _indi_tma[_shift][(int)TMA_TRUE_MAIN];
-          if (METHOD(_method, 5))
-            _result &= fmin(Close[_shift + 1], Close[_shift + 2]) < _indi_tma[_shift][(int)TMA_TRUE_MAIN];
-        }
-
-        if (_result && _method != 0) {
-          if (METHOD(_method, 0))
-            _result &= fmin(Close[_shift + 1], Close[_shift + 2]) > _indi_sve[_shift][(int)SVE_BAND_UPPER];
-          if (METHOD(_method, 1))
-            _result &= (_indi_sve[_shift][(int)SVE_BAND_LOWER] < _indi_sve[_shift + 2][(int)SVE_BAND_LOWER]);
-          if (METHOD(_method, 2))
-            _result &= (_indi_sve[_shift][(int)SVE_BAND_MAIN] < _indi_sve[_shift + 2][(int)SVE_BAND_MAIN]);
-          if (METHOD(_method, 3))
-            _result &= (_indi_sve[_shift][(int)SVE_BAND_UPPER] < _indi_sve[_shift + 2][(int)SVE_BAND_UPPER]);
-          if (METHOD(_method, 4)) _result &= highest_price > _indi_sve[_shift][(int)SVE_BAND_MAIN];
-          if (METHOD(_method, 5)) _result &= Open[_shift] > _indi_sve[_shift][(int)SVE_BAND_MAIN];
-          if (METHOD(_method, 6))
-            _result &= fmin(Close[_shift + 1], Close[_shift + 2]) < _indi_sve[_shift][(int)SVE_BAND_MAIN];
-        }
-
+        // SVE BB
+        _result &= _indi_sve[_ishift_sve][(int)SVE_BAND_MAIN] > _indi_sve[_ishift_sve][(int)SVE_BAND_UPPER];
+        _result &= _indi_sve.IsDecreasing(1, SVE_BAND_MAIN, _ishift_sve);
+        _result &= _indi_sve.IsDecByPct(_level, SVE_BAND_MAIN, _ishift_sve, 1);
+        // TMA True
+        _result &= _chart_tma.GetHighest(MODE_HIGH, 3) >= _indi_tma.GetMax<double>(0, 3);
         break;
     }
 
