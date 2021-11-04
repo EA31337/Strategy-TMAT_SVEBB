@@ -91,30 +91,23 @@ class Indi_TMA_True : public Indicator<IndiTMATrueParams> {
   Indi_TMA_True(ENUM_TIMEFRAMES _tf = PERIOD_CURRENT) : Indicator(INDI_TMA_TRUE, _tf){};
 
   /**
-   * Gets indicator's params.
-   */
-  // IndiTMATrueParams GetIndiParams() const { return params; }
-
-  /**
    * Returns the indicator's value.
    *
    */
   virtual double GetValue(int _mode = 0, int _shift = 0) {
-    ResetLastError();
     double _value = EMPTY_VALUE;
     switch (iparams.idstype) {
       case IDATA_ICUSTOM:
         _value = iCustom(istate.handle, Get<string>(CHART_PARAM_SYMBOL), Get<ENUM_TIMEFRAMES>(CHART_PARAM_TF),
-                         iparams.custom_indi_name, (int)iparams.tf.GetTf(), iparams.GetHalfLength(),
+                         iparams.custom_indi_name, Get<ENUM_TIMEFRAMES>(CHART_PARAM_TF), iparams.GetHalfLength(),
                          iparams.GetAtrMultiplier(), iparams.GetAtrPeriod(), iparams.GetBarsToProcess(), false, _mode,
                          _shift);
         break;
       default:
-        SetUserError(ERR_USER_NOT_SUPPORTED);
+        SetUserError(ERR_INVALID_PARAMETER);
         _value = EMPTY_VALUE;
+        break;
     }
-    istate.is_changed = false;
-    istate.is_ready = _LastError == ERR_NO_ERROR;
     return _value;
   }
 
@@ -123,7 +116,7 @@ class Indi_TMA_True : public Indicator<IndiTMATrueParams> {
    */
   virtual bool IsValidEntry(IndicatorDataEntry &_entry) {
     return Indicator<IndiTMATrueParams>::IsValidEntry(_entry) && _entry.GetMin<double>() > 0 &&
-           _entry.values[TMA_TRUE_UPPER].IsGt<double>(_entry[(int)TMA_TRUE_LOWER]);
+           _entry.values[(int)TMA_TRUE_UPPER].IsGt<double>(_entry[(int)TMA_TRUE_LOWER]);
   }
 };
 
