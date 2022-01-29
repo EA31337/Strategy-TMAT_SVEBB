@@ -94,14 +94,15 @@ class Indi_TMA_True : public Indicator<IndiTMATrueParams> {
    * Returns the indicator's value.
    *
    */
-  virtual double GetValue(int _mode = 0, int _shift = 0) {
+  IndicatorDataEntryValue GetEntryValue(int _mode = 0, int _shift = -1) {
     double _value = EMPTY_VALUE;
+    int _ishift = _shift >= 0 ? _shift : iparams.GetShift();
     switch (iparams.idstype) {
       case IDATA_ICUSTOM:
         _value = iCustom(istate.handle, Get<string>(CHART_PARAM_SYMBOL), Get<ENUM_TIMEFRAMES>(CHART_PARAM_TF),
                          iparams.custom_indi_name, Get<ENUM_TIMEFRAMES>(CHART_PARAM_TF), iparams.GetHalfLength(),
                          iparams.GetAtrMultiplier(), iparams.GetAtrPeriod(), iparams.GetBarsToProcess(), false, _mode,
-                         _shift);
+                         _ishift);
         break;
       default:
         SetUserError(ERR_INVALID_PARAMETER);
