@@ -51,14 +51,12 @@ struct IndiTMATrueParams : public IndicatorParams {
         half_length(_half_length),
         atr_multiplier(_atr_multiplier),
         atr_period(_atr_period),
-        bars_to_process(_bars_to_process),
-        IndicatorParams(INDI_TMA_TRUE, FINAL_TMA_TRUE_MODE_ENTRY, TYPE_DOUBLE) {
+        bars_to_process(_bars_to_process) {
 #ifdef __resource__
     custom_indi_name = "::" + INDI_TMA_TRUE_PATH + "\\TMA_True";
 #else
     custom_indi_name = "TMA_True";
 #endif
-    SetDataSourceType(IDATA_ICUSTOM);
   };
 
   IndiTMATrueParams(IndiTMATrueParams &_params, ENUM_TIMEFRAMES _tf) {
@@ -87,22 +85,25 @@ class Indi_TMA_True : public Indicator<IndiTMATrueParams> {
   /**
    * Class constructor.
    */
-  Indi_TMA_True(IndiTMATrueParams &_p, IndicatorBase *_indi_src = NULL) : Indicator<IndiTMATrueParams>(_p, _indi_src) {}
+  Indi_TMA_True(IndiTMATrueParams &_p, ENUM_IDATA_SOURCE_TYPE _idstype = IDATA_ICUSTOM, IndicatorBase *_indi_src = NULL,
+                int _indi_src_mode = 0)
+      : Indicator<IndiTMATrueParams>(_p,
+                                     IndicatorDataParams::GetInstance(FINAL_TMA_TRUE_MODE_ENTRY, TYPE_DOUBLE, _idstype,
+                                                                      IDATA_RANGE_PRICE, _indi_src_mode),
+                                     _indi_src) {}
   Indi_TMA_True(ENUM_TIMEFRAMES _tf = PERIOD_CURRENT) : Indicator(INDI_TMA_TRUE, _tf){};
 
   /**
    * Returns the indicator's value.
-   *
    */
   IndicatorDataEntryValue GetEntryValue(int _mode = 0, int _shift = -1) {
     double _value = EMPTY_VALUE;
     int _ishift = _shift >= 0 ? _shift : iparams.GetShift();
-    switch (iparams.idstype) {
+    switch (Get<ENUM_IDATA_SOURCE_TYPE>(STRUCT_ENUM(IndicatorDataParams, IDATA_PARAM_IDSTYPE))) {
       case IDATA_ICUSTOM:
-        _value = iCustom(istate.handle, Get<string>(CHART_PARAM_SYMBOL), Get<ENUM_TIMEFRAMES>(CHART_PARAM_TF),
-                         iparams.custom_indi_name, Get<ENUM_TIMEFRAMES>(CHART_PARAM_TF), iparams.GetHalfLength(),
-                         iparams.GetAtrMultiplier(), iparams.GetAtrPeriod(), iparams.GetBarsToProcess(), false, _mode,
-                         _ishift);
+        _value = iCustom(istate.handle, GetSymbol(), GetTf(), iparams.custom_indi_name, GetTf(),
+                         iparams.GetHalfLength(), iparams.GetAtrMultiplier(), iparams.GetAtrPeriod(),
+                         iparams.GetBarsToProcess(), false, _mode, _ishift);
         break;
       default:
         SetUserError(ERR_INVALID_PARAMETER);

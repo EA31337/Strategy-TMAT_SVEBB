@@ -51,14 +51,12 @@ struct IndiSVEBBParams : public IndicatorParams {
         SvePeriod(_sve_period),
         BBUpDeviations(_deviations_up),
         BBDnDeviations(_deviations_down),
-        DeviationsPeriod(_deviations_period),
-        IndicatorParams(INDI_SVE_BB, FINAL_SVE_BAND_LINE_ENTRY, TYPE_DOUBLE) {
+        DeviationsPeriod(_deviations_period) {
 #ifdef __resource__
     custom_indi_name = "::" + INDI_SVEBB_PATH + "\\SVE_Bollinger_Bands";
 #else
     custom_indi_name = "SVE_Bollinger_Bands";
 #endif
-    SetDataSourceType(IDATA_ICUSTOM);
   };
   void IndiSVEBBParams(IndiSVEBBParams &_params, ENUM_TIMEFRAMES _tf) {
     THIS_REF = _params;
@@ -86,8 +84,12 @@ class Indi_SVE_Bollinger_Bands : public Indicator<IndiSVEBBParams> {
   /**
    * Class constructor.
    */
-  Indi_SVE_Bollinger_Bands(IndiSVEBBParams &_p, IndicatorBase *_indi_src = NULL)
-      : Indicator<IndiSVEBBParams>(_p, _indi_src) {}
+  Indi_SVE_Bollinger_Bands(IndiSVEBBParams &_p, ENUM_IDATA_SOURCE_TYPE _idstype = IDATA_ICUSTOM,
+                           IndicatorBase *_indi_src = NULL, int _indi_src_mode = 0)
+      : Indicator<IndiSVEBBParams>(_p,
+                                   IndicatorDataParams::GetInstance(FINAL_SVE_BAND_LINE_ENTRY, TYPE_DOUBLE, _idstype,
+                                                                    IDATA_RANGE_MIXED, _indi_src_mode),
+                                   _indi_src) {}
   Indi_SVE_Bollinger_Bands(ENUM_TIMEFRAMES _tf = PERIOD_CURRENT) : Indicator(INDI_SVE_BB, _tf){};
 
   /**
@@ -96,12 +98,11 @@ class Indi_SVE_Bollinger_Bands : public Indicator<IndiSVEBBParams> {
   IndicatorDataEntryValue GetEntryValue(int _mode = 0, int _shift = -1) {
     double _value = EMPTY_VALUE;
     int _ishift = _shift >= 0 ? _shift : iparams.GetShift();
-    switch (iparams.idstype) {
+    switch (Get<ENUM_IDATA_SOURCE_TYPE>(STRUCT_ENUM(IndicatorDataParams, IDATA_PARAM_IDSTYPE))) {
       case IDATA_ICUSTOM:
-        _value = iCustom(istate.handle, Get<string>(CHART_PARAM_SYMBOL), Get<ENUM_TIMEFRAMES>(CHART_PARAM_TF),
-                         iparams.custom_indi_name, iparams.GetTEMAPeriod(), iparams.GetSvePeriod(),
-                         iparams.GetBBUpDeviations(), iparams.GetBBDnDeviations(), iparams.GetDeviationsPeriod(), _mode,
-                         _ishift);
+        _value = iCustom(istate.handle, GetSymbol(), GetTf(), iparams.custom_indi_name, iparams.GetTEMAPeriod(),
+                         iparams.GetSvePeriod(), iparams.GetBBUpDeviations(), iparams.GetBBDnDeviations(),
+                         iparams.GetDeviationsPeriod(), _mode, _ishift);
         break;
       default:
         SetUserError(ERR_INVALID_PARAMETER);
