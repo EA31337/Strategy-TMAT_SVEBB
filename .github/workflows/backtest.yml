@@ -25,20 +25,20 @@ jobs:
         shell: powershell
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: 'recursive'
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           path: Include/EA31337-classes
           ref: v2.011
           repository: EA31337/EA31337-classes
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           path: indicators-other/Oscillator/Include/EA31337-classes
           ref: v2.011
           repository: EA31337/EA31337-classes
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           path: indicators-other/PriceBands/Include/EA31337-classes
           ref: v2.011
@@ -82,10 +82,10 @@ jobs:
           - indicators-other/Oscillator/SVE_Bollinger_Bands
           - indicators-other/PriceBands/TMA_True
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: 'recursive'
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           path: Include/EA31337-classes
           ref: v2.011
