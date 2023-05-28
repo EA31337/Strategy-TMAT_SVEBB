@@ -101,7 +101,7 @@ class Stg_TMAT_SVEBB : public Strategy {
   Stg_TMAT_SVEBB(StgParams &_sparams, TradeParams &_tparams, ChartParams &_cparams, string _name = "")
       : Strategy(_sparams, _tparams, _cparams, _name) {}
 
-  static Stg_TMAT_SVEBB *Init(ENUM_TIMEFRAMES _tf = NULL) {
+  static Stg_TMAT_SVEBB *Init(ENUM_TIMEFRAMES _tf = NULL, EA* _ea = NULL) {
     // Initialize strategy initial values.
     Stg_TMAT_SVEBB_Params_Defaults stg_tmat_svebb_defaults;
     StgParams _stg_params(stg_tmat_svebb_defaults);
