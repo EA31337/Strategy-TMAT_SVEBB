@@ -25,7 +25,7 @@
 
 // Defines
 #ifndef INDI_TMA_TRUE_PATH
-#define INDI_TMA_TRUE_PATH "indicators-other\\PriceBands\\TMA_True"
+#define INDI_TMA_TRUE_PATH "indicators-other\\PriceBands"
 #endif
 
 // Indicator line identifiers used in the indicator.
